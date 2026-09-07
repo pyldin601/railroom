@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Railroom — train sound simulator</title><meta name="description" content="A local train sound simulator with recorded wheel impacts and spatial audio."><link rel="stylesheet" href="src/style.css"></head>
+<body>
+<header><a class="brand" href="./" aria-label="Railroom home"><span class="brand-icon">Ⅱ</span> railroom<span class="tag">SOUND SIMULATOR</span></a><div class="live"><i id="status-dot"></i><span id="status">Loading route</span></div></header>
+<main>
+<section class="route-panel">
+ <div class="section-line"><div><span class="eyebrow">YOUR JOURNEY</span><h1>Kyiv <span>→</span> Fastiv</h1></div><label class="route-picker"><span>Track</span><select id="route-mode"><option value="route">Kyiv–Fastiv · welded</option><option value="demo">25 m jointed demo</option></select></label></div>
+ <div class="route-map" id="route-map" aria-label="Route stations"></div>
+ <div class="route-caption"><span id="route-caption">64 km · 8 station markers · approximate route</span><span id="distance">0.000 / 64.000 km</span></div>
+</section>
+<div class="workspace">
+ <section class="drive-panel panel">
+  <div class="section-line"><span class="eyebrow">DRIVE</span><span class="pill" id="motion-label">STATIONARY</span></div>
+  <div class="speed-display"><span id="speed">0</span><span class="speed-unit">km/h</span></div>
+  <div class="speed-scale"><div id="speed-bar"></div></div><div class="scale-labels"><span>0</span><span>60</span><span>120</span></div>
+  <label class="slider-label" for="throttle">Throttle <output id="throttle-value">45%</output></label><input id="throttle" type="range" min="0" max="100" value="45">
+  <label class="slider-label" for="brake">Service brake <output id="brake-value">0%</output></label><input class="brake-range" id="brake" type="range" min="0" max="100" value="0">
+  <div class="drive-actions"><button id="coast">Coast</button><button id="emergency" class="danger">Emergency brake</button></div>
+  <button id="play" class="primary" disabled><span id="play-icon">▶</span> <span id="play-label">Start journey</span></button>
+  <div class="secondary-actions"><button id="reset">↺ Reset</button><button id="audition">Audition at 72 km/h ↗</button></div>
+  <p class="hint">Space to pause · ↑ ↓ throttle · B to brake</p>
+ </section>
+ <section class="carriage-panel panel">
+  <div class="section-line"><div><span class="eyebrow">BENEATH YOUR SEAT</span><h2>Every wheelset, its own voice.</h2></div><label class="compact"><span>Carriages</span><select id="cars"><option value="1">1 carriage</option><option value="3">3 carriages</option></select></label></div>
+  <div class="canvas-wrap"><canvas id="track" aria-label="Moving railway and individual wheelset impacts"></canvas><div class="diagram-key"><span><i class="key-dot"></i> wheel contact</span><span><i class="key-dot listener"></i> you</span><span>← direction of travel</span></div></div>
+  <div class="next-stop"><div><span class="eyebrow">NEXT MARKER</span><strong id="next-station">Karavaievi Dachi</strong></div><span id="next-distance">3.50 km</span></div>
+  <div class="axle-heading"><span class="eyebrow">WHEELSETS</span><span>Click to mute · S to solo</span></div><div class="axle-grid" id="axle-grid"></div>
+  <div class="journey-seek"><label for="station">Jump to station</label><select id="station"></select><button id="seek">Go →</button></div>
+ </section>
+ <section class="listen-panel panel">
+  <div class="section-line"><span class="eyebrow">LISTEN</span><span class="headphone">◖ ◗</span></div>
+  <h2>A seat in the sound.</h2>
+  <label class="slider-label" for="master">Master volume <output id="master-value">55%</output></label><input id="master" type="range" min="0" max="100" value="55">
+  <div class="output-meter"><div id="meter"></div></div><div class="scale-labels"><span>OUTPUT</span><span id="peak">−∞ dB</span></div>
+  <div class="seat-label">Seat position</div><div class="segmented" id="seats"><button data-seat="2" aria-pressed="false">Front</button><button data-seat="10" aria-pressed="true" class="selected">Middle</button><button data-seat="19" aria-pressed="false">Rear</button></div>
+  <label class="slider-label" for="yaw">Look around <output id="yaw-value">0°</output></label><input id="yaw" type="range" min="-180" max="180" value="0">
+  <label class="toggle"><input type="checkbox" id="spatial" checked><span>Binaural headphones</span></label>
+  <div class="mix-label">Sound layers</div>
+  <label class="mini-slider" for="impact-mix">Wheel impacts<input id="impact-mix" type="range" min="0" max="150" value="100"></label>
+  <label class="mini-slider" for="rolling-mix">Rolling<input id="rolling-mix" type="range" min="0" max="150" value="100"></label>
+  <label class="mini-slider" for="traction-mix">Traction<input id="traction-mix" type="range" min="0" max="150" value="100"></label>
+  <label class="mini-slider" for="brake-mix">Braking<input id="brake-mix" type="range" min="0" max="150" value="100"></label>
+ </section>
+</div>
+<div class="footer-row"><span class="recording-badge"><i></i> REAL FIELD RECORDINGS</span><span id="sound-note">Recorded wheel impacts, rolling and electric traction. Headphones recommended.</span><details><summary>About the sounds</summary><p>This starter pack uses public-domain and CC0 recordings from different trains. It is not a recording of the Kyiv–Fastiv service. The rolling bed is filtered from one ride; the braking layer is recorded electric deceleration. Pneumatic brake hiss and independent speed-band recordings are not included.</p><p>Welds are subtle. The jointed demo has a stronger clatter. Fastenings do not trigger impacts.</p><a href="AUDIO-LICENSES.md" target="_blank">Recording credits and processing notes ↗</a></details></div>
+<p id="error" role="alert" hidden></p>
+<details class="diagnostics"><summary>Playback diagnostics</summary><span id="diagnostics">Start the journey to enable audio.</span></details>
+</main><script type="module" src="src/main.js"></script></body></html>
