@@ -38,17 +38,18 @@ export function textureNormalization(data, sampleRate, offset) {
 }
 
 export class RecordedMotor {
-  constructor(context, bank, mixer) {
-    Object.assign(this, {context, bank, mixer});
+  constructor(context, bank, mixer, profile = {}) {
+    Object.assign(this, {context, bank, mixer, profile});
     this.voices = []; this.started = false;
     this.window = Float32Array.from({length:193}, (_, i) => grainWindow(i / 192));
   }
   start() {
     if (this.started) return;
-    this.sample = this.bank.pool('traction')[0];
+    this.sample = this.bank.pool(this.profile.kind??'traction')[0];
     if (!this.sample) return;
     this.started = true;
-    const bogies = (this.mixer.audibleAxles??this.mixer.axles).filter((_, i) => i % 4 === 0 || i % 4 === 2);
+    const axles=this.mixer.audibleAxles??this.mixer.axles;
+    const bogies = this.profile.axles?this.profile.axles(axles):axles.filter((_, i) => i % 4 === 0 || i % 4 === 2);
     this.voices = bogies.map((axle, i) => {
       const output = this.context.createGain(), fade = this.context.createGain();
       output.gain.value = 0;
@@ -59,19 +60,21 @@ export class RecordedMotor {
   update(state, controls, running) {
     if (!this.started) return;
     const now = this.context.currentTime;
-    const load = running && !controls.brake && !controls.emergency ? Math.max(0, Math.min(1, controls.throttle || 0)) : 0;
-    const gain = Math.pow(load, .75) * .19 * (this.mixer.levels.traction ?? 1) / Math.sqrt(this.voices.length);
+    const parameters=this.profile.parameters?.(state,controls,running);
+    const load = parameters?parameters.load:running && !controls.brake && !controls.emergency ? Math.max(0, Math.min(1, controls.throttle || 0)) : 0;
+    const gain = Math.pow(load, .75) * (this.profile.gain??.19) * (this.mixer.levels[this.profile.level??'traction'] ?? 1) / Math.sqrt(this.voices.length);
     const buffer = this.sample.buffer, data = buffer.getChannelData(0);
     for (const voice of this.voices) {
       voice.output.gain.setTargetAtTime(gain, now, .12);
-      const targetRate = recordedPitchRate(state.speed);
+      if(this.profile.lazy&&load===0){voice.rate=null;voice.previous=null;voice.nextTime=now+.015;continue;}
+      const targetRate = parameters?.rate??recordedPitchRate(state.speed);
       const dt = Math.max(0, now - (voice.lastUpdate ?? now));
       voice.rate = voice.rate == null ? targetRate : voice.rate + (targetRate - voice.rate) * (1 - Math.exp(-dt / .18));
       voice.lastUpdate = now;
       if (voice.nextTime < now) {voice.nextTime = now + .01; voice.previous = null;}
       while (voice.nextTime < now + .15) {
-        const desired = sourcePosition(state.speed, buffer.duration);
-        const offset = alignGrain(data, buffer.sampleRate, desired, voice.previous, voice.rate);
+        const desired = this.profile.offset?this.profile.offset(voice,buffer.duration):sourcePosition(state.speed, buffer.duration);
+        const offset = this.profile.align===false?desired:alignGrain(data, buffer.sampleRate, desired, voice.previous, voice.rate);
         const source = this.context.createBufferSource(), envelope = this.context.createGain();
         source.buffer = buffer;
         source.playbackRate.value = voice.rate;

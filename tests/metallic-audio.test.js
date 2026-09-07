@@ -15,7 +15,7 @@ test('metallic rolling restores midrange without a discontinuous loop seam',()=>
 });
 test('all eight impacts keep their timing and add bounded ringing tails',()=>{
  for(const sample of manifest.samples.filter(s=>s.kind==='joint')){
-  assert.equal(sample.url,`${sample.id}-rail-long.wav`);assert.equal(sample.onset,.01);
+  assert.equal(sample.url,`${sample.id}-rail-reverb.wav`);assert.equal(sample.onset,.01);
   const {x,rate}=wav(sample.url);assert.equal(rate,48000);assert.ok(x.length/rate>=.24);
   assert.ok(Math.abs(x[0])<.001&&Math.abs(x.at(-1))<.001);
   let peak=0,tail=0,head=0;for(let i=0;i<x.length;i++){peak=Math.max(peak,Math.abs(x[i]));if(i>rate*.16)tail+=x[i]**2;else head+=x[i]**2;}
@@ -25,10 +25,10 @@ test('all eight impacts keep their timing and add bounded ringing tails',()=>{
 
 test('rail resonance remains audible after the contact and decays before the next event',()=>{
  for(const s of manifest.samples.filter(s=>s.kind==='joint')){
-  const {x,rate}=wav(s.url);assert.equal(x.length/rate,.75);
+  const {x,rate}=wav(s.url);assert.equal(x.length/rate,1.0);
   const energy=(a,b)=>x.slice(Math.round(a*rate),Math.round(b*rate)).reduce((sum,v)=>sum+v*v,0);
   assert.ok(energy(.18,.28)>.001,'rail tail should survive the dry impact');
-  assert.ok(energy(.45,.55)<energy(.18,.28)*.2,'rail resonance must decay');
+  assert.ok(energy(.65,.75)<energy(.18,.28)*.2,'rail resonance must decay');
  }
 });
 

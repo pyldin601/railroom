@@ -80,3 +80,11 @@ Rolling now uses eight independent mono sources at the occupied carriage's four 
 ## UI rendering cost
 
 The dashboard no longer runs an unconditional animation-frame loop. It redraws on control/status changes and resize while paused, stops visual work when hidden, and schedules active animation at no more than 30 fps. Repeated text writes are skipped when values are unchanged. The separate 25 ms audio scheduling interval is retained. Browser start/pause checks passed; an OS-level CPU before/after benchmark has not been recorded.
+
+## Louder default mix
+
+Master volume defaults to 100%. A fixed 1.4× mix gain (+2.92 dB) sits before the existing compressor, raising all layers together while preserving their relative controls. The master slider still scales from silence to full volume. Combined with the previous 55% master default, this raises pre-compressor gain by approximately 8.12 dB at startup; perceived loudness depends on compressor activity and source content.
+
+## Braking without repeated deceleration sweeps
+
+Braking now combines a held, speed-pitched recorded tone with an independently scattered, unpitched friction-hiss texture. The same overlapping-grain engine used by recorded traction supplies smooth envelopes. Both components follow brake pressure, fade near rest, and are located at the occupied carriage's bogies. No full deceleration clip is looped. See [recording notes](AUDIO-LICENSES.md) for sources and limitations.

@@ -76,3 +76,18 @@ Current impacts are `joint-1-rail-long.wav` through `joint-8-rail-long.wav`, las
 ## Restored narrow rolling version
 
 At the listener's request, the manifest again selects the original `rolling-rail.wav`, from before the broad/noisy revisions. Regeneration matches that preserved WAV byte-for-byte. This restores its 45% narrow resonance mix and original bass blend, including the original filtering rather than the later final 120 Hz high-pass. The 750 ms impact revision remains active.
+
+## Softer reverberant impact release
+
+Current impacts are `joint-1-rail-reverb.wav` through `joint-8-rail-reverb.wav`. Duration increases from 750 ms to 1000 ms, with a 150 ms baked-in final fade instead of 40 ms. Impact-only resonance decay scaling increases from 71/61 to 96/61. Quiet additional returns at 61, 89 and 127 ms create a slightly more diffuse metallic tail. Recorded strike onset and resonance frequencies remain unchanged. Runtime's final 25 ms safety fade overlaps the end of the baked-in release. Earlier assets and the approved rolling sound are preserved.
+
+## Split braking tone and friction hiss
+
+The runtime replaces `brake.wav` with two derivatives of the preserved E217 E231 deceleration recording (CC0, original source URL retained in each manifest entry):
+
+- `brake-tone.wav`: original 10–11 s, 180–2200 Hz, mono 48 kHz PCM. A fixed local region is played with 180 ms phase-aligned Hann grains. Playback pitch follows simulated speed, not the recording's full deceleration sweep.
+- `brake-hiss.wav`: original 10–14 s, 4000–10000 Hz, mono 48 kHz PCM. Overlapping grains sample different offsets at a fixed playback rate. This is a high-frequency friction/air texture, not a recording of an isolated pneumatic brake valve.
+
+Both are peak-normalized to −6 dBFS. Regenerate using `PYTHONDONTWRITEBYTECODE=1 python3 scripts/prepare-brake-audio.py`. The old recording remains preserved. This is frequency separation and sound design, not clean physical source separation. Pitch continuity and lifecycle checks do not establish subjective authenticity.
+
+The two local bogies each receive a tone and hiss feed. Brake pressure controls amplitude; both fade below 2 m/s and become silent at rest. Releasing the brake stops scheduling new grains and fades existing sources. The existing Braking slider controls both components. The motor modes retain their original parameter defaults and sound assets.

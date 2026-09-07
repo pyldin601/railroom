@@ -5,98 +5,98 @@
     {
       "id": "joint-1",
       "kind": "joint",
-      "url": "joint-1-rail-long.wav",
+      "url": "joint-1-rail-reverb.wav",
       "source": "https://commons.wikimedia.org/wiki/File:Стук_колёс_поезда.ogg",
       "license": "CC0-1.0",
       "author": "Ural-66",
       "onset": 0.01,
       "gain": 0.75,
       "sourceOffsetSeconds": 61.06,
-      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 750 ms total with extended rail decay, original 10 ms onset retained."
+      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 1000 ms total with extended rail resonance and 150 ms final fade, original 10 ms onset retained."
     },
     {
       "id": "joint-2",
       "kind": "joint",
-      "url": "joint-2-rail-long.wav",
+      "url": "joint-2-rail-reverb.wav",
       "source": "https://commons.wikimedia.org/wiki/File:Стук_колёс_поезда.ogg",
       "license": "CC0-1.0",
       "author": "Ural-66",
       "onset": 0.01,
       "gain": 0.75,
       "sourceOffsetSeconds": 65.77,
-      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 750 ms total with extended rail decay, original 10 ms onset retained."
+      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 1000 ms total with extended rail resonance and 150 ms final fade, original 10 ms onset retained."
     },
     {
       "id": "joint-3",
       "kind": "joint",
-      "url": "joint-3-rail-long.wav",
+      "url": "joint-3-rail-reverb.wav",
       "source": "https://commons.wikimedia.org/wiki/File:Стук_колёс_поезда.ogg",
       "license": "CC0-1.0",
       "author": "Ural-66",
       "onset": 0.01,
       "gain": 0.75,
       "sourceOffsetSeconds": 68.51,
-      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 750 ms total with extended rail decay, original 10 ms onset retained."
+      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 1000 ms total with extended rail resonance and 150 ms final fade, original 10 ms onset retained."
     },
     {
       "id": "joint-4",
       "kind": "joint",
-      "url": "joint-4-rail-long.wav",
+      "url": "joint-4-rail-reverb.wav",
       "source": "https://commons.wikimedia.org/wiki/File:Стук_колёс_поезда.ogg",
       "license": "CC0-1.0",
       "author": "Ural-66",
       "onset": 0.01,
       "gain": 0.75,
       "sourceOffsetSeconds": 69.745,
-      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 750 ms total with extended rail decay, original 10 ms onset retained."
+      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 1000 ms total with extended rail resonance and 150 ms final fade, original 10 ms onset retained."
     },
     {
       "id": "joint-5",
       "kind": "joint",
-      "url": "joint-5-rail-long.wav",
+      "url": "joint-5-rail-reverb.wav",
       "source": "https://commons.wikimedia.org/wiki/File:Стук_колёс_поезда.ogg",
       "license": "CC0-1.0",
       "author": "Ural-66",
       "onset": 0.01,
       "gain": 0.75,
       "sourceOffsetSeconds": 71.015,
-      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 750 ms total with extended rail decay, original 10 ms onset retained."
+      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 1000 ms total with extended rail resonance and 150 ms final fade, original 10 ms onset retained."
     },
     {
       "id": "joint-6",
       "kind": "joint",
-      "url": "joint-6-rail-long.wav",
+      "url": "joint-6-rail-reverb.wav",
       "source": "https://commons.wikimedia.org/wiki/File:Стук_колёс_поезда.ogg",
       "license": "CC0-1.0",
       "author": "Ural-66",
       "onset": 0.01,
       "gain": 0.75,
       "sourceOffsetSeconds": 77.26,
-      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 750 ms total with extended rail decay, original 10 ms onset retained."
+      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 1000 ms total with extended rail resonance and 150 ms final fade, original 10 ms onset retained."
     },
     {
       "id": "joint-7",
       "kind": "joint",
-      "url": "joint-7-rail-long.wav",
+      "url": "joint-7-rail-reverb.wav",
       "source": "https://commons.wikimedia.org/wiki/File:Стук_колёс_поезда.ogg",
       "license": "CC0-1.0",
       "author": "Ural-66",
       "onset": 0.01,
       "gain": 0.75,
       "sourceOffsetSeconds": 79.765,
-      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 750 ms total with extended rail decay, original 10 ms onset retained."
+      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 1000 ms total with extended rail resonance and 150 ms final fade, original 10 ms onset retained."
     },
     {
       "id": "joint-8",
       "kind": "joint",
-      "url": "joint-8-rail-long.wav",
+      "url": "joint-8-rail-reverb.wav",
       "source": "https://commons.wikimedia.org/wiki/File:Стук_колёс_поезда.ogg",
       "license": "CC0-1.0",
       "author": "Ural-66",
       "onset": 0.01,
       "gain": 0.75,
       "sourceOffsetSeconds": 80.77,
-      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 750 ms total with extended rail decay, original 10 ms onset retained."
+      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 1000 ms total with extended rail resonance and 150 ms final fade, original 10 ms onset retained."
     },
     {
       "id": "rolling",
@@ -127,18 +127,28 @@
       "description": "Motor-dominated 18–19 s excerpt, mono, high-pass 160 Hz and low-pass 1500 Hz; normalized to -6 dBFS. Used as pitch-controlled, phase-aligned grains; not played as a one-second loop."
     },
     {
-      "id": "brake",
-      "kind": "brake",
-      "url": "brake.wav",
+      "id": "brake-tone",
+      "kind": "brake-tone",
+      "url": "brake-tone.wav",
+      "gain": 1,
+      "onset": 0,
+      "sourceOffsetSeconds": 10,
+      "description": "Fixed local brake-tone texture; pitch follows simulated speed using phase-aligned grains, not a deceleration loop.",
       "source": "https://commons.wikimedia.org/wiki/File:E231Deceleration.ogg",
       "license": "CC0-1.0",
-      "author": "E217",
-      "onset": 0,
+      "author": "E217"
+    },
+    {
+      "id": "brake-hiss",
+      "kind": "brake-hiss",
+      "url": "brake-hiss.wav",
       "gain": 1,
-      "loopStart": 0,
-      "loopEnd": 3.85,
+      "onset": 0,
       "sourceOffsetSeconds": 10,
-      "description": "Filtered mono field-recording excerpt with a 150 ms equal-power seam crossfade"
+      "description": "High-frequency friction/air texture from the same train recording; unpitched scattered grains. Not an isolated pneumatic vent recording.",
+      "source": "https://commons.wikimedia.org/wiki/File:E231Deceleration.ogg",
+      "license": "CC0-1.0",
+      "author": "E217"
     }
   ]
 }

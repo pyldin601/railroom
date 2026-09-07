@@ -3,11 +3,12 @@ import {carriageGain,occupiedCarriage} from './carriage-isolation.js?v=coach6177
 export class SpatialMixer{
  constructor(context,bank,axles){
   Object.assign(this,{context,bank,axles});this.voices=new Set();this.emitters=new Map();this.muted=new Set();this.solo=null;this.levels={impact:1,rolling:1,brake:1,traction:1};this.lastImpacts=new Map();
-  this.master=context.createGain();this.master.gain.value=.55;
+  this.master=context.createGain();this.master.gain.value=1;
+  this.mixBoost=context.createGain();this.mixBoost.gain.value=1.4;
   this.compressor=context.createDynamicsCompressor();this.compressor.threshold.value=-8;this.compressor.knee.value=12;this.compressor.ratio.value=4;
   this.analyser=context.createAnalyser();this.analyser.fftSize=256;this.meterData=new Float32Array(256);
   this.outputFade=context.createGain();
-  this.master.connect(this.outputFade).connect(this.compressor).connect(this.analyser).connect(context.destination);
+  this.master.connect(this.mixBoost).connect(this.outputFade).connect(this.compressor).connect(this.analyser).connect(context.destination);
   for(const axle of axles)for(const side of ['left','right','center']){
    const pan=context.createPanner();pan.panningModel='HRTF';pan.distanceModel='inverse';pan.refDistance=3;pan.rolloffFactor=0;pan.positionX.value=side==='left'?-.76:side==='right'?.76:0;pan.positionY.value=-1.5;pan.positionZ.value=axle.offset;
    const gain=context.createGain();gain.connect(pan).connect(this.master);this.emitters.set(`${axle.id}:${side}`,{gain,pan});
@@ -42,6 +43,6 @@ export class SpatialMixer{
  dispose(){
   this.silence();const t=this.context.currentTime;
   this.outputFade.gain.setValueAtTime(1,t);this.outputFade.gain.linearRampToValueAtTime(0,t+.03);
-  setTimeout(()=>{for(const {gain,pan} of this.emitters.values()){gain.disconnect();pan.disconnect();}this.master.disconnect();this.outputFade.disconnect();this.compressor.disconnect();this.analyser.disconnect();},60);
+  setTimeout(()=>{for(const {gain,pan} of this.emitters.values()){gain.disconnect();pan.disconnect();}this.master.disconnect();this.mixBoost.disconnect();this.outputFade.disconnect();this.compressor.disconnect();this.analyser.disconnect();},60);
  }
 }

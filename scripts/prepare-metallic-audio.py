@@ -100,7 +100,7 @@ def impacts(manifest):
         bright = bandpass(original, 2900, .7)
         body = [(v+1.3*h)*(.55+.45*math.exp(-max(0,i/RATE-.025)/.035))
                 for i,(v,h) in enumerate(zip(original, bright))]
-        body += [0.0]*(int(.75*RATE)-len(body))
+        body += [0.0]*(int(1.0*RATE)-len(body))
         exciter = [v*max(0, min(1, (.040-i/RATE)/.015)) for i,v in enumerate(body)]
         # Inharmonic modes approximate damped steel vibration, excited solely
         # by the recorded contact. Multiple modes avoid a single bell note.
@@ -109,20 +109,20 @@ def impacts(manifest):
         peak = max(map(abs, original))
         for frequency, decay, amount in RAIL_MODES:
             frequency *= 1+(index-3.5)*.002
-            ring = normalize(bandpass(exciter, frequency, math.pi*frequency*decay*(.71/.61)), peak*amount)
+            ring = normalize(bandpass(exciter, frequency, math.pi*frequency*decay*(.96/.61)), peak*amount)
             resonance = [a+b for a,b in zip(resonance,ring)]
         # Small, irregular early returns thicken rail vibration without a room
         # reverb or separately timed second wheel strike. They share its emitter.
-        for delay, amount in [(.0073,.22),(.0131,-.15),(.0227,.10),(.0379,.055)]:
+        for delay, amount in [(.0073,.22),(.0131,-.15),(.0227,.10),(.0379,.055),(.061,.045),(.089,-.03),(.127,.02)]:
             frames = round(delay*RATE)
             for i in range(frames,len(body)):
                 body[i] += resonance[i-frames]*amount
         body = [a+b for a,b in zip(body,resonance)]
         for i in range(len(body)):
-            body[i] *= min(1,i/96,(len(body)-1-i)/1920)
-        sample['url'] = sample['id']+'-rail-long.wav'
+            body[i] *= min(1,i/96,(len(body)-1-i)/7200)
+        sample['url'] = sample['id']+'-rail-reverb.wav'
         write(sample['url'],body)
-        sample['description'] = 'Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 750 ms total with extended rail decay, original 10 ms onset retained.'
+        sample['description'] = 'Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 1000 ms total with extended rail resonance and 150 ms final fade, original 10 ms onset retained.'
 
 
 

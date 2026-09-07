@@ -1,13 +1,15 @@
-import {RecordedMotor} from './recorded-motor.js?v=coach61779';
+import {BrakingLayers} from './braking.js';
+import {RecordedMotor} from './recorded-motor.js?v=brake-grains';
 import {TractionMotor} from './traction.js?v=motor-start';
 export function rollingWheels(axles, occupied=1){
  return axles.filter(a=>(a.car??1)===occupied).flatMap(a=>['left','right'].map(side=>({axle:a,side}))).map((w,i)=>({...w,offset:(i*.371)%1,rate:1+(i-3.5)*.0008}));
 }
 /** Recorded rolling/braking plus continuously synthesized traction. */
 export class RollingLayers{
- constructor(context,bank,mixer){Object.assign(this,{context,bank,mixer});this.layers=[];this.started=false;this.motor=new TractionMotor(context,mixer);this.recordedMotor=new RecordedMotor(context,bank,mixer);}
+ constructor(context,bank,mixer){Object.assign(this,{context,bank,mixer});this.layers=[];this.started=false;this.motor=new TractionMotor(context,mixer);this.recordedMotor=new RecordedMotor(context,bank,mixer);this.braking=new BrakingLayers(context,bank,mixer);}
  start(){if(this.started)return;this.started=true;if(this.mixer.motorMode==='recorded')this.recordedMotor.start();else this.motor.start();
-  for(const kind of ['rolling','brake','idle','air']){
+  this.braking.start();
+  for(const kind of ['rolling','idle','air']){
    const pool=this.bank.pool(kind);if(!pool.length)continue;
    const audible=this.mixer.audibleAxles??this.mixer.axles;
    const local=audible.find(a=>a.car===this.mixer.occupied)??audible[0];
@@ -20,11 +22,10 @@ export class RollingLayers{
    }
   }
  }
- update(state,controls,running){if(!this.started)return;this.motor.update(state,controls,running);this.recordedMotor.update(state,controls,running);const speed=state.speed,t=this.context.currentTime;
+ update(state,controls,running){if(!this.started)return;this.motor.update(state,controls,running);this.recordedMotor.update(state,controls,running);this.braking.update(state,controls,running);const speed=state.speed,t=this.context.currentTime;
   for(const layer of this.layers){let level=0;
    if(running){
     if(layer.kind==='rolling')level=Math.min(1,speed/22)*.14/Math.sqrt((this.mixer.audibleAxles??this.mixer.axles).length/4)*this.mixer.levels.rolling/Math.sqrt(2);
-    if(layer.kind==='brake')level=Math.min(1,speed/3)*(controls.emergency?1:(controls.brake||0))*.16*this.mixer.levels.brake;
     if(layer.kind==='idle')level=.025;
     if(layer.kind==='air')level=Math.min(1,speed/33)*.045;
    }
@@ -37,7 +38,7 @@ export class RollingLayers{
   if(this.started){if(mode==='recorded')this.recordedMotor.start();else this.motor.start();}
  }
  stop(at=this.context.currentTime){
-  this.motor.stop(at);this.recordedMotor.stop(at);
+  this.motor.stop(at);this.recordedMotor.stop(at);this.braking.stop(at);
   for(const l of this.layers){
    l.fade.gain.setValueAtTime(1,at);
    l.fade.gain.linearRampToValueAtTime(0,at+.03);
