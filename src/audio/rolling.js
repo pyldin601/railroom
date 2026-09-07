@@ -2,7 +2,7 @@ import {CabinAmbience} from './ambient.js';
 import {splitRolling,updateRollingBands,disposeRollingBands} from './rolling-bands.js';
 import {BrakingLayers} from './braking.js';
 import {RecordedMotor} from './recorded-motor.js?v=brake-grains';
-import {TractionMotor} from './traction.js?v=motor-start';
+import {TractionMotor} from './traction.js?v=locomotive-space';
 // Fixed, irregular cents offsets: centred overall, with no speed-driven pitch shift.
 const WHEEL_CENTS=[-17,7,15,-8,11,-14,-4,10];
 export function rollingWheels(axles, occupied=1){
@@ -31,7 +31,7 @@ export class RollingLayers{
  update(state,controls,running){if(!this.started)return;this.ambient.update(state,controls,running);this.motor.update(state,controls,running);this.recordedMotor.update(state,controls,running);this.braking.update(state,controls,running);const speed=state.speed,t=this.context.currentTime;
   for(const layer of this.layers){let level=0;
    if(running){
-    if(layer.kind==='rolling')level=Math.min(1,speed/22)*.14/Math.sqrt((this.mixer.audibleAxles??this.mixer.axles).length/4)*this.mixer.levels.rolling/Math.sqrt(2);
+    if(layer.kind==='rolling')level=Math.min(1,speed/22)*.28/Math.sqrt((this.mixer.audibleAxles??this.mixer.axles).length/4)*this.mixer.levels.rolling/Math.sqrt(2);
     if(layer.kind==='idle')level=.025;
     if(layer.kind==='air')level=Math.min(1,speed/33)*.045;
    }

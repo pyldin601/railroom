@@ -1,11 +1,11 @@
 <!doctype html><html><head><meta charset="utf-8"><title>Railroom audio verification</title></head><body><h1>Audio verification</h1><pre id="results">Running…</pre><script type="module">
 import {SampleBank} from '../src/audio/sample-bank.js';
-import {SpatialMixer} from '../src/audio/spatial-mixer.js?v=louder-mix';
+import {SpatialMixer} from '../src/audio/spatial-mixer.js?v=locomotive-space';
 import {wheelsets,RouteIndex,demoRoute} from '../src/route/route-index.js?v=coach61779';
 import {Transport} from '../src/audio/scheduler.js';
 import {RecordedMotor} from '../src/audio/recorded-motor.js';
-import {TractionMotor} from '../src/audio/traction.js?v=motor-start';
-import {RollingLayers} from '../src/audio/rolling.js?v=cabin-ambient';
+import {TractionMotor} from '../src/audio/traction.js?v=locomotive-space';
+import {RollingLayers} from '../src/audio/rolling.js?v=locomotive-space';
 import {CabinAmbience} from '../src/audio/ambient.js';
 const results=[];const assert=(condition,message)=>{if(!condition)throw Error(message);results.push('PASS '+message);};
 try{
@@ -17,7 +17,7 @@ try{
  assert(cabin.getChannelData(0).slice(25000).every(v=>v===0),'carriage ambience fades to silence on pause');
  const rate=48000,context=new OfflineAudioContext(2,rate*3,rate);const bank=await new SampleBank(context).load('../public/audio/manifest.json');
  assert(bank.samples.length===12,'all twelve recording assets decode');assert(bank.samples.every(s=>s.buffer.numberOfChannels===1),'point-source recordings are mono');
- const mixer=new SpatialMixer(context,bank,wheelsets(10));assert(mixer.master.gain.value===1&&Math.abs(mixer.mixBoost.gain.value-1.4)<1e-6,'master defaults to 100% with 1.4x mix boost');mixer.setListener(117.484,0);const rolling=new RollingLayers(context,bank,mixer);rolling.start();assert(mixer.audibleAxles.length===20,'only five carriages have audible wheelsets');assert(rolling.layers.filter(l=>l.kind==='rolling').length===8,'only the occupied carriage creates eight rolling wheel sources');assert(rolling.motor.voices.length===10,'only five carriages create motor sources');assert(mixer.transmission('c4-a1')===.3&&mixer.transmission('c3-a1')===.05&&mixer.transmission('c2-a1')===0,'interior isolation gains follow carriage distance');rolling.update({speed:20},{throttle:.5,brake:.2},true);
+ const mixer=new SpatialMixer(context,bank,wheelsets(10));assert(mixer.master.gain.value===1&&Math.abs(mixer.mixBoost.gain.value-1.4)<1e-6,'master defaults to 100% with 1.4x mix boost');mixer.setListener(117.484,0);assert(mixer.locomotive.paths.length===4,'locomotive has one direct path and three carriage reflections');assert(mixer.locomotive.paths[0].pan.positionZ.value===-14,'locomotive source stays ahead of the train');const rolling=new RollingLayers(context,bank,mixer);rolling.start();assert(mixer.audibleAxles.length===20,'only five carriages have audible wheelsets');assert(rolling.layers.filter(l=>l.kind==='rolling').length===8,'only the occupied carriage creates eight rolling wheel sources');assert(rolling.motor.voices.length===10,'only five carriages create motor sources');assert(mixer.transmission('c4-a1')===.3&&mixer.transmission('c3-a1')===.05&&mixer.transmission('c2-a1')===0,'interior isolation gains follow carriage distance');rolling.update({speed:20},{throttle:.5,brake:.2},true);
  for(let repeat=0;repeat<1;repeat++)for(const axle of wheelsets(10))for(const side of ['left','right'])mixer.hit({kind:'joint',wheelsetId:axle.id,side,offset:axle.offset,position:repeat*25,objectId:`${repeat}-${side}`,speedMps:33.3},.2+repeat*.3+(axle.offset%26.696)/200,0);
  assert(rolling.layers.filter(l=>l.kind==='rolling').every(l=>Object.keys(l.bands).length===2),'each wheel has independently controlled low and high rolling bands');
  assert(mixer.voices.size===40,'distant carriages create no impact sources');assert(mixer.voices.size<=128,'ten-carriage voice budget is bounded');const output=await context.startRendering();let peak=0,energy=0,difference=0;

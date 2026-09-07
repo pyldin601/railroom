@@ -1,3 +1,4 @@
+import {PWM_CARRIERS,pwmParameters} from './pwm.js?v=taurus-quiet';
 /** A generic electric drive: continuous phase, load-dependent FM and gear harmonics.
  * Frequencies are sound-design values, not a model of a named locomotive.
  */
@@ -48,10 +49,20 @@ export class TractionMotor {
       carrier.connect(filter);
       gear.connect(gearLevel).connect(filter);
       body.connect(bodyLevel).connect(filter);
-      filter.connect(gain).connect(fade).connect(this.mixer.emitters.get(`${axle.id}:center`).gain);
-      const oscillators = [carrier, modulator, gear, body, drift];
-      const nodes = [...oscillators, deviation, gearLevel, bodyLevel, driftDepth, filter, gain, fade];
-      const voice = {carrier, modulator, gear, body, deviation, filter, gain, fade, oscillators, nodes, needsInitialTune: true, detune: 1 + i * .0013};
+      filter.connect(gain).connect(fade).connect(this.mixer.locomotive?.input??this.mixer.emitters.get(`${axle.id}:center`).gain);
+      // Two alternating voices crossfade held notes without fourteen running oscillators.
+      const pwmMod=ctx.createOscillator(),pwmDepth=ctx.createGain(),pwmGain=ctx.createGain();
+      pwmMod.frequency.value=24;pwmDepth.gain.value=35;pwmGain.gain.value=0;
+      pwmMod.connect(pwmDepth);pwmGain.connect(fade);
+      const pwmBands=[PWM_CARRIERS[0],PWM_CARRIERS[0]].map(frequency=>{
+        const oscillator=ctx.createOscillator(),level=ctx.createGain();
+        oscillator.setPeriodicWave(wave);oscillator.frequency.value=frequency;level.gain.value=0;
+        pwmDepth.connect(oscillator.frequency);oscillator.connect(level).connect(pwmGain);
+        return {oscillator,level};
+      });
+      const oscillators = [carrier, modulator, gear, body, ...pwmBands.map(b=>b.oscillator), pwmMod, drift];
+      const nodes = [...oscillators, pwmDepth,pwmGain,...pwmBands.map(b=>b.level), deviation, gearLevel, bodyLevel, driftDepth, filter, gain, fade];
+      const voice = {pwmMod,pwmDepth,pwmGain,pwmBands,carrier, modulator, gear, body, deviation, filter, gain, fade, oscillators, nodes, needsInitialTune: true, detune: 1 + i * .0013};
       this.voices.push(voice);
       this.tune(voice, motorParameters(0, 0), ctx.currentTime, bogies.length, true);
       for (const oscillator of oscillators) oscillator.start();
@@ -73,7 +84,19 @@ export class TractionMotor {
   update(state, controls, running) {
     if (!this.started) return;
     const p = motorParameters(state.speed, running ? controls.throttle || 0 : 0, controls.brake || controls.emergency);
+    const pwm=pwmParameters(state.speed,controls,running,this.pwmStage);this.pwmStage=pwm.stage;
     for (const voice of this.voices) {
+      const t=this.context.currentTime;
+      const tune=(param,value)=>voice.needsInitialTune?param.setValueAtTime(value,t):param.setTargetAtTime(value,t,.08);
+      tune(voice.pwmMod.frequency,pwm.electrical);
+      tune(voice.pwmDepth.gain,pwm.deviation);
+      if(voice.pwmStage!==pwm.stage){
+        voice.pwmActive=voice.pwmActive===0?1:0;
+        voice.pwmBands[voice.pwmActive].oscillator.frequency.setValueAtTime(PWM_CARRIERS[pwm.stage],t);
+        voice.pwmBands.forEach((band,i)=>band.level.gain.setTargetAtTime(i===voice.pwmActive?1:0,t,.012));
+        voice.pwmStage=pwm.stage;
+      }
+      voice.pwmGain.gain.setTargetAtTime(pwm.gain*(this.mixer.levels[pwm.braking?'brake':'traction']??1)/Math.sqrt(this.voices.length),t,.12);
       this.tune(voice, p, this.context.currentTime, this.voices.length, voice.needsInitialTune);
       voice.needsInitialTune = false;
     }
@@ -87,6 +110,7 @@ export class TractionMotor {
       for (const oscillator of voice.oscillators) oscillator.stop(at + .035);
     }
     this.voices = [];
+    this.pwmStage=undefined;
     this.started = false;
   }
 }
