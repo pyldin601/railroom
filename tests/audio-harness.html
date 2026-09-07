@@ -3,6 +3,7 @@ import {SampleBank} from '../src/audio/sample-bank.js';
 import {SpatialMixer} from '../src/audio/spatial-mixer.js';
 import {wheelsets,RouteIndex,demoRoute} from '../src/route/route-index.js';
 import {Transport} from '../src/audio/scheduler.js';
+import {TractionMotor} from '../src/audio/traction.js';
 import {RollingLayers} from '../src/audio/rolling.js';
 const results=[];const assert=(condition,message)=>{if(!condition)throw Error(message);results.push('PASS '+message);};
 try{
@@ -28,6 +29,15 @@ try{
  assert(faded[Math.round(.11*rate)]>0,'continuous audio remains connected during its fade');
  assert(Math.abs(faded[Math.round(.15*rate)])<1e-8,'continuous audio is silent after scheduled stop');
  assert(Math.abs(faded[Math.round(.1*rate)]-faded[Math.round(.1*rate)-1])<.0001,'pause fade starts without an abrupt waveform cut');
+ const motorContext=new OfflineAudioContext(1,rate*.5,rate);
+ const motorMixer={axles:wheelsets(3),levels:{traction:1},emitters:new Map(wheelsets(3).map(a=>[a.id+':center',{gain:motorContext.destination}]))};
+ const motor=new TractionMotor(motorContext,motorMixer);motor.start();motor.update({speed:25},{throttle:1},true);
+ assert(motor.voices.length===6,'three carriages use six independent continuous motor voices');
+ motor.stop(.3);const motorAudio=(await motorContext.startRendering()).getChannelData(0);
+ let motorPeak=0,motorEnergy=0;for(const v of motorAudio){if(!Number.isFinite(v))throw Error('Non-finite motor output');motorPeak=Math.max(motorPeak,Math.abs(v));motorEnergy+=v*v;}
+ assert(motorEnergy>.1&&motorPeak<.5,'synthesized traction is audible and has mix headroom');
+ assert(Math.abs(motorAudio[Math.round(.4*rate)])<1e-8,'synthesized traction stops cleanly');
+ results.push('Motor peak '+motorPeak.toFixed(5));
  document.body.dataset.result='pass';
 }catch(e){results.push('FAIL '+e.stack);document.body.dataset.result='fail';}
 document.getElementById('results').textContent=results.join('\n');

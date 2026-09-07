@@ -29,7 +29,7 @@ function buildAudio(position=0){
 }
 async function enableAudio(){
  if(bank)return;if(loading)throw new Error('Audio is still loading');loading=true;$('play').disabled=true;setStatus('Loading recorded sounds');
- try{context ||= new AudioContext({latencyHint:'interactive'});await context.resume();const nextBank=new SampleBank(context);await nextBank.load();bank=nextBank;buildAudio(pendingPosition);$('sound-note').textContent='11 recorded samples · individual wheelset impacts · electric traction and braking';}
+ try{context ||= new AudioContext({latencyHint:'interactive'});await context.resume();const nextBank=new SampleBank(context);await nextBank.load();bank=nextBank;buildAudio(pendingPosition);$('sound-note').textContent='Live motor synthesis · recorded wheel impacts, rolling and braking';}
  finally{loading=false;$('play').disabled=!ready;}
 }
 async function play(audition=false){

@@ -1,8 +1,9 @@
-/** Continuous layers use authentic recordings. Missing layers stay absent. */
+import {TractionMotor} from './traction.js';
+/** Recorded rolling/braking plus continuously synthesized traction. */
 export class RollingLayers{
- constructor(context,bank,mixer){Object.assign(this,{context,bank,mixer});this.layers=[];this.started=false;}
- start(){if(this.started)return;this.started=true;
-  for(const kind of ['rolling','brake','traction','idle','air']){
+ constructor(context,bank,mixer){Object.assign(this,{context,bank,mixer});this.layers=[];this.started=false;this.motor=new TractionMotor(context,mixer);}
+ start(){if(this.started)return;this.started=true;this.motor.start();
+  for(const kind of ['rolling','brake','idle','air']){
    const pool=this.bank.pool(kind);if(!pool.length)continue;
    const axles=kind==='rolling'?this.mixer.axles:[this.mixer.axles[0]];
    for(const [i,axle] of axles.entries()){
@@ -12,11 +13,10 @@ export class RollingLayers{
    }
   }
  }
- update(state,controls,running){if(!this.started)return;const speed=state.speed,t=this.context.currentTime;
+ update(state,controls,running){if(!this.started)return;this.motor.update(state,controls,running);const speed=state.speed,t=this.context.currentTime;
   for(const layer of this.layers){let level=0;
    if(running){
     if(layer.kind==='rolling')level=Math.min(1,speed/22)*.14/Math.sqrt(this.mixer.axles.length/4)*this.mixer.levels.rolling;
-    if(layer.kind==='traction')level=controls.brake||controls.emergency?0:(controls.throttle||0)*.1*this.mixer.levels.traction;
     if(layer.kind==='brake')level=Math.min(1,speed/3)*(controls.emergency?1:(controls.brake||0))*.16*this.mixer.levels.brake;
     if(layer.kind==='idle')level=.025;
     if(layer.kind==='air')level=Math.min(1,speed/33)*.045;
@@ -26,6 +26,7 @@ export class RollingLayers{
   }
  }
  stop(at=this.context.currentTime){
+  this.motor.stop(at);
   for(const l of this.layers){
    l.fade.gain.setValueAtTime(1,at);
    l.fade.gain.linearRampToValueAtTime(0,at+.03);

@@ -1,6 +1,6 @@
 # Railroom — train sound simulator
 
-A local browser simulator for the synthetic 64 km Kyiv-Pasazhyrskyi–Fastiv route. Real recorded samples are triggered separately for every wheelset and rail side, with onboard headphone spatialization.
+A local browser simulator for the synthetic 64 km Kyiv-Pasazhyrskyi–Fastiv route. Real recorded wheel samples are triggered separately for every wheelset and rail side, with onboard headphone spatialization.
 
 ## Run
 
@@ -25,9 +25,9 @@ The original railway remains unchanged. `public/route.json` contains 5,118 weld/
 
 ## Recording quality and limitations
 
-This is a functional starter with **real recordings, no FM or synthesized train sources**. Eight short wheel-impact variants and three continuous layers are included. See [recording credits](AUDIO-LICENSES.md).
+This is a functional starter with **recorded rail sounds and continuous synthesized electric traction**. Eight short wheel-impact variants and three continuous layers are included. See [recording credits](AUDIO-LICENSES.md).
 
-The samples come from different trains and recording perspectives. Impacts are short excerpts of an in-wagon recording, rather than dry isolated wheel contacts. One low-pass-filtered ride supplies the rolling bed. Electric acceleration/deceleration recordings provide traction and braking character. A consistent vehicle sound pack, independently recorded speed bands, isolated pneumatic brake hiss, and a measured carriage impulse response remain future audio-production work. Naturalness and headphone front/back separation need listener audition; they are not guaranteed by numerical tests.
+The samples come from different trains and recording perspectives. Impacts are short excerpts of an in-wagon recording, rather than dry isolated wheel contacts. One low-pass-filtered ride supplies the rolling bed. A live motor model layers body tone, gear harmonics and restrained FM. Pitch follows speed and load follows throttle, so acceleration no longer repeats a recorded clip. Electric deceleration recordings still provide braking character. A consistent vehicle sound pack, independently recorded speed bands, isolated pneumatic brake hiss, and a measured carriage impulse response remain future audio-production work. Naturalness and headphone front/back separation need listener audition; they are not guaranteed by numerical tests.
 
 The route and component positions are synthetic. This is not an engineering or train-operation simulator. No grades, switches, route geometry, real timetable, or exterior Doppler model is included. Binaural output is stereo, not discrete 5.1/7.1. Browser background and screen-lock playback is not guaranteed.
 
@@ -35,7 +35,7 @@ The route and component positions are synthetic. This is not an engineering or t
 
 Run `npm test` for numerical and lifecycle tests. Open `/tests/audio-harness.html` on the same local server for actual browser offline-audio checks: asset decoding, bounded voices, finite unclipped output, stereo differences, exact event timing before spatial effects, and source reclamation.
 
-At implementation handoff: 22 Node tests pass. The in-app browser's offline render decoded all 11 samples, rendered non-silent stereo with a measured peak of 0.40376, preserved exact test event frames at 1.06/1.16 seconds, and reclaimed finished impact sources. A follow-up offline test confirmed the continuous layer remains connected during its 30 ms stop fade and reaches silence without an abrupt cut. Interactive playback and reset-after-seek were checked in that browser.
+At implementation handoff: 26 Node tests pass. The in-app browser's offline render decoded all 11 samples, rendered non-silent stereo with a measured peak of 0.40376, preserved exact test event frames at 1.06/1.16 seconds, and reclaimed finished impact sources. A follow-up offline test confirmed the continuous layer remains connected during its 30 ms stop fade and reaches silence without an abrupt cut. Interactive playback and reset-after-seek were checked in that browser.
 
 A 30-minute real-time foreground soak, separate Safari/Chrome compatibility sign-off, and subjective listening approval have not been completed. Passing an accelerated simulation or a short offline render is not a substitute for those checks.
 

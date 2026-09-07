@@ -1,6 +1,6 @@
 # Recording credits and processing
 
-All shipped sound sources are field recordings. No FM, oscillator, or synthesized noise sources are used. Original compressed recordings and license metadata are preserved in `audio-sources/`.
+Wheel impacts, rolling and braking use field recordings. As requested, powered traction now uses live oscillator/FM synthesis; the original traction recording is retained for provenance but is no longer played. Original compressed recordings and license metadata are preserved in `audio-sources/`.
 
 | Shipped layer | Recording | Creator | Licence |
 |---|---|---|---|

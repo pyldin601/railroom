@@ -21,3 +21,7 @@ Implements the approved train simulator plan as a local browser application.
 - Browser remains local; no account, cloud deployment, database migration, or source railway changes.
 
 The planning document's uncompleted listening and soak-test checkboxes remain meaningful acceptance work; this status does not mark them passed.
+
+## Traction revision
+
+Replaced the repeating acceleration recording with continuous, speed- and load-driven motor synthesis (user explicitly authorized FM). Two independent motor voices per carriage combine a body tone, gear harmonics, restrained FM and subtle frequency drift. Controls are smoothed and all oscillators fade out and disconnect on stop. Recorded wheel/rolling/braking sources remain. Numerical suite: 26 tests.
