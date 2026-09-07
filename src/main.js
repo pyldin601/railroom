@@ -1,3 +1,4 @@
+import { DEFAULT_CARRIAGES, SEAT_POSITIONS } from './route/coach-geometry.js';
 import { TrainSession } from './session.js?v=review-fixes';
 import { AUDIO_SETTINGS, MIX_LEVELS } from './audio/settings.js';
 import { drawRouteMap } from './ui/route-map.js?v=speed360';
@@ -7,6 +8,10 @@ import { wheelAt } from './ui/track-view.js?v=wheel-click';
 import { renderDashboard } from './ui/dashboard.js?v=review-fixes';
 import { setText } from './ui/dom.js';
 const $ = (id) => document.getElementById(id);
+$('cars').value = String(DEFAULT_CARRIAGES);
+document.querySelectorAll('[data-seat]').forEach((button, i) => {
+  button.dataset.seat = SEAT_POSITIONS[i];
+});
 // These shared defaults are authoritative; HTML values provide the initial shell.
 for (const [kind, level] of Object.entries(MIX_LEVELS)) $(kind + '-mix').value = level * 100;
 $('master').value = AUDIO_SETTINGS.master * 100;

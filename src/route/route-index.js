@@ -1,4 +1,4 @@
-import { COACH } from './coach-geometry.js';
+import { COACH, DEFAULT_CARRIAGES } from './coach-geometry.js';
 /** Static binary-search index. The audio path never reads the full source-object array. */
 export class RouteIndex {
   constructor(data) {
@@ -60,7 +60,7 @@ export class RouteIndex {
     return result;
   }
 }
-export function wheelsets(cars = 1) {
+export function wheelsets(cars = DEFAULT_CARRIAGES) {
   return Array.from({ length: cars }, (_, car) =>
     COACH.axles.map((offset, i) => ({
       id: `c${car + 1}-a${i + 1}`,

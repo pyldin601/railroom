@@ -56,6 +56,13 @@
           $(id).dispatchEvent(new win.Event(event, { bubbles: true }));
         };
         await until(() => !$('play').disabled, 'route loading');
+        assert($('cars').value === '10', 'Cairo defaults to ten carriages');
+        assert($('seat-label').textContent.includes('5 of 10'), 'listener starts in carriage five');
+        assert(
+          [...doc.querySelectorAll('[data-seat]')].map((b) => b.dataset.seat).join(',') ===
+            '2,9.7,17.4',
+          'seat presets follow Cairo axle geometry',
+        );
         change('master', 0);
         // Pre-audio navigation must survive first graph construction.
         change('station', 23000, 'change');

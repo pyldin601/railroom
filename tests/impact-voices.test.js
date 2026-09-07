@@ -14,7 +14,7 @@ function fixture() {
   };
   const axles = wheelsets(10);
   const mixer = new SpatialMixer(context, { select: () => sample }, axles);
-  mixer.setListener(117.484, 0);
+  mixer.setListener(108.7, 0);
   return { context, axles, mixer };
 }
 

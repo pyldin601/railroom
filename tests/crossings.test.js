@@ -54,7 +54,7 @@ test('route rejects invalid ordering and duplicate IDs', () => {
 test('three carriages have twelve unique wheelsets', () => {
   let w = wheelsets(3);
   assert.equal(w.length, 12);
-  assert.ok(Math.abs(w.at(-1).offset - 74.792) < 1e-9);
+  assert.ok(Math.abs(w.at(-1).offset - 68.9) < 1e-9);
   assert.equal(new Set(w.map((x) => x.id)).size, 12);
 });
 test('welded string welds are silent while its end joints still produce crossings', () => {

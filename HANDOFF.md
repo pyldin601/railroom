@@ -92,9 +92,9 @@ npm run build:route
 ## Train and route
 
 - Default: 10 carriages, listener in the middle of carriage 5; one-car option also exists.
-- Coach model: KVBZ 61-779, TVZ-TsNII-M bogies. See `COACH-GEOMETRY.md` and `src/route/coach-geometry.js`.
-- Coach pitch 26.696 m, bogie centres 19 m, wheelbase 2.4 m. Axle positions within a coach: 0, 2.4, 19, 21.4 m; centre 10.7 m.
-- Four axles/eight wheels per coach, 40 axles/80 wheels total. Default listener position 117.484 m; local seat presets 2, 10.7 and 19.4 m.
+- Coach profile: user-supplied Cairo dimensions. See `COACH-GEOMETRY.md` and `src/route/coach-geometry.js`.
+- Coach pitch 24.75 m (assumed coupler-to-coupler), bogie centres 17 m, wheelbase 2.4 m. Axle positions within a coach: 0, 2.4, 17, 19.4 m; centre 9.7 m.
+- Four axles/eight wheels per coach, 40 axles/80 wheels total. Default listener position 108.7 m; local seat presets 2, 9.7 and 17.4 m.
 - Vehicle maximum speed **360 km/h**, requested by the user. This does not raise track speed markers.
 - Route length 64 km, starts at Kyiv-Pasazhyrskyi and ends at Fastiv I.
 - 19 station/stop names in order: Kyiv-Pasazhyrskyi, Karavaievi Dachi, Kyiv-Volynskyi, Vyshneve, Tarasivka, Boiarka, Maliutynka, Shliakhova, Hlevakha, Danylivka (888 km), Vasylkiv I, Korchi, Motovylivka, Bilky, Pivni, Vyshniaky, Sorochyi Brid, Snitynka, Fastiv I.
@@ -141,7 +141,7 @@ Relevant files: `src/audio/rolling.js`, `rolling-bands.js`.
 - Taurus PWM uses a designed held-note sequence; its precise tuning/speed thresholds are not verified Siemens measurements.
 - Locomotive sounds use the front-positioned filtered `LocomotiveSpace` bus with short spatial reflections, avoiding a sound centred in the listener's head.
 - Horn button / H shortcut: **synthesized two-tone pneumatic horn**, not a real Siemens recording. Blast about 1.3 s; current reverb **2.4 s RT60**, 2.8 s tail space, 65% dry / 70% wet gains, eight delays, four diffusion stages, 1.8 kHz wet low-pass.
-- Horn distance gain is `1 / (1 + distanceToLocomotive / 28)`, about 17.6% (−15.1 dB) at default seat, before existing locomotive-bus attenuation. Applies to manual and automatic horn.
+- Horn distance gain is `1 / (1 + distanceToLocomotive / 28)`, about 20.5% (−13.8 dB) at the default ten-carriage seat, before existing locomotive-bus attenuation. Applies to manual and automatic horn.
 - Real Siemens horn search found a Vectron depot-horn video (`https://www.youtube.com/watch?v=ePI7YYaTfEA`) and Taurus model-decoder sample listings. No reusable Taurus recording was verified or installed. Don't claim the current horn is authentic recorded Siemens audio.
 - Friction braking separates recorded hiss from a speed-dependent tonal layer to avoid repeating pitch sweeps.
 - Pneumatic model includes brake-cylinder pressure, reservoir and compressor. Cylinder release uses a 1.4 s exponential time constant, so the release hiss fades as pressure falls. Compressor hysteresis 7.2–9 bar; initial reservoir 8.5 bar. This is a designed approximation.

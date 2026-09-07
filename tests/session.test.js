@@ -53,7 +53,7 @@ function setup(loadBank = async () => ({})) {
     axles: wheelsets(1),
     position: 100,
     controls: { throttle: 0.5 },
-    settings: { seat: 10.7 },
+    settings: { seat: 9.7 },
   };
   return { session, context, mixers, engines, options };
 }
@@ -110,7 +110,7 @@ test('initial loading applies the latest route, consist, position and mix settin
     ...x.options,
     position: 23000,
     axles: wheelsets(10),
-    settings: { master: 0, seat: 117.484 },
+    settings: { master: 0, seat: 108.7 },
   };
   completeLoad({});
   await enabled;

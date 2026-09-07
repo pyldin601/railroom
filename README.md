@@ -40,7 +40,7 @@ Python 3 serves files; Node.js 22 or newer runs the verification commands.
 
 ## Sound and route model
 
-All 80 wheels in the ten-carriage train can generate separate spatial joint
+All 80 wheels in the default ten-carriage train can generate separate spatial joint
 impacts. Continuous distance attenuation keeps the occupied carriage loudest.
 Metal tails carry farther than direct clacks and fade smoothly toward both ends
 of the train. Under maximum load, finished external clack tails can be retired

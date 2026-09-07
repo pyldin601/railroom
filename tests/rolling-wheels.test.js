@@ -77,7 +77,7 @@ test('rolling pitch stays fixed from low speed through maximum speed', async () 
       rates,
     );
   }
-  for (const seat of [2, 10.7, 19.4]) {
+  for (const seat of [2, 9.7, 17.4]) {
     mixer.seat = seat;
     rolling.update({ speed: 22 }, {}, true);
     for (const layer of rolling.layers) {

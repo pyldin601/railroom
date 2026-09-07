@@ -24,21 +24,21 @@ test('changing a carriage label cannot change the gain at the same wheel distanc
   assert.deepEqual(first, second);
 });
 test('near and far ends of the adjacent carriage have distinct distance gains', () => {
-  const seat = 117.484;
-  const near = impactDistance({ car: 4, offset: 101.488 }, seat, 5, 'left');
-  const far = impactDistance({ car: 4, offset: 80.088 }, seat, 5, 'left');
+  const seat = 108.7;
+  const near = impactDistance({ car: 4, offset: 93.65 }, seat, 5, 'left');
+  const far = impactDistance({ car: 4, offset: 74.25 }, seat, 5, 'left');
   assert.ok(near.direct / far.direct > 3, 'direct impact changes clearly across the carriage');
   assert.ok(near.metal / far.metal > 1.5, 'metal also varies with wheel distance');
   assert.ok(near.metal / far.metal < near.direct / far.direct, 'metal keeps its longer reach');
 });
 test('every wheel in the occupied carriage is louder than external wheels at all seat presets', () => {
-  for (const localSeat of [2, 10.7, 19.4]) {
-    const seat = 4 * 26.696 + localSeat,
+  for (const localSeat of [2, 9.7, 17.4]) {
+    const seat = 4 * 24.75 + localSeat,
       inside = [],
       outside = [];
     for (let car = 1; car <= 10; car++)
-      for (const offset of [0, 2.4, 19, 21.4]) {
-        const gain = impactDistance({ car, offset: (car - 1) * 26.696 + offset }, seat, 5, 'left');
+      for (const offset of [0, 2.4, 17, 19.4]) {
+        const gain = impactDistance({ car, offset: (car - 1) * 24.75 + offset }, seat, 5, 'left');
         (car === 5 ? inside : outside).push(gain);
       }
     for (const layer of ['direct', 'metal'])
@@ -49,13 +49,13 @@ test('every wheel in the occupied carriage is louder than external wheels at all
   }
 });
 test('adjacent carriage impacts are more audible from the middle seat', () => {
-  const g = impactDistance({ car: 4, offset: 101.488 }, 117.484, 5, 'left');
+  const g = impactDistance({ car: 4, offset: 93.65 }, 108.7, 5, 'left');
   assert.ok(g.direct > 0.24 && g.direct < 0.26);
   assert.ok(g.metal * 0.35 > 0.23 && g.metal * 0.35 < 0.25);
 });
 test('double metal reach preserves direct impacts and increases distant metal energy', () => {
   const axle = { car: 9, offset: 220 },
-    seat = 117.484;
+    seat = 108.7;
   const normal = impactDistance(axle, seat, 5, 'left');
   const extended = impactDistance(axle, seat, 5, 'left', 2);
   assert.equal(extended.direct, normal.direct);
@@ -64,26 +64,26 @@ test('double metal reach preserves direct impacts and increases distant metal en
   assert.ok(farther.metal > extended.metal);
   assert.equal(farther.direct, normal.direct);
   for (const reach of [2, 4])
-    for (const localSeat of [2, 10.7, 19.4]) {
-      const s = 4 * 26.696 + localSeat;
-      const inside = [0, 2.4, 19, 21.4].map(
-        (x) => impactDistance({ car: 5, offset: 4 * 26.696 + x }, s, 5, 'left', reach).metal,
+    for (const localSeat of [2, 9.7, 17.4]) {
+      const s = 4 * 24.75 + localSeat;
+      const inside = [0, 2.4, 17, 19.4].map(
+        (x) => impactDistance({ car: 5, offset: 4 * 24.75 + x }, s, 5, 'left', reach).metal,
       );
       for (let car = 1; car <= 10; car++)
         if (car !== 5)
-          for (const x of [0, 2.4, 19, 21.4])
+          for (const x of [0, 2.4, 17, 19.4])
             assert.ok(
-              impactDistance({ car, offset: (car - 1) * 26.696 + x }, s, 5, 'left', reach).metal <
+              impactDistance({ car, offset: (car - 1) * 24.75 + x }, s, 5, 'left', reach).metal <
                 Math.min(...inside),
             );
     }
 });
 test('end-carriage hiss fades smoothly by wheel position rather than carriage boundaries', async () => {
   const { endHissGain } = await import('../src/audio/impact-distance.js');
-  const length = 9 * 26.696 + 21.4;
+  const length = 9 * 24.75 + 19.4;
   assert.ok(Math.abs(endHissGain({ car: 1, offset: 0 }, 5, 10) - 0.1) < 1e-10);
   assert.equal(endHissGain({ car: 5, offset: 117 }, 5, 10), 1);
-  for (const x of [10, 26.696, 53.392, 70]) {
+  for (const x of [10, 24.75, 49.5, 70]) {
     const left = endHissGain({ car: 2, offset: x }, 5, 10);
     const right = endHissGain({ car: 9, offset: length - x }, 5, 10);
     assert.ok(Math.abs(left - right) < 1e-10);

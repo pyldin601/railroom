@@ -98,7 +98,7 @@
           mixer.master.gain.value === 1 && Math.abs(mixer.mixBoost.gain.value - 1.4) < 1e-6,
           'master defaults to 100% with 1.4x mix boost',
         );
-        mixer.setListener(117.484, 0);
+        mixer.setListener(108.7, 0);
         assert(
           mixer.locomotive.paths.length === 4,
           'locomotive has one direct path and three carriage reflections',
@@ -138,7 +138,7 @@
                   objectId: `${repeat}-${side}`,
                   speedMps: 33.3,
                 },
-                0.2 + repeat * 0.3 + (axle.offset % 26.696) / 200,
+                0.2 + repeat * 0.3 + (axle.offset % 24.75) / 200,
                 0,
               );
         assert(
@@ -188,7 +188,7 @@
           clock: () => clock,
           sink,
           route: new RouteIndex(demoRoute(1000)),
-          axles: wheelsets(),
+          axles: wheelsets(1),
           vehicle: { resistance: 0, drag: 0, jerk: Infinity },
         });
         transport.state.speed = 25;
@@ -213,7 +213,7 @@
         const fadeMixer = {
           axles: [{ id: 'test', car: 1, offset: 0 }],
           occupied: 1,
-          seat: 10.7,
+          seat: 9.7,
           levels: { rolling: 1 },
           emitters: new Map(
             ['left', 'right', 'center'].map((side) => [
@@ -407,7 +407,7 @@
         const loadContext = new OfflineAudioContext(2, rate * 6, rate);
         const loadAxles = wheelsets(10),
           loadMixer = new SpatialMixer(loadContext, bank, loadAxles);
-        loadMixer.setListener(117.484, 0);
+        loadMixer.setListener(108.7, 0);
         let loadAttempts = 0,
           loadDrops = 0,
           localDrops = 0,

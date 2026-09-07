@@ -6,6 +6,6 @@ test('only five carriages transmit sound around the middle listener', () => {
     Array.from({ length: 10 }, (_, i) => carriageGain(i + 1, 5)),
     [0, 0, 0.05, 0.3, 1, 0.3, 0.05, 0, 0, 0],
   );
-  for (const seat of [108.784, 117.484, 126.184]) assert.equal(occupiedCarriage(seat), 5);
+  for (const seat of [101, 108.7, 116.4]) assert.equal(occupiedCarriage(seat), 5);
   assert.equal(occupiedCarriage(10), 1);
 });
