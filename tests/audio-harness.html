@@ -5,9 +5,16 @@ import {wheelsets,RouteIndex,demoRoute} from '../src/route/route-index.js?v=coac
 import {Transport} from '../src/audio/scheduler.js';
 import {RecordedMotor} from '../src/audio/recorded-motor.js';
 import {TractionMotor} from '../src/audio/traction.js?v=motor-start';
-import {RollingLayers} from '../src/audio/rolling.js?v=rolling-bands';
+import {RollingLayers} from '../src/audio/rolling.js?v=cabin-ambient';
+import {CabinAmbience} from '../src/audio/ambient.js';
 const results=[];const assert=(condition,message)=>{if(!condition)throw Error(message);results.push('PASS '+message);};
 try{
+ const ambientContext=new OfflineAudioContext(2,32000,32000),ambientMixer={master:ambientContext.destination,levels:{ambient:.5}};
+ const ambient=new CabinAmbience(ambientContext,ambientMixer);ambient.start();ambient.update({speed:0},{},true);ambient.stop(.7);
+ const cabin=await ambientContext.startRendering();let cabinEnergy=0,cabinPeak=0;
+ for(const v of cabin.getChannelData(0)){assertFinite(v);cabinEnergy+=v*v;cabinPeak=Math.max(cabinPeak,Math.abs(v));}
+ assert(cabinEnergy>.001&&cabinPeak<.03,'carriage ambience is audible and quiet at rest');
+ assert(cabin.getChannelData(0).slice(25000).every(v=>v===0),'carriage ambience fades to silence on pause');
  const rate=48000,context=new OfflineAudioContext(2,rate*3,rate);const bank=await new SampleBank(context).load('../public/audio/manifest.json');
  assert(bank.samples.length===12,'all twelve recording assets decode');assert(bank.samples.every(s=>s.buffer.numberOfChannels===1),'point-source recordings are mono');
  const mixer=new SpatialMixer(context,bank,wheelsets(10));assert(mixer.master.gain.value===1&&Math.abs(mixer.mixBoost.gain.value-1.4)<1e-6,'master defaults to 100% with 1.4x mix boost');mixer.setListener(117.484,0);const rolling=new RollingLayers(context,bank,mixer);rolling.start();assert(mixer.audibleAxles.length===20,'only five carriages have audible wheelsets');assert(rolling.layers.filter(l=>l.kind==='rolling').length===8,'only the occupied carriage creates eight rolling wheel sources');assert(rolling.motor.voices.length===10,'only five carriages create motor sources');assert(mixer.transmission('c4-a1')===.3&&mixer.transmission('c3-a1')===.05&&mixer.transmission('c2-a1')===0,'interior isolation gains follow carriage distance');rolling.update({speed:20},{throttle:.5,brake:.2},true);
