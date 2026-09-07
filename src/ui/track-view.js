@@ -1,4 +1,14 @@
 import {COACH} from '../route/coach-geometry.js';
+export function wheelAt(width,height,axles,x,y){
+ const scale=(width-48)/(axles.length/4*COACH.pitch+8);
+ let nearest=null,best=Infinity;
+ for(const axle of axles)for(const side of ['left','right']){
+  const dx=x-(29+(axle.offset+5)*scale),dy=y-(height*.52+(side==='left'?-25:25));
+  const distance=dx*dx+dy*dy;
+  if(Math.abs(dx)<=6&&Math.abs(dy)<=9&&distance<best){nearest={axle,side};best=distance;}
+ }
+ return nearest;
+}
 export function drawTrack(canvas,state,axles,route,mixer,seat=COACH.centre){
  const width=canvas.clientWidth,height=canvas.clientHeight,dpr=window.devicePixelRatio||1;
  if(canvas.width!==Math.round(width*dpr)||canvas.height!==Math.round(height*dpr)){canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);}

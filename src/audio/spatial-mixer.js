@@ -1,8 +1,9 @@
 import {metalHissBuffer} from './metal-hiss.js';
-import {impactDistance} from './impact-distance.js';
+import {impactDistance} from './impact-distance.js?v=seat-isolation';
 import {powerSwitchBuffer} from './power-switch.js';
 import {LocomotiveSpace} from './locomotive-space.js';
 import {carriageGain,occupiedCarriage} from './carriage-isolation.js?v=coach61779';
+export const MAX_IMPACT_VOICES=512;
 /** Point contacts are fixed relative to an onboard listener; no artificial pass-by. */
 export class SpatialMixer{
  constructor(context,bank,axles){
@@ -41,7 +42,7 @@ export class SpatialMixer{
  }
  hit(event,when,generation){
   if(this.muted.has(event.wheelsetId)||(this.solo&&this.solo!==event.wheelsetId))return;
-  if(this.voices.size>=128){if(event.kind==='weld')return;const quiet=[...this.voices].find(v=>v.kind==='weld');if(quiet)this.stopVoice(quiet,this.context.currentTime);else return;}
+  if(this.voices.size>=MAX_IMPACT_VOICES){if(event.kind==='weld')return;const quiet=[...this.voices].find(v=>v.kind==='weld');if(quiet)this.stopVoice(quiet,this.context.currentTime);else return;}
   const sample=this.bank.select(event);if(!sample)return;
   const ctx=this.context,source=ctx.createBufferSource(),gain=ctx.createGain();source.buffer=sample.buffer;
   // Real alternate takes supply variation; playback-rate deviations stay subtle.

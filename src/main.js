@@ -4,9 +4,9 @@ import {createRenderLoop} from './ui/render-loop.js';
 import {RouteIndex,demoRoute,wheelsets,listenerSeat} from './route/route-index.js?v=speed360';
 import {Transport} from './audio/scheduler.js?v=speed360';
 import {SampleBank} from './audio/sample-bank.js';
-import {SpatialMixer} from './audio/spatial-mixer.js?v=speed360';
+import {SpatialMixer,MAX_IMPACT_VOICES} from './audio/spatial-mixer.js?v=seat-isolation';
 import {RollingLayers} from './audio/rolling.js?v=speed360';
-import {drawTrack} from './ui/track-view.js?v=speed360';
+import {drawTrack,wheelAt} from './ui/track-view.js?v=wheel-click';
 const $=id=>document.getElementById(id);
 let requestRender=()=>{};
 function setText(id,text){const el=$(id),value=String(text);if(el.textContent!==value)el.textContent=value;}
@@ -58,6 +58,19 @@ for(const id of ['route-mode','cars'])$(id).addEventListener('change',disableAut
 function updateControls(){
  $('throttle-value').textContent=$('throttle').value+'%';$('brake-value').textContent=$('brake').value+'%';$('emergency').classList.toggle('active',emergency);$('emergency').setAttribute('aria-pressed',String(emergency));transport?.updateControls(controls());
 }
+$('track').onclick=async event=>{
+ if(!ready||loading)return;
+ const canvas=$('track'),rect=canvas.getBoundingClientRect();
+ const hit=wheelAt(canvas.clientWidth,canvas.clientHeight,axles,(event.clientX-rect.left)*canvas.clientWidth/rect.width,(event.clientY-rect.top)*canvas.clientHeight/rect.height);
+ if(!hit)return;
+ try{
+  error('');await enableAudio();await context.resume();
+  if(!axles.some(a=>a.id===hit.axle.id))return;
+  const state=transport.snapshot();
+  mixer.hit({kind:'joint',wheelsetId:hit.axle.id,side:hit.side,offset:hit.axle.offset,position:state.position,objectId:`audition-${hit.axle.id}-${hit.side}`,speedMps:state.speed>0?state.speed:20},context.currentTime+.015,transport.generation);
+  requestRender();setTimeout(requestRender,30);setTimeout(requestRender,160);
+ }catch(e){error(e.message);}
+};
 $('play').onclick=()=>play();$('audition').onclick=()=>play(true);
 $('throttle').oninput=()=>{emergency=false;updateControls();};$('brake').oninput=()=>{emergency=false;updateControls();};
 $('coast').onclick=()=>{$('throttle').value=0;$('brake').value=0;emergency=false;updateControls();};
@@ -90,7 +103,7 @@ function render(){
   setText('motion-label',!running?'PAUSED':state.position>=route.length?'END OF ROUTE':state.speed<.05?'STATIONARY':emergency?'EMERGENCY':Number($('brake').value)>0?'BRAKING':state.acceleration>.01?'ACCELERATING':'COASTING');
   drawTrack($('track'),state,axles,route,mixer,seat);
   if(mixer){const peak=mixer.peak();$('meter').style.width=`${Math.min(100,peak*100)}%`;setText('peak',peak>1e-6?`${(20*Math.log10(peak)).toFixed(1)} dB`:'−∞ dB');$('meter').style.background=peak>.9?'var(--red)':'var(--mint)';
-   setText('diagnostics',`${context.sampleRate} Hz · ${mixer.voices.size}/128 impact voices · ${axles.length} wheelsets · ${transport.underruns} scheduling interruptions · ${Math.round((context.baseLatency||0)*1000)} ms base latency · ${route.events.length} route contacts`);
+   setText('diagnostics',`${context.sampleRate} Hz · ${mixer.voices.size}/${MAX_IMPACT_VOICES} impact voices · ${axles.length} wheelsets · ${transport.underruns} scheduling interruptions · ${Math.round((context.baseLatency||0)*1000)} ms base latency · ${route.events.length} route contacts`);
   }
  }
  return !!transport?.running;

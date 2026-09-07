@@ -26,7 +26,7 @@
  </section>
  <section class="carriage-panel panel">
   <div class="section-line"><div><span class="eyebrow">BENEATH YOUR SEAT</span><h2>КВБЗ 61-779 · ТВЗ-ЦНИИ-М</h2></div><label class="compact"><span>Carriages</span><select id="cars"><option value="1">1 carriage</option><option value="10" selected>10 carriages</option></select></label></div>
-  <div class="canvas-wrap"><canvas id="track" aria-label="Moving railway and individual wheelset impacts"></canvas><div class="diagram-key"><span><i class="key-dot"></i> wheel contact</span><span><i class="key-dot listener"></i> you</span><span>← direction of travel</span></div></div>
+  <div class="canvas-wrap"><canvas id="track" aria-label="Moving railway and individual wheelset impacts" title="Click a wheel to hear its impact"></canvas><div class="diagram-key"><span><i class="key-dot"></i> wheel contact</span><span><i class="key-dot listener"></i> you</span><span>← direction of travel</span></div></div>
   <div class="next-stop"><div><span class="eyebrow">NEXT MARKER</span><strong id="next-station">Karavaievi Dachi</strong></div><span id="next-distance">3.50 km</span></div>
   <div class="journey-seek"><label for="station">Jump to station</label><select id="station"></select><button id="seek">Go →</button></div>
  </section>
@@ -53,4 +53,4 @@
 <div class="footer-row"><span class="recording-badge"><i></i> LIVE MOTOR · REAL RAIL SOUNDS</span><span id="sound-note">Continuous motor · metallic wheel impacts and rolling. Headphones recommended.</span><details><summary>About the sounds</summary><p>Choose continuous motor synthesis or a recorded motor tone with speed-controlled pitch. The recorded option holds a local texture instead of restarting the full acceleration sweep. Wheel, rolling and braking sounds use public-domain and CC0 recordings from different trains. It is not a recording of the Kyiv–Fastiv service. Wheel impacts have short modeled metal resonances; the rolling bed restores metallic midrange from one ride; braking separates a speed-controlled recorded tone from an unpitched friction-hiss texture. Pneumatic brake hiss and independent speed-band recordings are not included.</p><p>You hear your carriage, its two neighbours at 30%, and the next two at 5%; farther carriages are silent. Welds are subtle. The jointed demo has a stronger clatter. Fastenings do not trigger impacts.</p><a href="AUDIO-LICENSES.md" target="_blank">Recording credits and processing notes ↗</a></details></div>
 <p id="error" role="alert" hidden></p>
 <details class="diagnostics"><summary>Playback diagnostics</summary><span id="diagnostics">Start the journey to enable audio.</span></details>
-</main><script type="module" src="src/main.js?v=speed360"></script></body></html>
+</main><script type="module" src="src/main.js?v=seat-isolation"></script></body></html>
