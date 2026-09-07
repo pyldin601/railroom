@@ -1,0 +1,26 @@
+# Mixed Kyiv–Fastiv track model
+
+This is an illustrative, deterministic layout on the existing approximate 64 km route, not a survey or a claim about current Kyiv–Fastiv infrastructure. It models an older jointed station approach / renewed welded running-track pattern. Stations can have welded track in reality; a station marker alone does not require a joint.
+
+| Position (km) | Construction | Model rationale |
+|---|---|---|
+| 0–1.5 | 25 m jointed | Kyiv-Pasazhyrskyi departure approach |
+| 1.5–6.25 | Welded strings | Running track through Karavaievi Dachi |
+| 6.25–7.75 | 25 m jointed | Kyiv-Volynskyi approach |
+| 7.75–34.25 | Welded strings | Running track through Vyshneve and Boiarka |
+| 34.25–35.75 | 25 m jointed | Vasylkiv I approach |
+| 35.75–62.5 | Welded strings | Running track through Motovylivka |
+| 62.5–64 | 25 m jointed | Fastiv I arrival approach |
+
+All constituent rails are 25 m. Within each welded section, use the fewest strings needed to keep each string at most 800 m, joining consecutive strings directly with one joint per rail. Distribute the remaining 25 m units evenly among strings to avoid tiny end pieces. This yields 775–800 m strings, without randomness. Both running rails use the same longitudinal boundaries.
+
+A welded string still contains a weld every 25 m. Those contacts use the existing quiet weld sound (7% of the joint gain); they are not bolted gaps. String ends and boundaries within jointed approaches use the stronger joint sound. The resulting rhythm is sustained 25 m joint clicks near the selected approaches, then quiet welded running interrupted by one joint crossing at each string boundary. The all-jointed audition track remains separate.
+
+The runtime JSON contains `sections`, `rails`, `events`, and `stations`. Each object has a UUID and a metre `position`; rail spans also have `length`, `side`, and `construction`. A welded `rail` span represents an assembled string, with `fabricationLength: 25.0`, rather than a single rolled rail. Existing connection and station UUIDs are retained; new spans and sections use deterministic UUIDv5. Original fastening and individual-rail records remain in the preserved source inventory and are not part of this runtime variant.
+
+Sources supporting the construction pattern (not the chosen chainages):
+
+- [ДСТУ 4344:2004, §4.8 and Table 3](https://dnaop.com/html/59639/doc-%D0%94%D0%A1%D0%A2%D0%A3_4344_2004): nominal 25 m rails, among other available lengths.
+- [Ukrainian State University of Railway Transport textbook, §5.4](https://lib.kart.edu.ua/bitstream/123456789/2452/1/Навчальний%20посібник.pdf): welded strings commonly up to 800 m, separated by three or four adjustment links. That source describes an adjustment-link construction variant. The current user-selected model instead joins strings directly; it does not reproduce those adjustment links.
+
+Regenerate with `npm run build:route`. Tests check coverage, maximum string length, UUIDs, every connection type, section continuity, and the approach/running-track distinction.

@@ -1,25 +1,25 @@
 <!doctype html><html><head><meta charset="utf-8"><title>Railroom audio verification</title></head><body><h1>Audio verification</h1><pre id="results">Running…</pre><script type="module">
 import {SampleBank} from '../src/audio/sample-bank.js';
-import {SpatialMixer} from '../src/audio/spatial-mixer.js';
-import {wheelsets,RouteIndex,demoRoute} from '../src/route/route-index.js';
+import {SpatialMixer} from '../src/audio/spatial-mixer.js?v=coach61779';
+import {wheelsets,RouteIndex,demoRoute} from '../src/route/route-index.js?v=coach61779';
 import {Transport} from '../src/audio/scheduler.js';
 import {RecordedMotor} from '../src/audio/recorded-motor.js';
 import {TractionMotor} from '../src/audio/traction.js';
-import {RollingLayers} from '../src/audio/rolling.js';
+import {RollingLayers} from '../src/audio/rolling.js?v=coach61779';
 const results=[];const assert=(condition,message)=>{if(!condition)throw Error(message);results.push('PASS '+message);};
 try{
  const rate=48000,context=new OfflineAudioContext(2,rate*3,rate);const bank=await new SampleBank(context).load('../public/audio/manifest.json');
  assert(bank.samples.length===11,'all eleven real recording assets decode');assert(bank.samples.every(s=>s.buffer.numberOfChannels===1),'point-source recordings are mono');
- const mixer=new SpatialMixer(context,bank,wheelsets(3));const rolling=new RollingLayers(context,bank,mixer);rolling.start();rolling.update({speed:20},{throttle:.5,brake:.2},true);
- for(let repeat=0;repeat<4;repeat++)for(const axle of wheelsets(3))for(const side of ['left','right'])mixer.hit({kind:'joint',wheelsetId:axle.id,side,offset:axle.offset,position:repeat*25,objectId:`${repeat}-${side}`,speedMps:33.3},.2+repeat*.3+(axle.offset%26)/200,0);
- assert(mixer.voices.size<=128,'three-carriage voice budget is bounded');const output=await context.startRendering();let peak=0,energy=0,difference=0;
+ const mixer=new SpatialMixer(context,bank,wheelsets(10));mixer.setListener(117.484,0);const rolling=new RollingLayers(context,bank,mixer);rolling.start();assert(mixer.audibleAxles.length===20,'only five carriages have audible wheelsets');assert(rolling.layers.filter(l=>l.kind==='rolling').length===20,'only five carriages create rolling sources');assert(rolling.motor.voices.length===10,'only five carriages create motor sources');assert(mixer.transmission('c4-a1')===.3&&mixer.transmission('c3-a1')===.05&&mixer.transmission('c2-a1')===0,'interior isolation gains follow carriage distance');rolling.update({speed:20},{throttle:.5,brake:.2},true);
+ for(let repeat=0;repeat<1;repeat++)for(const axle of wheelsets(10))for(const side of ['left','right'])mixer.hit({kind:'joint',wheelsetId:axle.id,side,offset:axle.offset,position:repeat*25,objectId:`${repeat}-${side}`,speedMps:33.3},.2+repeat*.3+(axle.offset%26.696)/200,0);
+ assert(mixer.voices.size===40,'distant carriages create no impact sources');assert(mixer.voices.size<=128,'ten-carriage voice budget is bounded');const output=await context.startRendering();let peak=0,energy=0,difference=0;
  for(let i=0;i<output.length;i++){let l=output.getChannelData(0)[i],r=output.getChannelData(1)[i];if(!Number.isFinite(l)||!Number.isFinite(r))throw Error('Non-finite audio');peak=Math.max(peak,Math.abs(l),Math.abs(r));energy+=l*l+r*r;difference+=Math.abs(l-r);}
- assert(energy>1,'real samples produce non-silent audio');assert(peak<1,'three-carriage mixed render has no sample clipping');assert(difference>1,'spatial output contains distinct left and right channels');results.push(`Peak ${peak.toFixed(5)}; output ${output.duration} s`);
+ assert(energy>1,'real samples produce non-silent audio');assert(peak<1,'ten-carriage mixed render has no sample clipping');assert(difference>1,'spatial output contains distinct left and right channels');results.push(`Peak ${peak.toFixed(5)}; output ${output.duration} s`);
  // Transport's real event times drive a test-only impulse renderer, before spatial effects.
  const timing=new OfflineAudioContext(1,rate*1.5,rate),impulse=timing.createBuffer(1,1,rate);impulse.getChannelData(0)[0]=.5;let clock=0;
  const sink={hit(e,when){if(e.side!=='left')return;const s=timing.createBufferSource();s.buffer=impulse;s.connect(timing.destination);s.start(when);},cancelFrom(){},silence(){}};
  const transport=new Transport({clock:()=>clock,sink,route:new RouteIndex(demoRoute(1000)),axles:wheelsets(),vehicle:{resistance:0,drag:0,jerk:Infinity}});transport.state.speed=25;transport.start();for(let i=1;i<=55;i++){clock=i*.025;transport.tick();}
- const timed=await timing.startRendering(),data=timed.getChannelData(0);for(const expected of [1.06,1.16]){const index=Math.round(expected*rate);assert(Math.abs(data[index]-.5)<1e-6,`axle event at ${expected}s is frame accurate`);}
+ const timed=await timing.startRendering(),data=timed.getChannelData(0);for(const expected of [1.06,1.156]){const index=Math.round(expected*rate);assert(Math.abs(data[index]-.5)<1e-6,`axle event at ${expected}s is frame accurate`);}
  assert(mixer.voices.size===0,'finished impact sources are reclaimed');
  const fadeContext=new OfflineAudioContext(1,rate*.2,rate),constant=fadeContext.createBuffer(1,rate,rate);constant.getChannelData(0).fill(.2);
  const fadeMixer={axles:[{id:'test'}],levels:{rolling:1},emitters:new Map([['test:center',{gain:fadeContext.destination}]])};

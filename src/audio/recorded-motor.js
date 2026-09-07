@@ -48,7 +48,7 @@ export class RecordedMotor {
     this.sample = this.bank.pool('traction')[0];
     if (!this.sample) return;
     this.started = true;
-    const bogies = this.mixer.axles.filter((_, i) => i % 4 === 0 || i % 4 === 2);
+    const bogies = (this.mixer.audibleAxles??this.mixer.axles).filter((_, i) => i % 4 === 0 || i % 4 === 2);
     this.voices = bogies.map((axle, i) => {
       const output = this.context.createGain(), fade = this.context.createGain();
       output.gain.value = 0;

@@ -28,7 +28,7 @@ export class TractionMotor {
     const ctx = this.context;
     const wave = ctx.createPeriodicWave(new Float32Array(5), new Float32Array([0, 1, .22, .075, .025]));
     // Two independently voiced bogies per carriage; existing spatial buses handle seats and solos.
-    const bogies = this.mixer.axles.filter((_, i) => i % 4 === 0 || i % 4 === 2);
+    const bogies = (this.mixer.audibleAxles??this.mixer.axles).filter((_, i) => i % 4 === 0 || i % 4 === 2);
     for (const [i, axle] of bogies.entries()) {
       const carrier = ctx.createOscillator(), modulator = ctx.createOscillator();
       const gear = ctx.createOscillator(), body = ctx.createOscillator(), drift = ctx.createOscillator();

@@ -1,3 +1,4 @@
+import {COACH} from './coach-geometry.js';
 /** Static binary-search index. The audio path never reads the full source-object array. */
 export class RouteIndex{
  constructor(data){
@@ -8,5 +9,8 @@ export class RouteIndex{
  upperBound(p){let lo=0,hi=this.events.length;while(lo<hi){const mid=(lo+hi)>>>1;if(this.events[mid].position<=p)lo=mid+1;else hi=mid;}return lo;}
  between(start,end){const result=[];for(let i=this.upperBound(start+1e-8);i<this.events.length&&this.events[i].position<=end+1e-8;i++)result.push(this.events[i]);return result;}
 }
-export function wheelsets(cars=1){return Array.from({length:cars},(_,car)=>[0,2.5,17.5,20].map((offset,i)=>({id:`c${car+1}-a${i+1}`,offset:car*26+offset,car:car+1,label:`${car+1} · ${i+1}`}))).flat();}
+export function wheelsets(cars=1){return Array.from({length:cars},(_,car)=>COACH.axles.map((offset,i)=>({id:`c${car+1}-a${i+1}`,offset:car*COACH.pitch+offset,car:car+1,label:`${car+1} · ${i+1}`}))).flat();}
 export function demoRoute(length=64000){const events=[];for(let p=25;p<length;p+=25)for(const side of ['left','right'])events.push({id:`demo-${p}-${side}`,position:p,side,type:'joint'});return {length,stations:[{name:'Jointed track start',position:0},{name:'Test track end',position:length}],events};}
+
+/** Front/middle/rear are local to carriage five in the long consist. */
+export function listenerSeat(cars, local=COACH.centre){return (Math.min(cars,5)-1)*COACH.pitch+local;}

@@ -24,3 +24,15 @@ The research report also describes a yard retarder sound that was deliberately *
 ## Recorded motor tone revision
 
 The current traction manifest points to `traction-tonal.wav`, taken from E233 original 18–19 seconds, high-passed at 160 Hz, low-passed at 1500 Hz, mono 48 kHz PCM and peak-normalized to −6 dBFS. Spectral inspection of the original showed a dominant approximately 273 Hz component and its harmonic at 18 seconds, whereas the previously used region had a less concentrated spectrum. Playback holds a fixed region and changes rate smoothly with simulated speed. Phase alignment accounts for that rate, keeping grain duration at 180 ms in output time. The older `traction.wav` is retained but is not loaded by the current manifest.
+
+## Metallic wheel/rail revision
+
+The manifest now loads `joint-1-metal.wav` through `joint-8-metal.wav` and `rolling-metal.wav`. These derivatives retain the original recording credits and licences above. Original WAVs remain available for comparison; both traction options and the brake recording are unchanged.
+
+Regenerate with `python3 scripts/prepare-metallic-audio.py` (Python standard library and ffmpeg). It reads the preserved original rolling OGG and original impact/bass WAVs, and updates only rolling/impact entries in the existing manifest.
+
+- Rolling restores the original recording's 90–4200 Hz region. Fast peak-following attenuation reduces existing recorded knocks, then broad resonances at 430, 870, 1630 and 2780 Hz add metal texture. This is blended with the previous bass bed. The 150 ms cyclic crossfade is applied after filtering, with a 1 ms boundary-step correction. Duration stays 9.85 seconds.
+- Impacts retain each original 160 ms recording and its approximate 10 ms onset. A broad 2.4 kHz band emphasizes the attack. The first 35 ms of the recording excites four damped resonators around 610, 1130, 2070 and 3460 Hz, with decay time constants of 70, 45, 27 and 15 ms and small variation between the eight takes. A quiet ringing tail extends the file to 300 ms, ending in a 20 ms fade. These are modeled resonances excited by recorded sound, not a new Ukrainian field recording.
+- All new files are mono 48 kHz signed 16-bit PCM, peak-normalized to approximately −6 dBFS. No added free-running tone or FM source is used in these wheel/rail layers.
+
+The target is the harder metallic character requested by the listener. A specific Ukrainian carriage/track match still requires listening comparison with a reference recording. The rolling bed can still contain some embedded sounds from the original journey.

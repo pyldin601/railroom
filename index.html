@@ -4,9 +4,9 @@
 <header><a class="brand" href="./" aria-label="Railroom home"><span class="brand-icon">Ⅱ</span> railroom<span class="tag">SOUND SIMULATOR</span></a><div class="live"><i id="status-dot"></i><span id="status">Loading route</span></div></header>
 <main>
 <section class="route-panel">
- <div class="section-line"><div><span class="eyebrow">YOUR JOURNEY</span><h1>Kyiv <span>→</span> Fastiv</h1></div><label class="route-picker"><span>Track</span><select id="route-mode"><option value="route">Kyiv–Fastiv · welded</option><option value="demo">25 m jointed demo</option></select></label></div>
+ <div class="section-line"><div><span class="eyebrow">YOUR JOURNEY</span><h1>Kyiv <span>→</span> Fastiv</h1></div><label class="route-picker"><span>Track</span><select id="route-mode"><option value="route">Kyiv–Fastiv · mixed track</option><option value="demo">25 m jointed demo</option></select></label></div>
  <div class="route-map" id="route-map" aria-label="Route stations"></div>
- <div class="route-caption"><span id="route-caption">64 km · 8 station markers · approximate route</span><span id="distance">0.000 / 64.000 km</span></div>
+ <div class="route-caption"><span id="route-caption">64 km · 25 m rails / welded strings ≤800 m · approximate route</span><span id="distance">0.000 / 64.000 km</span></div>
 </section>
 <div class="workspace">
  <section class="drive-panel panel">
@@ -21,7 +21,7 @@
   <p class="hint">Space to pause · ↑ ↓ throttle · B to brake</p>
  </section>
  <section class="carriage-panel panel">
-  <div class="section-line"><div><span class="eyebrow">BENEATH YOUR SEAT</span><h2>Every wheelset, its own voice.</h2></div><label class="compact"><span>Carriages</span><select id="cars"><option value="1">1 carriage</option><option value="3">3 carriages</option></select></label></div>
+  <div class="section-line"><div><span class="eyebrow">BENEATH YOUR SEAT</span><h2>КВБЗ 61-779 · ТВЗ-ЦНИИ-М</h2></div><label class="compact"><span>Carriages</span><select id="cars"><option value="1">1 carriage</option><option value="10" selected>10 carriages</option></select></label></div>
   <div class="canvas-wrap"><canvas id="track" aria-label="Moving railway and individual wheelset impacts"></canvas><div class="diagram-key"><span><i class="key-dot"></i> wheel contact</span><span><i class="key-dot listener"></i> you</span><span>← direction of travel</span></div></div>
   <div class="next-stop"><div><span class="eyebrow">NEXT MARKER</span><strong id="next-station">Karavaievi Dachi</strong></div><span id="next-distance">3.50 km</span></div>
   <div class="axle-heading"><span class="eyebrow">WHEELSETS</span><span>Click to mute · S to solo</span></div><div class="axle-grid" id="axle-grid"></div>
@@ -32,7 +32,7 @@
   <h2>A seat in the sound.</h2>
   <label class="slider-label" for="master">Master volume <output id="master-value">55%</output></label><input id="master" type="range" min="0" max="100" value="55">
   <div class="output-meter"><div id="meter"></div></div><div class="scale-labels"><span>OUTPUT</span><span id="peak">−∞ dB</span></div>
-  <div class="seat-label">Seat position</div><div class="segmented" id="seats"><button data-seat="2" aria-pressed="false">Front</button><button data-seat="10" aria-pressed="true" class="selected">Middle</button><button data-seat="19" aria-pressed="false">Rear</button></div>
+  <div class="seat-label" id="seat-label">Seat position · carriage 5 of 10</div><div class="segmented" id="seats"><button data-seat="2" aria-pressed="false">Front</button><button data-seat="10.7" aria-pressed="true" class="selected">Middle</button><button data-seat="19.4" aria-pressed="false">Rear</button></div>
   <label class="slider-label" for="yaw">Look around <output id="yaw-value">0°</output></label><input id="yaw" type="range" min="-180" max="180" value="0">
   <label class="toggle"><input type="checkbox" id="spatial" checked><span>Binaural headphones</span></label>
   <div class="mix-label">Sound layers</div>
@@ -43,7 +43,7 @@
   <label class="mini-slider" for="brake-mix">Braking<input id="brake-mix" type="range" min="0" max="150" value="100"></label>
  </section>
 </div>
-<div class="footer-row"><span class="recording-badge"><i></i> LIVE MOTOR · REAL RAIL SOUNDS</span><span id="sound-note">Continuous motor synthesis with recorded wheel impacts and rolling. Headphones recommended.</span><details><summary>About the sounds</summary><p>Choose continuous motor synthesis or a a recorded motor tone with speed-controlled pitch. The recorded option holds a local texture instead of restarting the full acceleration sweep. Wheel, rolling and braking sounds use public-domain and CC0 recordings from different trains. It is not a recording of the Kyiv–Fastiv service. The rolling bed is filtered from one ride; the braking layer is recorded electric deceleration. Pneumatic brake hiss and independent speed-band recordings are not included.</p><p>Welds are subtle. The jointed demo has a stronger clatter. Fastenings do not trigger impacts.</p><a href="AUDIO-LICENSES.md" target="_blank">Recording credits and processing notes ↗</a></details></div>
+<div class="footer-row"><span class="recording-badge"><i></i> LIVE MOTOR · REAL RAIL SOUNDS</span><span id="sound-note">Continuous motor · metallic wheel impacts and rolling. Headphones recommended.</span><details><summary>About the sounds</summary><p>Choose continuous motor synthesis or a recorded motor tone with speed-controlled pitch. The recorded option holds a local texture instead of restarting the full acceleration sweep. Wheel, rolling and braking sounds use public-domain and CC0 recordings from different trains. It is not a recording of the Kyiv–Fastiv service. Wheel impacts have short modeled metal resonances; the rolling bed restores metallic midrange from one ride; the braking layer is recorded electric deceleration. Pneumatic brake hiss and independent speed-band recordings are not included.</p><p>You hear your carriage, its two neighbours at 30%, and the next two at 5%; farther carriages are silent. Welds are subtle. The jointed demo has a stronger clatter. Fastenings do not trigger impacts.</p><a href="AUDIO-LICENSES.md" target="_blank">Recording credits and processing notes ↗</a></details></div>
 <p id="error" role="alert" hidden></p>
 <details class="diagnostics"><summary>Playback diagnostics</summary><span id="diagnostics">Start the journey to enable audio.</span></details>
-</main><script type="module" src="src/main.js"></script></body></html>
+</main><script type="module" src="src/main.js?v=coach61779"></script></body></html>

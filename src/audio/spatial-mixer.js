@@ -1,3 +1,4 @@
+import {carriageGain,occupiedCarriage} from './carriage-isolation.js?v=coach61779';
 /** Point contacts are fixed relative to an onboard listener; no artificial pass-by. */
 export class SpatialMixer{
  constructor(context,bank,axles){
@@ -8,16 +9,19 @@ export class SpatialMixer{
   this.outputFade=context.createGain();
   this.master.connect(this.outputFade).connect(this.compressor).connect(this.analyser).connect(context.destination);
   for(const axle of axles)for(const side of ['left','right','center']){
-   const pan=context.createPanner();pan.panningModel='HRTF';pan.distanceModel='inverse';pan.refDistance=3;pan.rolloffFactor=.3;pan.positionX.value=side==='left'?-.76:side==='right'?.76:0;pan.positionY.value=-1.5;pan.positionZ.value=axle.offset;
+   const pan=context.createPanner();pan.panningModel='HRTF';pan.distanceModel='inverse';pan.refDistance=3;pan.rolloffFactor=0;pan.positionX.value=side==='left'?-.76:side==='right'?.76:0;pan.positionY.value=-1.5;pan.positionZ.value=axle.offset;
    const gain=context.createGain();gain.connect(pan).connect(this.master);this.emitters.set(`${axle.id}:${side}`,{gain,pan});
   }
   this.setListener(10,0);
  }
- setListener(seat,yaw){const l=this.context.listener,a=yaw*Math.PI/180,t=this.context.currentTime;l.positionX.setTargetAtTime(0,t,.03);l.positionY.setTargetAtTime(0,t,.03);l.positionZ.setTargetAtTime(seat,t,.03);l.forwardX.setTargetAtTime(Math.sin(a),t,.03);l.forwardY.setTargetAtTime(0,t,.03);l.forwardZ.setTargetAtTime(-Math.cos(a),t,.03);l.upY.value=1;}
+ get audibleAxles(){return this.axles.filter(a=>this.transmission(a.id)>0);}
+ transmission(id){const axle=this.axles.find(a=>a.id===id);return carriageGain(axle?.car??1,this.occupied??1);}
+ setListener(seat,yaw){this.occupied=occupiedCarriage(seat);this.applyMute();const l=this.context.listener,a=yaw*Math.PI/180,t=this.context.currentTime;l.positionX.setTargetAtTime(0,t,.03);l.positionY.setTargetAtTime(0,t,.03);l.positionZ.setTargetAtTime(seat,t,.03);l.forwardX.setTargetAtTime(Math.sin(a),t,.03);l.forwardY.setTargetAtTime(0,t,.03);l.forwardZ.setTargetAtTime(-Math.cos(a),t,.03);l.upY.value=1;}
  setSpatial(enabled){for(const {pan} of this.emitters.values())pan.panningModel=enabled?'HRTF':'equalpower';}
- isAudible(id){return !this.muted.has(id)&&(!this.solo||this.solo===id);}
- applyMute(){const t=this.context.currentTime;for(const [key,{gain}]of this.emitters)gain.gain.setTargetAtTime(this.isAudible(key.split(':')[0])?1:0,t,.015);}
+ isAudible(id){return this.transmission(id)>0&&!this.muted.has(id)&&(!this.solo||this.solo===id);}
+ applyMute(){const t=this.context.currentTime;for(const [key,{gain}]of this.emitters)gain.gain.setTargetAtTime(this.isAudible(key.split(':')[0])?this.transmission(key.split(':')[0]):0,t,.015);}
  hit(event,when,generation){
+  if(!this.isAudible(event.wheelsetId))return;
   if(this.voices.size>=128){if(event.kind==='weld')return;const quiet=[...this.voices].find(v=>v.kind==='weld');if(quiet)this.stopVoice(quiet,this.context.currentTime);else return;}
   const sample=this.bank.select(event);if(!sample)return;
   const ctx=this.context,source=ctx.createBufferSource(),gain=ctx.createGain();source.buffer=sample.buffer;

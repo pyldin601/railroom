@@ -17,11 +17,11 @@ From this directory, run `npm start`, then open <http://127.0.0.1:8765/>. No pac
 
 ## What is modelled
 
-The leading axle is the position reference. Other axles are 0, 2.5, 17.5, and 20 m behind each carriage's leading axle; carriages are spaced 26 m apart. At 72 km/h, adjacent axles 2.5 m apart cross the same joint 125 ms apart. Behind-start contacts are suppressed; the train ends when its leading axle reaches 64 km.
+The leading axle is the position reference. Other axles are 0, 2.4, 19, and 21.4 m behind each carriage's leading axle; carriages are spaced 26.696 m apart. At 72 km/h, adjacent axles 2.4 m apart cross the same joint 120 ms apart. Behind-start contacts are suppressed; the train ends when its leading axle reaches 64 km.
 
 Motion advances in 10 ms steps; crossing times are solved inside each step. An audio-clock scheduler prepares a 150 ms horizon and replans future sounds on control changes. A scheduling interruption pauses instead of playing a burst of old sounds.
 
-The original railway remains unchanged. `public/route.json` contains 5,118 weld/joint events and eight stations derived from 245,766 source objects. `npm run build:route` regenerates it when the source dataset exists at the repository's `data/railway/kyiv-fastiv/objects.json` path.
+The original railway inventory remains unchanged. `public/route.json` is a separate mixed-track variant, with 5,118 weld/joint events, eight source station markers, and explicit rail spans and construction sections. `npm run build:route` deterministically regenerates it using `data/railway/kyiv-fastiv/objects.json`. Connection UUIDs and positions are retained; their types follow the new layout. See [TRACK-LAYOUT.md](TRACK-LAYOUT.md) for the section plan and assumptions.
 
 ## Recording quality and limitations
 
@@ -52,3 +52,23 @@ A 30-minute real-time foreground soak, separate Safari/Chrome compatibility sign
 ## Motor comparison
 
 The approved synthesized motor was preserved in commit `3c96ddc`. The Motor sound selector also offers **Recorded · motor tone**. This uses 180 ms overlapping Hann-windowed grains from a fixed, motor-dominated region of the original recording, with local waveform alignment. Pitch follows simulated speed through smoothed playback-rate control. At steady speed both region and pitch stay fixed: the full acceleration sweep is never repeatedly restarted. This is a time-stretched texture from one recording, not a newly recorded steady-speed engine. Some granular coloration can remain. Switching modes fades the old motor and keeps the journey running.
+
+## Metallic wheel/rail character
+
+The default rolling and joint assets now use the metallic derivatives described in [AUDIO-LICENSES.md](AUDIO-LICENSES.md): restored rolling midrange, sharper recorded contact attacks, and short damped metal tails. Per-wheelset spatial positioning, joint timing, the quiet weld level, and both motor options are preserved. Regenerate with `python3 scripts/prepare-metallic-audio.py`; the older WAVs are retained.
+
+Verification after this revision: 37 Node tests pass, including rolling spectral change, loop continuity, and bounded impact tails. The browser offline render passes asset decoding, timing, spatial channels, fades and source cleanup; three-carriage peak is 0.37970. These checks establish audio integrity, not subjective authenticity.
+
+## Ten-carriage consist
+
+The consist selector offers one or ten carriages, defaulting to ten. In the ten-carriage train the listener is in carriage five: Front/Middle/Rear correspond to 108.784/117.484/126.184 m behind the leading axle. Switching to one carriage maps those same seat controls back to carriage one. All forty wheelsets retain independent spatial contacts and mute/solo controls. The schematic fits the entire consist.
+
+Verification: 38 Node tests pass. A ten-carriage browser offline render with the listener in carriage five passes timing, stereo, voice cleanup, and clipping checks (peak 0.39131).
+
+## Interior carriage isolation
+
+Ten carriages remain visible, but only carriages 3–7 produce sound around the listener in carriage 5. Relative bus gains are 5%, 30%, 100%, 30%, 5%; all farther carriages are silent and create no impact, rolling, or motor sources. HRTF direction remains active; outdoor inverse-distance attenuation is disabled so it does not multiply these interior transmission levels. Mute/solo retains the isolation gains. Braking is emitted locally in the occupied carriage. These percentages are amplitude gains, not calibrated perceived-loudness percentages.
+
+Verification: 39 Node tests pass. Browser checks confirm 20 rolling sources, ten motor voices, no distant impact sources, preserved timing and stereo, clean fades and no clipping (peak 0.42179).
+
+Current coach geometry: [КВБЗ 61-779 with ТВЗ-ЦНИИ-М bogies](COACH-GEOMETRY.md). This supersedes earlier generic geometry and timing figures in the historical verification notes.

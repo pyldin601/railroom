@@ -1,11 +1,11 @@
-import {RouteIndex,demoRoute,wheelsets} from './route/route-index.js';
+import {RouteIndex,demoRoute,wheelsets,listenerSeat} from './route/route-index.js?v=coach61779';
 import {Transport} from './audio/scheduler.js';
 import {SampleBank} from './audio/sample-bank.js';
-import {SpatialMixer} from './audio/spatial-mixer.js';
-import {RollingLayers} from './audio/rolling.js';
-import {drawTrack} from './ui/track-view.js';
+import {SpatialMixer} from './audio/spatial-mixer.js?v=coach61779';
+import {RollingLayers} from './audio/rolling.js?v=coach61779';
+import {drawTrack} from './ui/track-view.js?v=coach61779';
 const $=id=>document.getElementById(id);
-let routeData,route,context,bank,mixer,rolling,transport,axles=wheelsets(),seat=10,loading=false,ready=false;
+let routeData,route,context,bank,mixer,rolling,transport,axles=wheelsets(Number($('cars').value)),seat=listenerSeat(Number($('cars').value)),loading=false,ready=false;
 let emergency=false;const controls=()=>({throttle:Number($('throttle').value)/100,brake:Number($('brake').value)/100,emergency});
 function error(message){$('error').textContent=message;$('error').hidden=!message;}
 function setStatus(text){$('status').textContent=text;}
@@ -13,7 +13,7 @@ function displayRoute(){
  $('route-map').replaceChildren();$('station').replaceChildren();
  route.stations.forEach((s,i)=>{const marker=document.createElement('div');marker.className='station-marker';marker.style.left=`${s.position/route.length*100}%`;const dot=document.createElement('i'),label=document.createElement('span');label.textContent=s.name.replace('Kyiv-Pasazhyrskyi','Kyiv-Pas.');marker.append(dot,label);$('route-map').append(marker);const option=document.createElement('option');option.value=s.position;option.textContent=s.name;$('station').append(option);});
  const head=document.createElement('i');head.id='route-head';head.className='route-head';$('route-map').append(head);
- $('route-caption').textContent=$('route-mode').value==='demo'?'25 m jointed test track · separate from the Kyiv route':'64 km · 8 station markers · approximate route';
+ $('route-caption').textContent=$('route-mode').value==='demo'?'25 m jointed test track · separate from the Kyiv route':'64 km · 25 m rails / welded strings ≤800 m · approximate route';
 }
 function axleButtons(){
  $('axle-grid').replaceChildren();for(const axle of axles){const cell=document.createElement('div');cell.className='axle-cell';cell.id=`cell-${axle.id}`;const mute=document.createElement('button'),solo=document.createElement('button');mute.textContent=axle.label;mute.title=`Mute wheelset ${axle.label}`;mute.setAttribute('aria-pressed','false');solo.textContent='S';solo.title=`Solo wheelset ${axle.label}`;solo.setAttribute('aria-pressed','false');
@@ -51,10 +51,10 @@ $('reset').onclick=()=>{pendingPosition=0;transport?.seek(0);emergency=false;$('
 $('seek').onclick=()=>{transport?.seek(Number($('station').value));if(!transport){pendingPosition=Number($('station').value);}setStatus('Ready at station');};
 let pendingPosition=0;
 $('route-mode').onchange=()=>{transport?.pause();route=$('route-mode').value==='demo'?new RouteIndex(demoRoute()):new RouteIndex(routeData);pendingPosition=0;displayRoute();if(bank)buildAudio();setStatus('Ready');};
-$('cars').onchange=()=>{const position=transport?.snapshot().position??pendingPosition;transport?.pause();axles=wheelsets(Number($('cars').value));if(bank)buildAudio(position);else axleButtons();setStatus('Ready');};
+$('cars').onchange=()=>{const position=transport?.snapshot().position??pendingPosition;transport?.pause();axles=wheelsets(Number($('cars').value));seat=listenerSeat(axles.length/4,Number($('seats').querySelector('.selected').dataset.seat));$('seat-label').textContent=`Seat position · carriage ${Math.min(axles.length/4,5)} of ${axles.length/4}`;if(bank)buildAudio(position);else axleButtons();setStatus('Ready');};
 $('master').oninput=()=>{$('master-value').textContent=$('master').value+'%';if(mixer)mixer.master.gain.setTargetAtTime(Number($('master').value)/100,context.currentTime,.03);};
 $('yaw').oninput=()=>{$('yaw-value').textContent=$('yaw').value+'°';mixer?.setListener(seat,Number($('yaw').value));};
-for(const button of $('seats').children)button.onclick=()=>{seat=Number(button.dataset.seat);for(const b of $('seats').children){b.classList.toggle('selected',b===button);b.setAttribute('aria-pressed',String(b===button));}mixer?.setListener(seat,Number($('yaw').value));};
+for(const button of $('seats').children)button.onclick=()=>{seat=listenerSeat(axles.length/4,Number(button.dataset.seat));for(const b of $('seats').children){b.classList.toggle('selected',b===button);b.setAttribute('aria-pressed',String(b===button));}mixer?.setListener(seat,Number($('yaw').value));};
 $('motor-mode').onchange=()=>{rolling?.setMotorMode($('motor-mode').value);$('sound-note').textContent=$('motor-mode').value==='recorded'?'Recorded motor tone · pitch follows speed':'Live motor synthesis · recorded wheel impacts, rolling and braking';};
 $('spatial').onchange=()=>mixer?.setSpatial($('spatial').checked);
 for(const kind of ['impact','rolling','traction','brake'])$(kind+'-mix').oninput=()=>{if(mixer)mixer.levels[kind]=Number($(kind+'-mix').value)/100;};
