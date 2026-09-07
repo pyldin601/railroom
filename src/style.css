@@ -20,3 +20,5 @@
 .route-map{height:150px}
 .route-head{pointer-events:none;z-index:3}.map-legend{font-size:10px;color:var(--muted);margin:0 0 10px;line-height:1.5}
 @media(max-width:700px){.map-tooltip{max-width:260px;white-space:normal;width:max-content}.map-speed{font-size:8px}}
+
+#autopilot{width:100%;margin-top:12px}#autopilot[aria-pressed="true"]{background:#345442;border-color:var(--mint);color:var(--mint)}

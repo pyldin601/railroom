@@ -1,14 +1,22 @@
 <!doctype html><html><head><meta charset="utf-8"><title>Railroom audio verification</title></head><body><h1>Audio verification</h1><pre id="results">Running…</pre><script type="module">
 import {SampleBank} from '../src/audio/sample-bank.js';
-import {SpatialMixer} from '../src/audio/spatial-mixer.js?v=power-zones';
-import {wheelsets,RouteIndex,demoRoute} from '../src/route/route-index.js?v=power-zones';
-import {Transport} from '../src/audio/scheduler.js?v=power-zones';
+import {SpatialMixer} from '../src/audio/spatial-mixer.js?v=impact-reverb500';
+import {wheelsets,RouteIndex,demoRoute} from '../src/route/route-index.js?v=impact-reverb500';
+import {Transport} from '../src/audio/scheduler.js?v=impact-reverb500';
 import {RecordedMotor} from '../src/audio/recorded-motor.js';
-import {TractionMotor} from '../src/audio/traction.js?v=power-zones';
-import {RollingLayers} from '../src/audio/rolling.js?v=power-zones';
+import {TractionMotor} from '../src/audio/traction.js?v=impact-reverb500';
+import {RollingLayers} from '../src/audio/rolling.js?v=impact-reverb500';
 import {CabinAmbience} from '../src/audio/ambient.js';
+import {PneumaticAudio} from '../src/audio/pneumatic.js';
 const results=[];const assert=(condition,message)=>{if(!condition)throw Error(message);results.push('PASS '+message);};
 try{
+ const airContext=new OfflineAudioContext(2,48000,48000);
+ const airMixer={master:airContext.destination,levels:{brake:1},axles:[{id:'test',car:1}],occupied:1,emitters:new Map([['test:center',{gain:airContext.destination}]])};
+ const airSound=new PneumaticAudio(airContext,airMixer);airSound.start();airSound.update({air:{releaseFlow:3,compressor:true}},{},true);airSound.stop(.5);
+ const airOutput=await airContext.startRendering(),airData=airOutput.getChannelData(0);
+ assert(airData.some(v=>Math.abs(v)>.001),'pneumatic exhaust and compressor are audible at rest');
+ assert(airData.every(v=>Number.isFinite(v)&&Math.abs(v)<1),'pneumatic sound has finite output and headroom');
+ assert(airData.slice(30000).every(v=>v===0),'pneumatic sounds fade out on pause');
  const ambientContext=new OfflineAudioContext(2,32000,32000),ambientMixer={master:ambientContext.destination,levels:{ambient:.5}};
  const ambient=new CabinAmbience(ambientContext,ambientMixer);ambient.start();ambient.update({speed:0},{},true);ambient.stop(.7);
  const cabin=await ambientContext.startRendering();let cabinEnergy=0,cabinPeak=0;
@@ -17,10 +25,10 @@ try{
  assert(cabin.getChannelData(0).slice(25000).every(v=>v===0),'carriage ambience fades to silence on pause');
  const rate=48000,context=new OfflineAudioContext(2,rate*3,rate);const bank=await new SampleBank(context).load('../public/audio/manifest.json');
  assert(bank.samples.length===12,'all twelve recording assets decode');assert(bank.samples.every(s=>s.buffer.numberOfChannels===1),'point-source recordings are mono');
- const mixer=new SpatialMixer(context,bank,wheelsets(10));assert(mixer.master.gain.value===1&&Math.abs(mixer.mixBoost.gain.value-1.4)<1e-6,'master defaults to 100% with 1.4x mix boost');mixer.setListener(117.484,0);assert(mixer.locomotive.paths.length===4,'locomotive has one direct path and three carriage reflections');assert(mixer.locomotive.paths[0].pan.positionZ.value===-14,'locomotive source stays ahead of the train');const rolling=new RollingLayers(context,bank,mixer);rolling.start();assert(mixer.audibleAxles.length===20,'only five carriages have audible wheelsets');assert(rolling.layers.filter(l=>l.kind==='rolling').length===8,'only the occupied carriage creates eight rolling wheel sources');assert(rolling.motor.voices.length===10,'only five carriages create motor sources');assert(mixer.transmission('c4-a1')===.3&&mixer.transmission('c3-a1')===.05&&mixer.transmission('c2-a1')===0,'interior isolation gains follow carriage distance');rolling.update({speed:20},{throttle:.5,brake:.2},true);
+ const mixer=new SpatialMixer(context,bank,wheelsets(10));assert(mixer.master.gain.value===1&&Math.abs(mixer.mixBoost.gain.value-1.4)<1e-6,'master defaults to 100% with 1.4x mix boost');mixer.setListener(117.484,0);assert(mixer.locomotive.paths.length===4,'locomotive has one direct path and three carriage reflections');assert(mixer.locomotive.paths[0].pan.positionZ.value===-14,'locomotive source stays ahead of the train');const rolling=new RollingLayers(context,bank,mixer);rolling.start();assert(mixer.audibleAxles.length===20,'continuous carriage layers retain the five-carriage isolation range');assert(rolling.layers.filter(l=>l.kind==='rolling').length===8,'only the occupied carriage creates eight rolling wheel sources');assert(rolling.motor.voices.length===10,'only five carriages create motor sources');assert(mixer.transmission('c4-a1')===.3&&mixer.transmission('c3-a1')===.05&&mixer.transmission('c2-a1')===0,'interior isolation gains follow carriage distance');rolling.update({speed:20},{throttle:.5,brake:.2},true);
  for(let repeat=0;repeat<1;repeat++)for(const axle of wheelsets(10))for(const side of ['left','right'])mixer.hit({kind:'joint',wheelsetId:axle.id,side,offset:axle.offset,position:repeat*25,objectId:`${repeat}-${side}`,speedMps:33.3},.2+repeat*.3+(axle.offset%26.696)/200,0);
  assert(rolling.layers.filter(l=>l.kind==='rolling').every(l=>Object.keys(l.bands).length===2),'each wheel has independently controlled low and high rolling bands');
- assert(mixer.voices.size===40,'distant carriages create no impact sources');mixer.power({kind:'power_off'},.8,0);mixer.power({kind:'power_on'},1.2,0);assert(mixer.voices.size===42,'power switch sounds are scheduled and tracked');assert(mixer.voices.size<=128,'ten-carriage voice budget is bounded');const output=await context.startRendering();let peak=0,energy=0,difference=0;
+ assert(mixer.voices.size===80,'all carriage wheels create distance-attenuated impacts');mixer.power({kind:'power_off'},.8,0);mixer.power({kind:'power_on'},1.2,0);assert(mixer.voices.size===82,'power switch sounds are scheduled and tracked');assert(mixer.voices.size<=128,'ten-carriage voice budget is bounded');const output=await context.startRendering();let peak=0,energy=0,difference=0;
  for(let i=0;i<output.length;i++){let l=output.getChannelData(0)[i],r=output.getChannelData(1)[i];if(!Number.isFinite(l)||!Number.isFinite(r))throw Error('Non-finite audio');peak=Math.max(peak,Math.abs(l),Math.abs(r));energy+=l*l+r*r;difference+=Math.abs(l-r);}
  assert(energy>1,'real samples produce non-silent audio');assert(peak<1,'ten-carriage mixed render has no sample clipping');assert(difference>1,'spatial output contains distinct left and right channels');results.push(`Peak ${peak.toFixed(5)}; output ${output.duration} s`);
  // Transport's real event times drive a test-only impulse renderer, before spatial effects.

@@ -1,6 +1,6 @@
 import {RecordedMotor} from './recorded-motor.js?v=brake-grains';
 export function brakeParameters(state,controls,running){
- const speed=Math.max(0,state.speed),pressure=controls.emergency?1:Math.max(0,Math.min(1,controls.brake||0));
+ const speed=Math.max(0,state.speed),pressure=state.air?state.air.cylinder/4:controls.emergency?1:Math.max(0,Math.min(1,controls.brake||0));
  return {load:running?pressure*Math.min(1,speed/2):0,rate:.55+1.15*Math.min(1,speed/(120/3.6))};
 }
 export class BrakingLayers{

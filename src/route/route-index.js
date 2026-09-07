@@ -3,7 +3,7 @@ import {COACH} from './coach-geometry.js';
 export class RouteIndex{
  constructor(data){
   if(!Number.isFinite(data.length)||data.length<=0)throw new Error('Invalid route length');
-  this.powerMarkers=(data.operatingMarkers||[]).filter(m=>['power_off','power_on'].includes(m.type)).sort((a,b)=>a.position-b.position);this.length=data.length;this.stations=data.stations||[];this.events=data.events||[];const ids=new Set();let last=-Infinity;
+  this.speedMarkers=(data.operatingMarkers||[]).filter(m=>m.type==='speed_limit');this.powerMarkers=(data.operatingMarkers||[]).filter(m=>['power_off','power_on'].includes(m.type)).sort((a,b)=>a.position-b.position);this.length=data.length;this.stations=data.stations||[];this.events=data.events||[];const ids=new Set();let last=-Infinity;
   for(const e of this.events){if(!e.id||ids.has(e.id)||!Number.isFinite(e.position)||e.position<0||e.position>this.length||e.position<last||!['left','right'].includes(e.side)||!['joint','weld'].includes(e.type))throw new Error('Invalid or unsorted route event');ids.add(e.id);last=e.position;}
  }
  powerAt(position){let on=true;for(const m of this.powerMarkers){if(m.position>position+1e-8)break;on=m.type==='power_on';}return on;}

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Railroom — train sound simulator</title><meta name="description" content="A local train sound simulator with recorded wheel impacts and spatial audio."><link rel="stylesheet" href="src/style.css?v=map-badges"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Railroom — train sound simulator</title><meta name="description" content="A local train sound simulator with recorded wheel impacts and spatial audio."><link rel="stylesheet" href="src/style.css?v=speed360"></head>
 <body>
 <header><a class="brand" href="./" aria-label="Railroom home"><span class="brand-icon">Ⅱ</span> railroom<span class="tag">SOUND SIMULATOR</span></a><div class="live"><i id="status-dot"></i><span id="status">Loading route</span></div></header>
 <main>
@@ -13,10 +13,13 @@
  <section class="drive-panel panel">
   <div class="section-line"><span class="eyebrow">DRIVE</span><span class="pill" id="motion-label">STATIONARY</span></div>
   <div class="speed-display"><span id="speed">0</span><span class="speed-unit">km/h</span></div>
-  <div class="speed-scale"><div id="speed-bar"></div></div><div class="scale-labels"><span>0</span><span>60</span><span>120</span></div>
+  <div class="speed-scale"><div id="speed-bar"></div></div><div class="scale-labels"><span>0</span><span>180</span><span>360</span></div>
   <label class="slider-label" for="throttle">Throttle <output id="throttle-value">45%</output></label><input id="throttle" type="range" min="0" max="100" value="45">
   <label class="slider-label" for="brake">Service brake <output id="brake-value">0%</output></label><input class="brake-range" id="brake" type="range" min="0" max="100" value="0">
+  <p id="air-status" class="hint">Brake cylinders 0.0 bar · air 8.5 bar</p>
   <div class="drive-actions"><button id="coast">Coast</button><button id="emergency" class="danger">Emergency brake</button></div>
+  <button id="autopilot" aria-pressed="false">Autopilot</button>
+  <p id="autopilot-status" class="hint" hidden></p>
   <button id="play" class="primary" disabled><span id="play-icon">▶</span> <span id="play-label">Start journey</span></button>
   <div class="secondary-actions"><button id="reset">↺ Reset</button><button id="audition">Audition at 72 km/h ↗</button></div>
   <p class="hint">Space to pause · ↑ ↓ throttle · B to brake</p>
@@ -25,7 +28,6 @@
   <div class="section-line"><div><span class="eyebrow">BENEATH YOUR SEAT</span><h2>КВБЗ 61-779 · ТВЗ-ЦНИИ-М</h2></div><label class="compact"><span>Carriages</span><select id="cars"><option value="1">1 carriage</option><option value="10" selected>10 carriages</option></select></label></div>
   <div class="canvas-wrap"><canvas id="track" aria-label="Moving railway and individual wheelset impacts"></canvas><div class="diagram-key"><span><i class="key-dot"></i> wheel contact</span><span><i class="key-dot listener"></i> you</span><span>← direction of travel</span></div></div>
   <div class="next-stop"><div><span class="eyebrow">NEXT MARKER</span><strong id="next-station">Karavaievi Dachi</strong></div><span id="next-distance">3.50 km</span></div>
-  <div class="axle-heading"><span class="eyebrow">WHEELSETS</span><span>Click to mute · S to solo</span></div><div class="axle-grid" id="axle-grid"></div>
   <div class="journey-seek"><label for="station">Jump to station</label><select id="station"></select><button id="seek">Go →</button></div>
  </section>
  <section class="listen-panel panel">
@@ -39,6 +41,7 @@
   <div class="mix-label">Sound layers</div>
   <label class="slider-label" for="motor-mode">Motor sound</label><select id="motor-mode"><option value="synth">Synthesized · continuous</option><option value="recorded">Recorded · motor tone</option></select>
   <label class="mini-slider" for="impact-mix">Wheel impacts<input id="impact-mix" type="range" min="0" max="150" value="100"></label>
+  <label class="mini-slider" for="impactMetal-mix">Impact · metal hiss<input id="impactMetal-mix" type="range" min="0" max="150" value="100"></label>
   <label class="mini-slider" for="rolling-mix">Rolling<input id="rolling-mix" type="range" min="0" max="150" value="100"></label>
   <label class="mini-slider" for="rollingLow-mix">Rolling · low rumble<input id="rollingLow-mix" type="range" min="0" max="150" value="100"></label>
   <label class="mini-slider" for="ambient-mix">Carriage ambience<input id="ambient-mix" type="range" min="0" max="150" value="10"></label>
@@ -50,4 +53,4 @@
 <div class="footer-row"><span class="recording-badge"><i></i> LIVE MOTOR · REAL RAIL SOUNDS</span><span id="sound-note">Continuous motor · metallic wheel impacts and rolling. Headphones recommended.</span><details><summary>About the sounds</summary><p>Choose continuous motor synthesis or a recorded motor tone with speed-controlled pitch. The recorded option holds a local texture instead of restarting the full acceleration sweep. Wheel, rolling and braking sounds use public-domain and CC0 recordings from different trains. It is not a recording of the Kyiv–Fastiv service. Wheel impacts have short modeled metal resonances; the rolling bed restores metallic midrange from one ride; braking separates a speed-controlled recorded tone from an unpitched friction-hiss texture. Pneumatic brake hiss and independent speed-band recordings are not included.</p><p>You hear your carriage, its two neighbours at 30%, and the next two at 5%; farther carriages are silent. Welds are subtle. The jointed demo has a stronger clatter. Fastenings do not trigger impacts.</p><a href="AUDIO-LICENSES.md" target="_blank">Recording credits and processing notes ↗</a></details></div>
 <p id="error" role="alert" hidden></p>
 <details class="diagnostics"><summary>Playback diagnostics</summary><span id="diagnostics">Start the journey to enable audio.</span></details>
-</main><script type="module" src="src/main.js?v=map-badges"></script></body></html>
+</main><script type="module" src="src/main.js?v=speed360"></script></body></html>
