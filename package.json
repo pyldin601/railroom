@@ -1,1 +1,14 @@
-{"name":"train-sound-simulator","private":true,"type":"module","scripts":{"test":"node --test tests/*.test.js","start":"python3 -m http.server 8765 --bind 127.0.0.1","build:route":"python3 scripts/build-route.py"}}
+{
+  "name": "train-sound-simulator",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "start": "python3 -m http.server 8765 --bind 127.0.0.1",
+    "build:route": "python3 scripts/build-route.py",
+    "test:browser": "node scripts/test-browser.mjs",
+    "check": "npm test && npm run test:browser",
+    "build:audio": "python3 scripts/prepare-audio.py",
+    "check:audio": "python3 scripts/prepare-audio.py --check"
+  }
+}

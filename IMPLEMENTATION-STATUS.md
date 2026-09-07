@@ -1,31 +1,27 @@
-# Implementation status — 2026-09-07
+# Implementation status
 
-Implements the approved train simulator plan as a local browser application.
+Railroom is a working local browser simulator. Current behavior, structure, and
+commands are documented in [README](README.md); source attribution and exact
+preparation details are in [audio credits](AUDIO-LICENSES.md).
 
-## Delivered
+The review cleanup corrects resistance during braking, preserves pending departure
+horns across cancellation, protects local contacts at maximum impact load, repairs
+the browser harness, and replaces obsolete user-facing sound descriptions.
 
-- Deterministic motion with throttle, coast, jerk limits, service/emergency brakes, exact stopping and endpoint handling.
-- Audio-clock scheduling of each wheelset/rail crossing; future-event cancellation and pause/seek lifecycle.
-- Eleven real field-recording assets with saved originals and provenance, including eight impact variants.
-- Per-contact HRTF positioning, one/three carriages, listener seat/yaw, per-wheelset mute/solo and layer controls.
-- Original 64 km route preserved; compact derived audio index plus a separate jointed fixture.
-- Interactive schematic, station markers/seeking, output meter, diagnostic counters, keyboard controls.
-- Twenty-two passing Node tests and a browser offline-audio harness.
-- Independent code review found three defects; all were fixed and re-reviewed: pre-audio reset, continuous-layer fade, and control-cutoff event retention.
+The session controller owns transport and graph replacement. The audio engine owns
+continuous layers; rolling is a separate wheel-only layer. Shared mix defaults and
+vehicle coefficients reduce tuning drift. Audio preparation builds the complete
+current pack from saved originals, stages and validates it, and can compare it with
+shipped assets before installation.
 
-## Deliberate differences and remaining acceptance work
+Run `npm run check` for Node and browser verification, `npm run check:audio` for
+recording reproducibility, and `npm run build:route` to regenerate the route.
+These are independent checks: no historical result should be treated as a fresh run.
 
-- Recordings are a mixed-source starter pack. A matched vehicle pack, independent speed-band takes, isolated pneumatic hiss, and carriage impulse responses are not supplied.
-- The UI and transport were tested in the Codex in-app browser. A short offline render demonstrated non-silent, finite, unclipped spatial audio and sample-frame event timing. Separate Safari/Chrome sign-off and a 30-minute foreground playback soak remain unperformed.
-- No claim of subjective sound-quality approval is made. The included audition mode is ready for the user's listening review.
-- Browser remains local; no account, cloud deployment, database migration, or source railway changes.
+Remaining manual acceptance work: a 30-minute real-time foreground soak, separate
+Safari compatibility sign-off, and subjective listening after changes. Short
+numerical/offline renders do not establish subjective authenticity or guarantee
+background/screen-lock playback. No operational railway safety claims are made.
 
-The planning document's uncompleted listening and soak-test checkboxes remain meaningful acceptance work; this status does not mark them passed.
-
-## Traction revision
-
-Replaced the repeating acceleration recording with continuous, speed- and load-driven motor synthesis (user explicitly authorized FM). Two independent motor voices per carriage combine a body tone, gear harmonics, restrained FM and subtle frequency drift. Controls are smoothed and all oscillators fade out and disconnect on stop. Recorded wheel/rolling/braking sources remain. Numerical suite: 26 tests.
-
-## Recorded motor tone correction
-
-Replaced the broadband 9–13 second traction excerpt with the more tonal 18–19 second source region. The recorded mode now holds a fixed region, varies playback pitch smoothly with speed, and accounts for playback rate in overlap phase alignment and source duration. The approved synth is unchanged. All 32 Node tests and browser offline audio checks pass; perceived naturalness remains subject to listening review.
+Earlier implementation counts and sound revisions remain in
+[historical notes](docs/development-history.md).

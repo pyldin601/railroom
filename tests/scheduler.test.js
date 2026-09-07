@@ -1,11 +1,105 @@
-import test from 'node:test';import assert from 'node:assert/strict';
-import {Transport} from '../src/audio/scheduler.js';
-import {RouteIndex,demoRoute} from '../src/route/route-index.js';
-const make=()=>{let time=0;const heard=[];const sink={hit:(e,when)=>heard.push({...e,when}),cancelFrom:t=>{for(let i=heard.length-1;i>=0;i--)if(heard[i].when>=t)heard.splice(i,1);},silence(){heard.length=0;}};const t=new Transport({clock:()=>time,sink,route:new RouteIndex(demoRoute(1000)),axles:[{id:'a',offset:0}],vehicle:{resistance:0,drag:0,jerk:Infinity}});return {t,heard,setTime:x=>time=x};};
-test('audio scheduling delivers one event per rail at the crossing',()=>{const x=make();x.t.state.speed=25;x.t.start();for(let n=1;n<=42;n++){x.setTime(n*.025);x.t.tick();}assert.equal(x.heard.length,2);assert.ok(Math.abs(x.heard[0].when-1.06)<1e-7);});
-test('pause freezes state and resume does not replay the passed joint',()=>{const x=make();x.t.state.speed=25;x.t.start();for(let n=1;n<=44;n++){x.setTime(n*.025);x.t.tick();}x.t.pause();let p=x.t.state.position;x.setTime(10);assert.equal(x.t.snapshot().position,p);x.t.start();x.setTime(10.025);x.t.tick();assert.equal(x.heard.length,0);});
-test('seek clears future sound and stops the train',()=>{const x=make();x.t.state.speed=25;x.t.start();x.t.seek(500);assert.equal(x.t.state.position,500);assert.equal(x.t.state.speed,0);assert.equal(x.t.running,false);assert.equal(x.heard.length,0);});
-test('a 300 ms stall pauses rather than replaying missed events',()=>{const x=make();x.t.start();x.setTime(.3);x.t.tick();assert.equal(x.t.running,false);assert.equal(x.t.underruns,1);});
-test('control changes cancel predicted impacts before replacing the horizon',()=>{const x=make();x.t.state.speed=25;x.t.start();for(let n=1;n<=38;n++){x.setTime(n*.025);x.t.tick();}x.t.updateControls({brake:1});const times=x.heard.map(e=>`${e.objectId}:${e.when}`);assert.equal(new Set(times).size,times.length);assert.ok(x.t.controls.brake===1);});
-test('repeated start cannot reset the transport clock',()=>{const x=make();x.t.start();const origin=x.t.origin;x.setTime(.01);x.t.start();assert.equal(x.t.origin,origin);});
-test('a joint exactly at the control cutoff survives replanning',()=>{const x=make();x.t.state.speed=25;x.t.start();for(let n=1;n<=40;n++){x.setTime(n*.025);x.t.tick();}x.setTime(1.035);x.t.updateControls({brake:1});const atJoint=x.heard.filter(e=>Math.abs(e.when-1.06)<1e-8);assert.equal(atJoint.length,2);});
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { Transport } from '../src/audio/scheduler.js';
+import { RouteIndex, demoRoute } from '../src/route/route-index.js';
+const make = () => {
+  let time = 0;
+  const heard = [];
+  const sink = {
+    hit: (e, when) => heard.push({ ...e, when }),
+    cancelFrom: (t) => {
+      for (let i = heard.length - 1; i >= 0; i--) if (heard[i].when >= t) heard.splice(i, 1);
+    },
+    silence() {
+      heard.length = 0;
+    },
+  };
+  const t = new Transport({
+    clock: () => time,
+    sink,
+    route: new RouteIndex(demoRoute(1000)),
+    axles: [{ id: 'a', offset: 0 }],
+    vehicle: { resistance: 0, drag: 0, jerk: Infinity },
+  });
+  return { t, heard, setTime: (x) => (time = x) };
+};
+test('audio scheduling delivers one event per rail at the crossing', () => {
+  const x = make();
+  x.t.state.speed = 25;
+  x.t.start();
+  for (let n = 1; n <= 42; n++) {
+    x.setTime(n * 0.025);
+    x.t.tick();
+  }
+  assert.equal(x.heard.length, 2);
+  assert.ok(Math.abs(x.heard[0].when - 1.06) < 1e-7);
+});
+test('pause freezes state and resume does not replay the passed joint', () => {
+  const x = make();
+  x.t.state.speed = 25;
+  x.t.start();
+  for (let n = 1; n <= 44; n++) {
+    x.setTime(n * 0.025);
+    x.t.tick();
+  }
+  x.t.pause();
+  let p = x.t.state.position;
+  x.setTime(10);
+  assert.equal(x.t.snapshot().position, p);
+  x.t.start();
+  x.setTime(10.025);
+  x.t.tick();
+  assert.equal(x.heard.length, 0);
+});
+test('seek clears future sound and stops the train', () => {
+  const x = make();
+  x.t.state.speed = 25;
+  x.t.start();
+  x.t.seek(500);
+  assert.equal(x.t.state.position, 500);
+  assert.equal(x.t.state.speed, 0);
+  assert.equal(x.t.running, false);
+  assert.equal(x.heard.length, 0);
+});
+test('a 300 ms stall pauses rather than replaying missed events', () => {
+  const x = make();
+  x.t.start();
+  x.setTime(0.3);
+  x.t.tick();
+  assert.equal(x.t.running, false);
+  assert.equal(x.t.underruns, 1);
+});
+test('control changes cancel predicted impacts before replacing the horizon', () => {
+  const x = make();
+  x.t.state.speed = 25;
+  x.t.start();
+  for (let n = 1; n <= 38; n++) {
+    x.setTime(n * 0.025);
+    x.t.tick();
+  }
+  x.t.updateControls({ brake: 1 });
+  const times = x.heard.map((e) => `${e.objectId}:${e.when}`);
+  assert.equal(new Set(times).size, times.length);
+  assert.ok(x.t.controls.brake === 1);
+});
+test('repeated start cannot reset the transport clock', () => {
+  const x = make();
+  x.t.start();
+  const origin = x.t.origin;
+  x.setTime(0.01);
+  x.t.start();
+  assert.equal(x.t.origin, origin);
+});
+test('a joint exactly at the control cutoff survives replanning', () => {
+  const x = make();
+  x.t.state.speed = 25;
+  x.t.start();
+  for (let n = 1; n <= 40; n++) {
+    x.setTime(n * 0.025);
+    x.t.tick();
+  }
+  x.setTime(1.035);
+  x.t.updateControls({ brake: 1 });
+  const atJoint = x.heard.filter((e) => Math.abs(e.when - 1.06) < 1e-8);
+  assert.equal(atJoint.length, 2);
+});

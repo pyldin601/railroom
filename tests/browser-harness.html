@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <meta charset="utf-8" />
+  <title>Railroom browser verification</title>
+  <h1>Browser verification</h1>
+  <button id="run">Run browser checks</button>
+  <pre id="results">Ready</pre>
+  <iframe
+    id="fixture"
+    title="Application under test"
+    style="width: 1200px; height: 900px; border: 0"
+  ></iframe>
+  <script type="module">
+    const results = [],
+      frame = document.getElementById('fixture'),
+      output = document.getElementById('results');
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    function assert(condition, message) {
+      if (!condition) throw Error(message);
+      results.push('PASS ' + message);
+      output.textContent = results.join('\n');
+    }
+    async function until(check, message, timeout = 15000) {
+      const end = performance.now() + timeout;
+      while (!check()) {
+        if (performance.now() > end) throw Error('Timed out: ' + message);
+        await delay(25);
+      }
+    }
+    async function navigate(url) {
+      const loaded = new Promise((resolve) => (frame.onload = resolve));
+      frame.src = url;
+      await loaded;
+    }
+    async function run() {
+      document.getElementById('run').disabled = true;
+      output.textContent = 'Running…';
+      let passed = false;
+      try {
+        await navigate('./audio-harness.html');
+        await until(() => frame.contentDocument.body.dataset.result, 'offline audio render', 60000);
+        results.push(frame.contentDocument.getElementById('results').textContent);
+        assert(
+          frame.contentDocument.body.dataset.result === 'pass',
+          'complete offline audio harness',
+        );
+        await navigate('../index.html');
+        const win = frame.contentWindow,
+          doc = frame.contentDocument,
+          $ = (id) => doc.getElementById(id),
+          errors = [];
+        win.addEventListener('error', (e) => errors.push(e.message));
+        win.addEventListener('unhandledrejection', (e) => errors.push(String(e.reason)));
+        const change = (id, value, event = 'input') => {
+          $(id).value = String(value);
+          $(id).dispatchEvent(new win.Event(event, { bubbles: true }));
+        };
+        await until(() => !$('play').disabled, 'route loading');
+        change('master', 0);
+        // Pre-audio navigation must survive first graph construction.
+        change('station', 23000, 'change');
+        $('seek').click();
+        await until(() => $('distance').textContent.startsWith('23.000'), 'pre-audio seek');
+        $('reset').click();
+        await until(() => $('distance').textContent.startsWith('0.000'), 'pre-audio reset');
+        $('play').click();
+        await until(() => Number($('speed').textContent) >= 1, 'journey acceleration');
+        assert(
+          $('play-label').textContent === 'Pause journey',
+          'start initializes audio and advances motion',
+        );
+        $('play').click();
+        await until(() => $('play-label').textContent === 'Resume journey', 'pause');
+        const pausedDistance = $('distance').textContent;
+        await delay(250);
+        assert($('distance').textContent === pausedDistance, 'pause freezes position');
+        $('reset').click();
+        await until(
+          () =>
+            $('distance').textContent.startsWith('0.000') && Number($('speed').textContent) === 0,
+          'reset',
+        );
+        assert(Number($('speed').textContent) === 0, 'reset stops and rewinds');
+        change('station', 23000, 'change');
+        $('seek').click();
+        await until(() => $('distance').textContent.startsWith('23.000'), 'station seek');
+        assert(Number($('speed').textContent) === 0, 'station seek stays stopped');
+        $('autopilot').click();
+        await until(() => $('autopilot').getAttribute('aria-pressed') === 'true', 'autopilot');
+        assert(!$('autopilot-status').hidden, 'autopilot starts and exposes departure status');
+        change('throttle', 35);
+        await until(
+          () => $('autopilot').getAttribute('aria-pressed') === 'false',
+          'manual takeover',
+        );
+        assert(
+          $('throttle-value').textContent === '35%',
+          'manual takeover preserves the requested throttle',
+        );
+        change('motor-mode', 'recorded', 'change');
+        assert(
+          $('sound-note').textContent.includes('Recorded'),
+          'motor mode changes during playback',
+        );
+        change('cars', 1, 'change');
+        await until(
+          () =>
+            $('seat-label').textContent.includes('1 of 1') &&
+            $('play-label').textContent === 'Resume journey',
+          'consist rebuild',
+        );
+        assert(
+          $('play-label').textContent === 'Resume journey',
+          'consist changes pause the journey',
+        );
+        $('audition').click();
+        await until(() => Number($('speed').textContent) >= 71, 'demo audition');
+        assert($('route-mode').value === 'demo', 'audition switches to the jointed fixture');
+        $('reset').click();
+        await until(() => Number($('speed').textContent) === 0, 'final reset');
+        assert($('error').hidden && errors.length === 0, 'control lifecycle has no browser errors');
+        passed = true;
+      } catch (error) {
+        results.push('FAIL ' + error.stack);
+      }
+      frame.src = 'about:blank';
+      document.body.dataset.result = passed ? 'pass' : 'fail';
+      output.textContent = results.join('\n');
+      const report = new URLSearchParams(location.search).get('report');
+      if (report)
+        await fetch(`/__results/${report}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ passed, results }),
+        });
+    }
+    document.getElementById('run').onclick = run;
+    if (new URLSearchParams(location.search).has('report')) run();
+  </script>
+</html>

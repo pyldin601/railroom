@@ -1,10 +1,44 @@
-import test from 'node:test';import assert from 'node:assert/strict';
-import {sourcePosition,grainWindow,alignGrain,textureNormalization} from '../src/audio/recorded-motor.js';
-test('steady speed holds the same source region indefinitely',()=>{const positions=Array.from({length:1000},()=>sourcePosition(15,3.85));assert.equal(new Set(positions).size,1);});
-test('source follows speed monotonically without wrapping to beginning',()=>{let previous=-1;for(let v=0;v<=150;v++){let p=sourcePosition(v/3.6,3.85);assert.ok(p>=previous);assert.ok(p+.18<=3.85);previous=p;}});
-test('three overlapping Hann grains have constant summed envelope',()=>{for(let t=.001;t<.06;t+=.001){const sum=[t,t+.06,t+.12].reduce((s,t)=>s+grainWindow(t/.18),0);assert.ok(Math.abs(sum-1)<1e-10);}});
-test('phase alignment stays within valid source bounds',()=>{const data=Float32Array.from({length:48000},(_,i)=>Math.sin(i*.02));const p=alignGrain(data,48000,.3,.2);assert.ok(Math.abs(p-.3)<=.006);});
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {
+  sourcePosition,
+  grainWindow,
+  alignGrain,
+  textureNormalization,
+} from '../src/audio/recorded-motor.js';
+test('steady speed holds the same source region indefinitely', () => {
+  const positions = Array.from({ length: 1000 }, () => sourcePosition(15, 3.85));
+  assert.equal(new Set(positions).size, 1);
+});
+test('source follows speed monotonically without wrapping to beginning', () => {
+  let previous = -1;
+  for (let v = 0; v <= 150; v++) {
+    let p = sourcePosition(v / 3.6, 3.85);
+    assert.ok(p >= previous);
+    assert.ok(p + 0.18 <= 3.85);
+    previous = p;
+  }
+});
+test('three overlapping Hann grains have constant summed envelope', () => {
+  for (let t = 0.001; t < 0.06; t += 0.001) {
+    const sum = [t, t + 0.06, t + 0.12].reduce((s, t) => s + grainWindow(t / 0.18), 0);
+    assert.ok(Math.abs(sum - 1) < 1e-10);
+  }
+});
+test('phase alignment stays within valid source bounds', () => {
+  const data = Float32Array.from({ length: 48000 }, (_, i) => Math.sin(i * 0.02));
+  const p = alignGrain(data, 48000, 0.3, 0.2);
+  assert.ok(Math.abs(p - 0.3) <= 0.006);
+});
 
-test('quiet recording regions get bounded loudness matching',()=>{assert.equal(textureNormalization(new Float32Array(48000),48000,.2),4);assert.ok(textureNormalization(new Float32Array(48000).fill(.2),48000,.2)<1);});
+test('quiet recording regions get bounded loudness matching', () => {
+  assert.equal(textureNormalization(new Float32Array(48000), 48000, 0.2), 4);
+  assert.ok(textureNormalization(new Float32Array(48000).fill(0.2), 48000, 0.2) < 1);
+});
 
-test('motor holds the clean source region and changes pitch with speed',async()=>{const {recordedPitchRate}=await import('../src/audio/recorded-motor.js');assert.equal(sourcePosition(0,1),sourcePosition(30,1));assert.ok(recordedPitchRate(30)>recordedPitchRate(3));assert.ok(sourcePosition(30,1)+.18*recordedPitchRate(40)<1);});
+test('motor holds the clean source region and changes pitch with speed', async () => {
+  const { recordedPitchRate } = await import('../src/audio/recorded-motor.js');
+  assert.equal(sourcePosition(0, 1), sourcePosition(30, 1));
+  assert.ok(recordedPitchRate(30) > recordedPitchRate(3));
+  assert.ok(sourcePosition(30, 1) + 0.18 * recordedPitchRate(40) < 1);
+});

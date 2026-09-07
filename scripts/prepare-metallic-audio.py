@@ -4,6 +4,7 @@ Keeps original WAVs and motor/brake assets intact. See AUDIO-LICENSES.md.
 import array
 import json
 import math
+import argparse
 import subprocess
 import sys
 import wave
@@ -25,14 +26,14 @@ def pcm(raw, code):
     return values
 
 
-def read(name):
-    with wave.open(str(OUT/name)) as w:
+def read(name, directory):
+    with wave.open(str(directory/name)) as w:
         assert (w.getnchannels(), w.getsampwidth(), w.getframerate()) == (1, 2, RATE)
         return [v/32768 for v in pcm(w.readframes(w.getnframes()), 'h')]
 
 
-def decode(source, start, duration, filters):
-    raw = subprocess.run(['ffmpeg', '-v', 'error', '-i', str(APP/'audio-sources'/source),
+def decode(source, start, duration, filters, source_dir=APP/'audio-sources', ffmpeg='ffmpeg'):
+    raw = subprocess.run([ffmpeg, '-v', 'error', '-i', str(source_dir/source),
                           '-ss', str(start), '-t', str(duration), '-af', filters,
                           '-ac', '1', '-ar', str(RATE), '-f', 'f32le', 'pipe:1'],
                          check=True, capture_output=True).stdout
@@ -79,12 +80,12 @@ def highpass(x, cutoff=120):
     return output[warm:]
 
 
-def write(name, x):
+def write(name, x, directory):
     x = normalize(x, .5)
     values = array.array('h', (round(v*32767) for v in x))
     if sys.byteorder != 'little':
         values.byteswap()
-    with wave.open(str(OUT/name), 'wb') as w:
+    with wave.open(str(directory/name), 'wb') as w:
         w.setnchannels(1)
         w.setsampwidth(2)
         w.setframerate(RATE)
@@ -92,9 +93,9 @@ def write(name, x):
     return x
 
 
-def impacts(manifest):
+def impacts(manifest, directory):
     for index, sample in enumerate(s for s in manifest['samples'] if s['kind'] == 'joint'):
-        original = read(sample['id']+'.wav')
+        original = read(sample['id']+'.wav', directory)
         # Retain the real contact attack, while shortening the muffled carriage
         # body so that the rail response is distinct from the initial knock.
         bright = bandpass(original, 2900, .7)
@@ -121,15 +122,15 @@ def impacts(manifest):
         for i in range(len(body)):
             body[i] *= min(1,i/96,(len(body)-1-i)/7200)
         sample['url'] = sample['id']+'-rail-reverb.wav'
-        write(sample['url'],body)
+        write(sample['url'],body,directory)
         sample['description'] = 'Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 1000 ms total with extended rail resonance and 150 ms final fade, original 10 ms onset retained.'
 
 
 
-def rolling(manifest):
+def rolling(manifest, directory, source_dir=APP/'audio-sources', ffmpeg='ffmpeg'):
     sample = next(s for s in manifest['samples'] if s['kind'] == 'rolling')
     x = decode('complete_train_ride_PD.ogg', 98, 10,
-               'highpass=f=90,lowpass=f=4200')
+               'highpass=f=90,lowpass=f=4200', source_dir, ffmpeg)
     # Fast peak follower tames already-recorded knocks in the rolling bed.
     # Their timing must not compete with the independently scheduled joints.
     envelope = 0
@@ -165,7 +166,7 @@ def rolling(manifest):
     loop = texture[fade:-fade]+[
         texture[-fade+i]*math.cos(i/(fade-1)*math.pi/2)+
         texture[i]*math.sin(i/(fade-1)*math.pi/2) for i in range(fade)]
-    bass = normalize(read('rolling.wav'))
+    bass = normalize(read('rolling.wav', directory))
     assert len(bass) == len(loop)
     mixed = [.48*b+.72*t for b, t in zip(bass, loop)]
     # Correct only the tiny boundary step over 1 ms, not a fade-to-silence dip.
@@ -175,14 +176,20 @@ def rolling(manifest):
     sample['url'] = 'rolling-rail.wav'
     sample['loopEnd'] = len(mixed)/RATE
     sample['description'] = 'Original 98–108 s rolling recording, 90–4200 Hz, transient control, broad metal texture plus the same eight damped rail modes and early returns as the impact layer, blended with the original bass bed; 150 ms cyclic crossfade.'
-    write(sample['url'], mixed)
+    write(sample['url'], mixed, directory)
 
 
 if __name__ == '__main__':
-    path = OUT/'manifest.json'
+    parser = argparse.ArgumentParser(description='Update metallic derivatives in an explicit staging directory. For a complete pack use prepare-audio.py.')
+    parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--ffmpeg', default='ffmpeg')
+    args = parser.parse_args()
+    if args.output.resolve() == OUT.resolve():
+        parser.error('Use a staging directory; install a verified pack through prepare-audio.py --install.')
+    path = args.output/'manifest.json'
     manifest = json.loads(path.read_text())
-    impacts(manifest)
-    rolling(manifest)
+    impacts(manifest, args.output)
+    rolling(manifest, args.output, ffmpeg=args.ffmpeg)
     manifest['name'] = 'Field recordings · metallic rail texture'
     manifest['description'] = 'Recorded wheel/rail sounds shaped for harder metallic carriage character. Mixed source trains, not a verified Ukrainian vehicle recording. Motor and brake assets unchanged.'
     path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2)+'\n')
