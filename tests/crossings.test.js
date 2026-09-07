@@ -9,3 +9,13 @@ test('split intervals neither miss nor duplicate boundary impacts',()=>{const r=
 test('negative trailing axle positions emit no contacts',()=>{const {segments}=advanceMotion({...initialState(),speed:1},{},1,config);assert.equal(findCrossings(segments,[{id:'rear',offset:20}],route).length,0);});
 test('route rejects invalid ordering and duplicate IDs',()=>{assert.throws(()=>new RouteIndex({length:10,stations:[],events:[{id:'a',position:5,side:'left',type:'joint'},{id:'a',position:3,side:'left',type:'joint'}]}));});
 test('three carriages have twelve unique wheelsets',()=>{let w=wheelsets(3);assert.equal(w.length,12);assert.ok(Math.abs(w.at(-1).offset-74.792)<1e-9);assert.equal(new Set(w.map(x=>x.id)).size,12);});
+test('welded string welds are silent while its end joints still produce crossings',()=>{
+ const r=new RouteIndex({length:900,stations:[],events:[
+  {id:'weld',position:25,side:'left',type:'weld'},
+  {id:'end-left',position:800,side:'left',type:'joint'},
+  {id:'end-right',position:800,side:'right',type:'joint'}
+ ]});
+ const segments=[{start:{position:0,speed:20,time:0},duration:41,acceleration:0}];
+ assert.deepEqual(findCrossings(segments,[{id:'a',offset:0}],r).map(e=>e.objectId),['end-left','end-right']);
+ assert.equal(r.events.length,3,'weld remains in the route data');
+});

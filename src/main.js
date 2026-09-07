@@ -2,9 +2,9 @@ import {DEFAULT_VEHICLE} from './simulation/motion.js?v=speed360';
 import {drawRouteMap} from './ui/route-map.js?v=speed360';
 import {createRenderLoop} from './ui/render-loop.js';
 import {RouteIndex,demoRoute,wheelsets,listenerSeat} from './route/route-index.js?v=speed360';
-import {Transport} from './audio/scheduler.js?v=speed360';
+import {Transport} from './audio/scheduler.js?v=horn';
 import {SampleBank} from './audio/sample-bank.js';
-import {SpatialMixer,MAX_IMPACT_VOICES} from './audio/spatial-mixer.js?v=seat-isolation';
+import {SpatialMixer,MAX_IMPACT_VOICES} from './audio/spatial-mixer.js?v=ambient-horn';
 import {RollingLayers} from './audio/rolling.js?v=rolling-distance';
 import {drawTrack,wheelAt} from './ui/track-view.js?v=wheel-click';
 const $=id=>document.getElementById(id);
@@ -22,7 +22,7 @@ function displayRoute(){
 }
 function buildAudio(position=0){
  rolling?.stop();mixer?.dispose();mixer=new SpatialMixer(context,bank,axles);mixer.motorMode=$('motor-mode').value;rolling=new RollingLayers(context,bank,mixer);
- const sink={power:(...args)=>mixer.power(...args),hit:(...args)=>mixer.hit(...args),cancelFrom:t=>mixer.cancelFrom(t),silence:()=>{mixer.silence();rolling.stop();}};
+ const sink={horn:(...args)=>mixer.horn(...args),power:(...args)=>mixer.power(...args),hit:(...args)=>mixer.hit(...args),cancelFrom:t=>mixer.cancelFrom(t),silence:()=>{mixer.silence();rolling.stop();}};
  transport=new Transport({clock:()=>context.currentTime,sink,route,axles});transport.seek(position);transport.updateControls(controls());mixer.master.gain.value=Number($('master').value)/100;mixer.setListener(seat,Number($('yaw').value));mixer.setSpatial($('spatial').checked);
  for(const kind of ['impact','impactMetal','rolling','rollingLow','rollingHigh','ambient','traction','brake'])mixer.levels[kind]=Number($(kind+'-mix').value)/100;
 }
@@ -58,6 +58,11 @@ for(const id of ['route-mode','cars'])$(id).addEventListener('change',disableAut
 function updateControls(){
  $('throttle-value').textContent=$('throttle').value+'%';$('brake-value').textContent=$('brake').value+'%';$('emergency').classList.toggle('active',emergency);$('emergency').setAttribute('aria-pressed',String(emergency));transport?.updateControls(controls());
 }
+async function soundHorn(){
+ if(!ready||loading)return;
+ try{error('');await enableAudio();await context.resume();mixer.horn(context.currentTime,transport.generation);if(!transport.running)setStatus('Ready');requestRender();}catch(e){error(e.message);}
+}
+$('horn').onclick=soundHorn;
 $('track').onclick=async event=>{
  if(!ready||loading)return;
  const canvas=$('track'),rect=canvas.getBoundingClientRect();
@@ -86,7 +91,7 @@ for(const button of $('seats').children)button.onclick=()=>{seat=listenerSeat(ax
 $('motor-mode').onchange=()=>{rolling?.setMotorMode($('motor-mode').value);$('sound-note').textContent=$('motor-mode').value==='recorded'?'Recorded motor tone · pitch follows speed':'Live motor synthesis · recorded wheel impacts, rolling and braking';};
 $('spatial').onchange=()=>mixer?.setSpatial($('spatial').checked);
 for(const kind of ['impact','impactMetal','rolling','rollingLow','rollingHigh','ambient','traction','brake'])$(kind+'-mix').oninput=()=>{if(mixer)mixer.levels[kind]=Number($(kind+'-mix').value)/100;};
-document.addEventListener('keydown',e=>{if(['INPUT','SELECT','BUTTON','SUMMARY','TEXTAREA'].includes(e.target.tagName))return;if(e.code==='Space'){e.preventDefault();play();}if(e.code==='ArrowUp'||e.code==='ArrowDown'){e.preventDefault();disableAutopilot();$('throttle').value=Math.max(0,Math.min(100,Number($('throttle').value)+(e.code==='ArrowUp'?5:-5)));updateControls();}if(e.code==='KeyB'){disableAutopilot();$('brake').value=Math.min(100,Number($('brake').value)+10);updateControls();}});
+document.addEventListener('keydown',e=>{if(['INPUT','SELECT','BUTTON','SUMMARY','TEXTAREA'].includes(e.target.tagName))return;if(e.code==='KeyH'&&!e.repeat){e.preventDefault();soundHorn();}if(e.code==='Space'){e.preventDefault();play();}if(e.code==='ArrowUp'||e.code==='ArrowDown'){e.preventDefault();disableAutopilot();$('throttle').value=Math.max(0,Math.min(100,Number($('throttle').value)+(e.code==='ArrowUp'?5:-5)));updateControls();}if(e.code==='KeyB'){disableAutopilot();$('brake').value=Math.min(100,Number($('brake').value)+10);updateControls();}});
 setInterval(()=>{
  if(!transport)return;const wasRunning=transport.running;transport.tick();const snapshot=transport.snapshot();rolling.update(snapshot,{...transport.controls,powerAvailable:route.powerAt(snapshot.position)},transport.running);
  if(wasRunning&&!transport.running)setStatus('Paused · audio timing interruption');

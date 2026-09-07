@@ -26,3 +26,16 @@ test('transport autopilot dwells on simulation time and manual takeover clears s
  assert.notEqual(t.autopilot.arrivedAt,null);t.pause();const time=t.snapshot().time;clock+=120;t.start();assert.ok(t.snapshot().time-time<1);assert.equal(t.autopilot.index,0);
  t.setAutopilot(false);assert.equal(t.autopilot,null);assert.equal(t.controls.stopPosition,undefined);
 });
+test('autopilot horns once before initial and station departures, never at the terminus',()=>{
+ const route={stations:[{name:'A',position:100},{name:'B',position:200}]};
+ const pilot=new Autopilot(route,initialState());
+ let c=pilot.update(initialState());assert.equal(c.horn,true);assert.equal(c.throttle,0);
+ c=pilot.update({...initialState(),time:.5});assert.ok(!c.horn);assert.equal(c.throttle,0);
+ c=pilot.update({...initialState(),time:1.5});assert.ok(c.throttle>0);
+ pilot.update({...initialState(100),time:10});
+ c=pilot.update({...initialState(100),time:70});assert.equal(c.horn,true);assert.equal(c.throttle,0);
+ c=pilot.update({...initialState(100),time:71.5});assert.ok(c.throttle>0);assert.ok(!c.horn);
+ pilot.update({...initialState(200),time:100});
+ c=pilot.update({...initialState(200),time:160});assert.ok(!c.horn);assert.equal(c.throttle,0);
+ const moving=new Autopilot(route,{...initialState(),speed:10});assert.ok(!moving.update({...initialState(),speed:10}).horn);
+});

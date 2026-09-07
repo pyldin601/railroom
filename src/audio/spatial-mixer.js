@@ -1,3 +1,4 @@
+import {hornBuffer,hornDistanceGain} from './horn.js?v=ambient-horn';
 import {metalHissBuffer} from './metal-hiss.js';
 import {impactDistance} from './impact-distance.js?v=seat-isolation';
 import {powerSwitchBuffer} from './power-switch.js';
@@ -23,7 +24,7 @@ export class SpatialMixer{
  }
  get audibleAxles(){return this.axles.filter(a=>this.transmission(a.id)>0);}
  transmission(id){const axle=this.axles.find(a=>a.id===id);return carriageGain(axle?.car??1,this.occupied??1);}
- setListener(seat,yaw){this.seat=seat;this.locomotive.setListener(seat);this.occupied=occupiedCarriage(seat);this.applyMute();const l=this.context.listener,a=yaw*Math.PI/180,t=this.context.currentTime;l.positionX.setTargetAtTime(0,t,.03);l.positionY.setTargetAtTime(0,t,.03);l.positionZ.setTargetAtTime(seat,t,.03);l.forwardX.setTargetAtTime(Math.sin(a),t,.03);l.forwardY.setTargetAtTime(0,t,.03);l.forwardZ.setTargetAtTime(-Math.cos(a),t,.03);l.upY.value=1;}
+ setListener(seat,yaw){this.seat=seat;for(const v of this.voices)if(v.kind==='horn')v.gain.gain.setTargetAtTime(hornDistanceGain(seat),this.context.currentTime,.12);this.locomotive.setListener(seat);this.occupied=occupiedCarriage(seat);this.applyMute();const l=this.context.listener,a=yaw*Math.PI/180,t=this.context.currentTime;l.positionX.setTargetAtTime(0,t,.03);l.positionY.setTargetAtTime(0,t,.03);l.positionZ.setTargetAtTime(seat,t,.03);l.forwardX.setTargetAtTime(Math.sin(a),t,.03);l.forwardY.setTargetAtTime(0,t,.03);l.forwardZ.setTargetAtTime(-Math.cos(a),t,.03);l.upY.value=1;}
  setSpatial(enabled){this.locomotive.setSpatial(enabled);for(const {pan} of this.emitters.values())pan.panningModel=enabled?'HRTF':'equalpower';}
  isAudible(id){return this.transmission(id)>0&&!this.muted.has(id)&&(!this.solo||this.solo===id);}
  applyMute(){const t=this.context.currentTime;for(const [key,{gain,impact,metal}]of this.emitters){
@@ -32,6 +33,15 @@ export class SpatialMixer{
   const levels=impactDistance(axle,this.seat,this.occupied,side);
   impact.gain.setTargetAtTime(enabled?levels.direct:0,t,.03);metal.gain.setTargetAtTime(enabled?levels.metal:0,t,.03);
  }}
+ horn(when=this.context.currentTime,generation=0){
+  if([...this.voices].some(v=>v.kind==='horn'))return;
+  const source=this.context.createBufferSource(),gain=this.context.createGain();
+  source.buffer=hornBuffer(this.context);gain.gain.value=hornDistanceGain(this.seat);
+  source.connect(gain).connect(this.locomotive.input);
+  const voice={source,gain,when,kind:'horn',generation};this.voices.add(voice);
+  source.onended=()=>{this.voices.delete(voice);source.disconnect();gain.disconnect();};
+  source.start(Math.max(when,this.context.currentTime));
+ }
  power(event,when,generation){
   const source=this.context.createBufferSource(),gain=this.context.createGain();
   source.buffer=powerSwitchBuffer(this.context,event.kind==='power_on');gain.gain.value=.6;
@@ -41,14 +51,15 @@ export class SpatialMixer{
   source.start(Math.max(when,this.context.currentTime));
  }
  hit(event,when,generation){
+  if(event.kind==='weld')return;
   if(this.muted.has(event.wheelsetId)||(this.solo&&this.solo!==event.wheelsetId))return;
-  if(this.voices.size>=MAX_IMPACT_VOICES){if(event.kind==='weld')return;const quiet=[...this.voices].find(v=>v.kind==='weld');if(quiet)this.stopVoice(quiet,this.context.currentTime);else return;}
+  if(this.voices.size>=MAX_IMPACT_VOICES)return;
   const sample=this.bank.select(event);if(!sample)return;
   const ctx=this.context,source=ctx.createBufferSource(),gain=ctx.createGain();source.buffer=sample.buffer;
   // Real alternate takes supply variation; playback-rate deviations stay subtle.
   const rate=1+((event.position%7)-3)*.003;source.playbackRate.value=rate;
   const start=Math.max(ctx.currentTime,when-(sample.onset||0)/rate),duration=sample.buffer.duration/rate;
-  const level=(sample.gain??.45)*this.levels.impact*(event.kind==='weld'?.07:1)*(.12+.65*Math.sqrt(Math.min(1,event.speedMps/33.333)));
+  const level=(sample.gain??.45)*this.levels.impact*(.12+.65*Math.sqrt(Math.min(1,event.speedMps/33.333)));
   gain.gain.setValueAtTime(0,start);gain.gain.linearRampToValueAtTime(level,start+.002);gain.gain.setValueAtTime(level,start+Math.max(.003,duration-.025));gain.gain.linearRampToValueAtTime(0,start+duration);
   const emitter=this.emitters.get(`${event.wheelsetId}:${event.side}`);
   if(!emitter)return;

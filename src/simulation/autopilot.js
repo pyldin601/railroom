@@ -2,17 +2,24 @@ import {DEFAULT_VEHICLE} from './motion.js?v=speed360';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 /** Comfort profile for the illustrative route, not railway safety equipment. */
 export class Autopilot{
- constructor(route,state,trainLength=0){this.route=route;this.trainLength=trainLength;this.stops=route.stations.filter(s=>s.position>state.position+.5);this.index=0;this.arrivedAt=null;this.status='Driving';}
+ constructor(route,state,trainLength=0){this.route=route;this.trainLength=trainLength;this.stops=route.stations.filter(s=>s.position>state.position+.5);this.index=0;this.arrivedAt=null;this.status='Driving';this.departureAt=state.speed<.08?state.time:null;this.hornPending=this.departureAt!==null;}
  update(state){
   const stop=this.stops[this.index];
   if(!stop){this.status='Journey complete';return {throttle:0,brake:.3,emergency:false,stopPosition:state.position};}
+  if(this.departureAt!==null){
+   if(state.time-this.departureAt<1.4){
+    const horn=this.hornPending;this.hornPending=false;this.status='Departure horn';
+    return {throttle:0,brake:.3,emergency:false,stopPosition:state.position,horn};
+   }
+   this.departureAt=null;
+  }
   const distance=stop.position-state.position;
   if(distance<.15&&state.speed<.08){
    this.arrivedAt??=state.time;
    const remaining=Math.max(0,60-(state.time-this.arrivedAt));
    this.status=`${stop.name} · ${Math.ceil(remaining)}s`;
    if(remaining>0)return {throttle:0,brake:.3,emergency:false,stopPosition:stop.position};
-   this.index++;this.arrivedAt=null;return this.update(state);
+   this.index++;this.arrivedAt=null;this.departureAt=state.time;this.hornPending=true;return this.update(state);
   }
   let target=DEFAULT_VEHICLE.maxSpeed;
   for(const m of this.route.speedMarkers||[]){
