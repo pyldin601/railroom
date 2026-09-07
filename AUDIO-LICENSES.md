@@ -36,3 +36,9 @@ Regenerate with `python3 scripts/prepare-metallic-audio.py` (Python standard lib
 - All new files are mono 48 kHz signed 16-bit PCM, peak-normalized to approximately −6 dBFS. No added free-running tone or FM source is used in these wheel/rail layers.
 
 The target is the harder metallic character requested by the listener. A specific Ukrainian carriage/track match still requires listening comparison with a reference recording. The rolling bed can still contain some embedded sounds from the original journey.
+
+## Rail impact and resonance revision
+
+Current impacts are `joint-1-rail.wav` through `joint-8-rail.wav`; the earlier `-metal.wav` assets remain preserved. Source recording, source offsets, licences and approximate 10 ms contact onset are unchanged. The 2.9 kHz attack band is emphasized, and the recorded carriage body is shortened. Eight inharmonic resonances (390–4187 Hz, 35–145 ms decay constants) are excited by the first 40 ms of recorded contact, with quiet early returns at 7.3, 13.1, 22.7 and 37.9 ms. The full file is 650 ms including a 40 ms final fade, peak-normalized to −6 dBFS.
+
+This is a modeled rail response, not a measured rail impulse response. The contact and its decay share the existing wheelset emitter and carriage isolation; propagation along a spatially extended rail is not simulated. No room-reverb effect is added. Regeneration uses `scripts/prepare-metallic-audio.py`. Rolling and motor assets are unchanged by this revision.

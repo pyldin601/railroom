@@ -72,22 +72,37 @@ def write(name, x):
 def impacts(manifest):
     for index, sample in enumerate(s for s in manifest['samples'] if s['kind'] == 'joint'):
         original = read(sample['id']+'.wav')
-        # Same recorded onset and attack, with more upper-mid transient detail.
-        bright = bandpass(original, 2400, .65)
-        body = [v+.85*h for v, h in zip(original, bright)]
-        body += [0.0]*(int(.30*RATE)-len(body))
-        # Only the first 35 ms excites the resonators, avoiding sustained hiss.
-        exciter = [v*max(0, min(1, (.035-i/RATE)/.012)) for i, v in enumerate(body)]
-        for frequency, decay, amount in [(610,.070,.12),(1130,.045,.11),(2070,.027,.08),(3460,.015,.045)]:
-            frequency *= 1+(index-3.5)*.003
-            q = math.pi*frequency*decay
-            ring = normalize(bandpass(exciter, frequency, q), max(map(abs, original))*amount)
-            body = [a+b for a, b in zip(body, ring)]
+        # Retain the real contact attack, while shortening the muffled carriage
+        # body so that the rail response is distinct from the initial knock.
+        bright = bandpass(original, 2900, .7)
+        body = [(v+1.3*h)*(.55+.45*math.exp(-max(0,i/RATE-.025)/.035))
+                for i,(v,h) in enumerate(zip(original, bright))]
+        body += [0.0]*(int(.65*RATE)-len(body))
+        exciter = [v*max(0, min(1, (.040-i/RATE)/.015)) for i,v in enumerate(body)]
+        # Inharmonic modes approximate damped steel vibration, excited solely
+        # by the recorded contact. Multiple modes avoid a single bell note.
+        modes = [(390,.120,.07),(617,.145,.11),(943,.115,.10),
+                 (1379,.095,.10),(1883,.080,.085),(2531,.065,.08),
+                 (3271,.048,.065),(4187,.035,.045)]
+        resonance = [0.0]*len(body)
+        peak = max(map(abs, original))
+        for frequency, decay, amount in modes:
+            frequency *= 1+(index-3.5)*.002
+            ring = normalize(bandpass(exciter, frequency, math.pi*frequency*decay), peak*amount)
+            resonance = [a+b for a,b in zip(resonance,ring)]
+        # Small, irregular early returns thicken rail vibration without a room
+        # reverb or separately timed second wheel strike. They share its emitter.
+        for delay, amount in [(.0073,.22),(.0131,-.15),(.0227,.10),(.0379,.055)]:
+            frames = round(delay*RATE)
+            for i in range(frames,len(body)):
+                body[i] += resonance[i-frames]*amount
+        body = [a+b for a,b in zip(body,resonance)]
         for i in range(len(body)):
-            body[i] *= min(1, i/96, (len(body)-1-i)/960)
-        sample['url'] = sample['id']+'-metal.wav'
-        write(sample['url'], body)
-        sample['description'] = 'Recorded 160 ms wheel impact with upper-mid attack emphasis and recording-excited damped metal resonances; 300 ms total, original 10 ms onset retained.'
+            body[i] *= min(1,i/96,(len(body)-1-i)/1920)
+        sample['url'] = sample['id']+'-rail.wav'
+        write(sample['url'],body)
+        sample['description'] = 'Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 650 ms total, original 10 ms onset retained.'
+
 
 
 def rolling(manifest):
