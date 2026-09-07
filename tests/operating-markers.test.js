@@ -5,8 +5,8 @@ import { RouteIndex } from '../src/route/route-index.js';
 const route = JSON.parse(fs.readFileSync(new URL('../public/route.json', import.meta.url)));
 test('operating markers are unique, sorted and explicitly estimated', () => {
   const markers = route.operatingMarkers;
-  assert.equal(markers.length, 9);
-  assert.equal(new Set(markers.map((m) => m.id)).size, 9);
+  assert.equal(markers.length, route.sections.length + 2);
+  assert.equal(new Set(markers.map((m) => m.id)).size, route.sections.length + 2);
   markers.forEach((m, i) => {
     assert.match(m.id, /^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
     assert.ok(Number.isFinite(m.position) && m.position >= 0 && m.position < route.length);
@@ -20,7 +20,10 @@ test('every construction zone has the requested scenario speed coverage', () => 
     assert.equal(m.position, section.position);
     assert.equal(m.endPosition, section.position + section.length);
     assert.equal(m.verifiedSpeedKmh, null);
-    assert.ok(section.construction === 'welded' ? m.speedKmh === 120 : m.speedKmh <= 40);
+    const p = section.position;
+    const expected =
+      section.construction === 'welded' ? 120 : p === 0 || p === 62500 ? 25 : 40;
+    assert.equal(m.speedKmh, expected);
   }
 });
 test('Boiarka electrical markers are paired and never enter the impact scheduler', () => {
@@ -31,7 +34,7 @@ test('Boiarka electrical markers are paired and never enter the impact scheduler
   );
   assert.ok(pair[0].position < pair[1].position);
   const index = new RouteIndex(route);
-  assert.equal(index.events.length, 5118);
+  assert.equal(index.events.length, 5598);
   assert.ok(index.events.every((e) => ['joint', 'weld'].includes(e.type)));
   assert.equal(route.operatingMetadata.speedLimitsEnforced, false);
 });

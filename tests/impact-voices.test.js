@@ -18,16 +18,18 @@ function fixture() {
   return { context, axles, mixer };
 }
 
-test('maximum-speed joint scheduling preserves new contacts and occupied-carriage tails', () => {
+test('maximum-speed 12.5 m joint scheduling preserves new contacts and occupied-carriage tails', () => {
   const { context, axles, mixer } = fixture();
   const localSources = [];
   let attempted = 0,
     dropped = 0,
     localDropped = 0,
     maximum = 0;
+  const route = demoRoute();
+  route.events = route.events.map((event) => ({ ...event, position: event.position / 2 }));
   const transport = new Transport({
     clock: () => context.currentTime,
-    route: new RouteIndex(demoRoute()),
+    route: new RouteIndex(route),
     axles,
     vehicle: { resistance: 0, drag: 0, jerk: Infinity },
     sink: {
@@ -58,7 +60,7 @@ test('maximum-speed joint scheduling preserves new contacts and occupied-carriag
       'retiring fades do not create an unbounded source backlog',
     );
   }
-  assert.ok(attempted > 3200, 'exercise sustained traffic beyond the initial tail lifetime');
+  assert.ok(attempted > 6400, 'exercise sustained traffic beyond the initial tail lifetime');
   assert.equal(transport.underruns, 0);
   assert.equal(localDropped, 0, 'occupied wheels must retain every clack');
   assert.equal(dropped, 0, 'quiet old tails should free capacity for every new contact');

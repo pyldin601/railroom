@@ -98,10 +98,10 @@ npm run build:route
 - Vehicle maximum speed **360 km/h**, requested by the user. This does not raise track speed markers.
 - Route length 64 km, starts at Kyiv-Pasazhyrskyi and ends at Fastiv I.
 - 19 station/stop names in order: Kyiv-Pasazhyrskyi, Karavaievi Dachi, Kyiv-Volynskyi, Vyshneve, Tarasivka, Boiarka, Maliutynka, Shliakhova, Hlevakha, Danylivka (888 km), Vasylkiv I, Korchi, Motovylivka, Bilky, Pivni, Vyshniaky, Sorochyi Brid, Snitynka, Fastiv I.
-- Track combines 25 m jointed areas and roughly 775–800 m welded strings. Strings connect with single joints, not inserted series of 25 m rails.
+- Track combines 12 km of 25 m jointed areas, 6 km of 12.5 m jointed areas and 46 km of 725–800 m welded strings. Strings connect with single joints, not inserted series of 25 m rails.
 - **Internal welds are completely silent**: retained in route data, skipped by crossing scheduling and rejected by the mixer. String-end joints still produce impacts. Rolling continues over welds.
-- Jointed areas: 0–1,500; 6,250–7,750; 34,250–35,750; 62,500–64,000 m.
-- Estimated speed markers over successive sections: 25, 120, 40, 120, 40, 120, 25 km/h.
+- 25 m jointed areas: 0–1,500; 6,250–7,750; 14,000–17,000; 34,250–35,750; 42,000–45,000; 62,500–64,000 m. 12.5 m jointed areas: 23,250–25,250; 51,250–53,250; 60,500–62,500 m.
+- Speed limits: all 25 m and 12.5 m jointed sections 40 km/h, except terminal approaches at 25 km/h. Only welded strings receive 120 km/h. Autopilot follows these markers; manual driving can exceed them.
 - Estimated Boiarka power-off/on positions: 23,500 / 23,800 m. Power switching sounds play; traction is unavailable in the neutral section, while coasting/braking continue.
 - Positions and operating limits are **illustrative estimates**, not verified current railway operating data. Stop order was checked against a timetable; don't describe the route as an exact infrastructure survey. See `OPERATING-MARKERS.md` and `TRACK-LAYOUT.md`.
 - Turnouts/junction sounds were implemented then explicitly removed at the user's request. Do not reintroduce them without a new request.
@@ -112,7 +112,7 @@ npm run build:route
 
 Relevant files: `src/audio/spatial-mixer.js`, `impact-distance.js`, `metal-hiss.js`.
 
-- All 80 wheels can produce impacts. Budget: **512 simultaneous impact groups**, each with two synchronized sample sources (direct clack and processed metal). Horn and power voices also occupy the shared tracked voice set.
+- All 80 wheels can produce impacts. Budget: **1024 simultaneous impact groups**, each with two synchronized sample sources (direct clack and processed metal). Horn and power voices also occupy the shared tracked voice set.
 - Clacks use eight alternate recorded, processed one-second samples: `public/audio/joint-*-rail-reverb.wav`. They already contain modeled rail resonance. See `AUDIO-LICENSES.md` for source attribution and processing.
 - Metal hiss uses the **same clack**, high-pass at **4 kHz**, with **500 ms RT60 reverb**, 35% wet addition. Rendered once per decoded recording and cached; no per-hit synthesis of the effect.
 - Metal branch base gain is **0.7**, twice its earlier 0.35. Overall impact and separate metal sliders both affect it.

@@ -412,9 +412,14 @@
           loadDrops = 0,
           localDrops = 0,
           maximumVoices = 0;
+        // Short rails are the densest route section: twice the 25 m contact rate.
+        const shortRailRoute = demoRoute();
+        shortRailRoute.events = shortRailRoute.events.map((event) => ({
+          ...event, position: event.position / 2,
+        }));
         const loadTransport = new Transport({
           clock: () => loadContext.currentTime,
-          route: new RouteIndex(demoRoute()),
+          route: new RouteIndex(shortRailRoute),
           axles: loadAxles,
           vehicle: { resistance: 0, drag: 0, jerk: Infinity },
           sink: {
@@ -446,8 +451,8 @@
         const loaded = await loadContext.startRendering();
         await Promise.all(updates);
         assert(
-          loadAttempts > 1200 && loadTransport.underruns === 0,
-          '360 km/h load runs on the audio clock without interruptions',
+          loadAttempts > 2400 && loadTransport.underruns === 0,
+          '360 km/h on 12.5 m rails runs on the audio clock without interruptions',
         );
         assert(
           localDrops === 0 && loadDrops === 0,

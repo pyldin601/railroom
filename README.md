@@ -53,10 +53,12 @@ air release, compressor, cabin ambience, and horn have independent lifecycles.
 Cabin ambience contains no speech. The horn is synthesized, not an authentic
 Siemens recording. See [audio credits and processing](AUDIO-LICENSES.md).
 
-The route has 19 passenger stops, mixed 25 m jointed sections and approximately
-775–800 m welded strings. Internal fabrication welds are silent; joints between
+The route has 19 passenger stops, 12 km of 25 m jointed track, 6 km of
+12.5 m jointed track, and 46 km of 725–800 m welded strings. Internal fabrication welds are silent; joints between
 strings still produce impacts. A Boiarka neutral section cuts traction and triggers
-power-switch sounds. Positions and speed limits are illustrative estimates, not
+power-switch sounds. Jointed sections are limited to 40 km/h (25 km/h at the
+terminal approaches); welded strings permit 120 km/h. Autopilot follows these
+limits. Positions and speed limits are illustrative estimates, not
 verified operating data. See [track layout](TRACK-LAYOUT.md),
 [operating markers](OPERATING-MARKERS.md), and [coach geometry](COACH-GEOMETRY.md).
 

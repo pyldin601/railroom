@@ -59,7 +59,7 @@ function displayRoute() {
   $('route-caption').textContent =
     $('route-mode').value === 'demo'
       ? '25 m jointed test track · separate from the Kyiv route'
-      : '64 km · 25 m rails / welded strings ≤800 m · approximate route';
+      : '64 km · 12.5 / 25 m rails / welded strings ≤800 m · approximate route';
 }
 function audioOptions(position = 0) {
   return {

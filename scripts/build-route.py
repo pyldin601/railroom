@@ -35,21 +35,32 @@ def build_route(objects):
     # Deliberate illustrative renewal pattern, NOT observed infrastructure.
     # Small passenger stops do not automatically interrupt welded running rails.
     plan = [
-        (0, 1500, 'jointed', 'Kyiv-Pasazhyrskyi departure approach; assumed older jointed track'),
-        (1500, 6250, 'welded', 'Continuous running section through Karavaievi Dachi'),
-        (6250, 7750, 'jointed', 'Kyiv-Volynskyi station approach; assumed jointed zone'),
-        (7750, 34250, 'welded', 'Renewed running track through Vyshneve and Boiarka'),
-        (34250, 35750, 'jointed', 'Vasylkiv I station approach; assumed jointed zone'),
-        (35750, 62500, 'welded', 'Renewed running track through Motovylivka'),
-        (62500, 64000, 'jointed', 'Fastiv I arrival approach; assumed older jointed track'),
+        (0, 1500, 25, 'Kyiv-Pasazhyrskyi departure approach'),
+        (1500, 6250, None, 'Running track through Karavaievi Dachi'),
+        (6250, 7750, 25, 'Kyiv-Volynskyi approach'),
+        (7750, 14000, None, 'Renewed running track'),
+        (14000, 17000, 25, 'Illustrative older jointed running section'),
+        (17000, 23250, None, 'Renewed running track toward Boiarka'),
+        (23250, 25250, 12.5, 'Illustrative short-rail section near Boiarka'),
+        (25250, 34250, None, 'Renewed running track'),
+        (34250, 35750, 25, 'Vasylkiv I approach'),
+        (35750, 42000, None, 'Renewed running track'),
+        (42000, 45000, 25, 'Illustrative older jointed running section'),
+        (45000, 51250, None, 'Renewed running track through Motovylivka'),
+        (51250, 53250, 12.5, 'Illustrative short-rail section near Pivni'),
+        (53250, 60500, None, 'Renewed running track'),
+        (60500, 62500, 12.5, 'Illustrative short-rail section near Snitynka'),
+        (62500, 64000, 25, 'Fastiv I arrival approach'),
     ]
     sections, spans = [], []
-    for start, end, construction, reason in plan:
+    for start, end, rail_length, reason in plan:
+        construction = 'jointed' if rail_length else 'welded'
         section_id = identity('section', start, end)
         sections.append(dict(id=section_id, type='section', position=float(start),
                              length=float(end-start), construction=construction, reason=reason))
         if construction == 'jointed':
-            sizes = [(25, 'jointed', 'station approach')] * ((end-start)//25)
+            assert (end-start) % rail_length == 0
+            sizes = [(rail_length, 'jointed', reason)] * int((end-start)/rail_length)
         else:
             # Direct string-to-string joints. Balance lengths on the 25 m
             # fabrication grid, keeping each string at most 800 m.
@@ -65,8 +76,8 @@ def build_route(objects):
                               construction=kind, purpose=purpose, sectionId=section_id))
             position += length
         assert position == end
-    rails = [dict(id=identity('rail', int(s['position']), side), type='rail', side=side,
-                  fabricationLength=25.0, **s)
+    rails = [dict(id=identity('rail', int(s['position']) if s['position'].is_integer() else s['position'], side), type='rail', side=side,
+                  fabricationLength=s['length'] if s['construction'] == 'jointed' else 25.0, **s)
              for s in spans for side in ('left', 'right')]
     boundaries = {s['position'] for s in spans[1:]}
     # Retain original event UUIDs/positions. Their connection type now follows
@@ -74,9 +85,16 @@ def build_route(objects):
     events = [dict(id=o['id'], position=o['position'], side=o['side'],
                    type='joint' if o['position'] in boundaries else 'weld')
               for o in objects if o['type'] in ('joint', 'weld')]
-    assert len(events) == 5118 and len(stations) == 19
+    existing = {(e['position'], e['side']) for e in events}
+    for position in sorted(boundaries):
+        for side in ('left', 'right'):
+            if (position, side) not in existing:
+                events.append(dict(id=identity('joint', position, side),
+                                   position=position, side=side, type='joint'))
+    events.sort(key=lambda event: (event['position'], event['side']))
+    assert len(stations) == 19
     assert all(a['position'] <= b['position'] for a, b in zip(events, events[1:]))
-    return dict(length=64000.0, synthetic=True, layout='mixed-25m-800m-direct-joints-v2',
+    return dict(length=64000.0, synthetic=True, layout='mixed-12.5m-25m-800m-direct-joints-v3',
                 stations=stations, sections=sections, rails=rails, events=events,
                 operatingMarkers=build_markers(sections),
                 operatingMetadata=dict(schemaVersion=1, researchedOn='2026-09-07',

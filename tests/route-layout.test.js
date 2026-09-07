@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { RouteIndex } from '../src/route/route-index.js';
 const data = JSON.parse(readFileSync(new URL('../public/route.json', import.meta.url)));
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
-test('mixed route has continuous rail coverage with 25 m rails and welded strings up to 800 m', () => {
+test('mixed route has continuous rail coverage with 12.5/25 m rails and welded strings up to 800 m', () => {
   assert.ok(data.rails?.length, 'explicit rail spans required');
   for (const side of ['left', 'right']) {
     const rails = data.rails.filter((r) => r.side === side);
@@ -13,8 +13,8 @@ test('mixed route has continuous rail coverage with 25 m rails and welded string
       assert.equal(r.position, end);
       assert.ok(uuid.test(r.id));
       assert.ok(r.length > 0 && r.length <= 800);
-      assert.equal(r.length % 25, 0);
-      if (r.construction === 'jointed') assert.equal(r.length, 25);
+      assert.equal(r.length % 12.5, 0);
+      if (r.construction === 'jointed') assert.ok([12.5, 25].includes(r.length));
       end += r.length;
     }
     assert.equal(end, 64000);
@@ -28,7 +28,11 @@ test('every rail boundary is a joint and every internal fabrication seam is a we
     const rails = data.rails.filter((r) => r.side === side);
     const boundaries = new Set(rails.slice(1).map((r) => r.position));
     const events = data.events.filter((e) => e.side === side);
-    assert.equal(events.length, 2559);
+    assert.equal(events.length, 2799);
+    assert.deepEqual(
+      events.filter((e) => e.type === 'joint').map((e) => e.position),
+      [...boundaries],
+    );
     for (const e of events) {
       assert.equal(e.type, boundaries.has(e.position) ? 'joint' : 'weld');
       assert.ok(uuid.test(e.id));
@@ -60,7 +64,7 @@ test('jointed station approaches and long welded stretches follow an explicit pl
 test('welded sections have direct string joints without short adjustment clusters', () => {
   for (const section of data.sections.filter((s) => s.construction === 'welded')) {
     const spans = data.rails.filter((r) => r.sectionId === section.id && r.side === 'left');
-    assert.ok(spans.every((r) => r.construction === 'welded' && r.length >= 750));
+    assert.ok(spans.every((r) => r.construction === 'welded' && r.length >= 700));
     for (const side of ['left', 'right']) {
       const joints = data.events.filter(
         (e) =>
@@ -107,4 +111,20 @@ test('all nineteen passenger stopping points are present in route order', () => 
     assert.equal(s.positionStatus, 'estimated');
     if (i) assert.ok(s.position > data.stations[i - 1].position);
   });
+});
+
+test('expanded jointed track includes 12 km of 25 m and 6 km of 12.5 m rails', () => {
+  const rails = data.rails.filter((r) => r.side === 'left' && r.construction === 'jointed');
+  for (const [length, total] of [
+    [25, 12000],
+    [12.5, 6000],
+  ]) {
+    assert.equal(
+      rails.filter((r) => r.length === length).reduce((sum, r) => sum + r.length, 0),
+      total,
+    );
+  }
+  const half = data.events.filter((e) => e.position === 23262.5);
+  assert.equal(half.length, 2);
+  assert.ok(half.every((e) => e.type === 'joint'));
 });

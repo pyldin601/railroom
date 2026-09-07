@@ -5,7 +5,7 @@ import { powerSwitchBuffer } from './power-switch.js';
 import { LocomotiveSpace } from './locomotive-space.js';
 import { carriageGain, occupiedCarriage } from './carriage-isolation.js?v=coach61779';
 import { MIX_LEVELS } from './settings.js';
-export const MAX_IMPACT_VOICES = 512;
+export const MAX_IMPACT_VOICES = 1024;
 /** Point contacts are fixed relative to an onboard listener; no artificial pass-by. */
 export class SpatialMixer {
   constructor(context, bank, axles) {
@@ -202,7 +202,7 @@ export class SpatialMixer {
     if (this.voices.size < MAX_IMPACT_VOICES) return true;
     const now = this.context.currentTime;
     let oldest;
-    // At 360 km/h the metal release can outlive the 512-group budget. Preserve
+    // At 360 km/h the metal release can outlive the impact-group budget. Preserve
     // every scheduled strike and the occupied carriage's full decay; retire only
     // an old external metal tail after its direct clack has already finished.
     for (const voice of this.voices) {
