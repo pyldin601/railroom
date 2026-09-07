@@ -12,6 +12,9 @@ from pathlib import Path
 APP = Path(__file__).resolve().parents[1]
 OUT = APP/'public/audio'
 RATE = 48000
+RAIL_MODES = [(390,.120,.07),(617,.145,.11),(943,.115,.10),
+              (1379,.095,.10),(1883,.080,.085),(2531,.065,.08),
+              (3271,.048,.065),(4187,.035,.045)]
 
 
 def pcm(raw, code):
@@ -56,6 +59,26 @@ def bandpass(x, frequency, q):
     return out
 
 
+def highpass(x, cutoff=120):
+    """Fourth-order Butterworth high-pass, with cyclic filter warmup."""
+    warm = min(RATE, len(x))
+    output = x[-warm:]+x
+    omega = 2*math.pi*cutoff/RATE
+    cosine = math.cos(omega)
+    for q in (.5411961001, 1.3065629649):
+        alpha = math.sin(omega)/(2*q)
+        b0 = (1+cosine)/(2*(1+alpha))
+        a1, a2 = -2*cosine/(1+alpha), (1-alpha)/(1+alpha)
+        x1 = x2 = y1 = y2 = 0
+        filtered = []
+        for v in output:
+            y = b0*(v-2*x1+x2)-a1*y1-a2*y2
+            filtered.append(y)
+            x2, x1, y2, y1 = x1, v, y1, y
+        output = filtered
+    return output[warm:]
+
+
 def write(name, x):
     x = normalize(x, .5)
     values = array.array('h', (round(v*32767) for v in x))
@@ -81,12 +104,10 @@ def impacts(manifest):
         exciter = [v*max(0, min(1, (.040-i/RATE)/.015)) for i,v in enumerate(body)]
         # Inharmonic modes approximate damped steel vibration, excited solely
         # by the recorded contact. Multiple modes avoid a single bell note.
-        modes = [(390,.120,.07),(617,.145,.11),(943,.115,.10),
-                 (1379,.095,.10),(1883,.080,.085),(2531,.065,.08),
-                 (3271,.048,.065),(4187,.035,.045)]
+
         resonance = [0.0]*len(body)
         peak = max(map(abs, original))
-        for frequency, decay, amount in modes:
+        for frequency, decay, amount in RAIL_MODES:
             frequency *= 1+(index-3.5)*.002
             ring = normalize(bandpass(exciter, frequency, math.pi*frequency*decay), peak*amount)
             resonance = [a+b for a,b in zip(resonance,ring)]
@@ -121,6 +142,31 @@ def rolling(manifest):
     for frequency, q, level in [(430,2.2,.20),(870,3.1,.27),(1630,4,.20),(2780,3.5,.09)]:
         band = normalize(bandpass(x, frequency, q))
         texture = [a+level*b for a, b in zip(texture, band)]
+    # The approved impact modes, continuously excited by recorded rail texture.
+    # A one-second cyclic preroll lets slow modes settle before the usable audio.
+    warm = RATE
+    excitation = x[-warm:]+x
+    resonance = [0.0]*len(x)
+    broad = [0.0]*len(x)
+    for frequency, decay, amount in RAIL_MODES:
+        band = normalize(bandpass(excitation, frequency, math.pi*frequency*decay)[warm:])
+        resonance = [a+amount*b for a,b in zip(resonance,band)]
+        # Broader bands carry the recording's irregular friction texture around
+        # the same mode centres, instead of sustaining isolated narrow pitches.
+        noise_band = normalize(bandpass(excitation, frequency, 2.5)[warm:])
+        broad = [a+amount*b for a,b in zip(broad,noise_band)]
+    reflected = resonance.copy()
+    for delay, amount in [(.0073,.22),(.0131,-.15),(.0227,.10),(.0379,.055)]:
+        frames = round(delay*RATE)
+        for i in range(len(reflected)):
+            reflected[i] += resonance[(i-frames)%len(resonance)]*amount
+    # Keep the existing recorded rumble dominant; match energy before blending.
+    dry_energy = sum(v*v for v in texture)
+    wet_energy = sum(v*v for v in reflected)
+    wet_gain = .60*math.sqrt(dry_energy/max(wet_energy,1e-12))
+    broad_gain = 1.45*math.sqrt(dry_energy/max(sum(v*v for v in broad),1e-12))
+    texture = [a+wet_gain*b+broad_gain*c+.35*d
+               for a,b,c,d in zip(texture,reflected,broad,x)]
     # Crossfade cyclically after filtering so filter startup is also hidden.
     fade = int(.15*RATE)
     loop = texture[fade:-fade]+[
@@ -128,14 +174,15 @@ def rolling(manifest):
         texture[i]*math.sin(i/(fade-1)*math.pi/2) for i in range(fade)]
     bass = normalize(read('rolling.wav'))
     assert len(bass) == len(loop)
-    mixed = [.48*b+.72*t for b, t in zip(bass, loop)]
+    mixed = [.30*b+.95*t for b, t in zip(bass, loop)]
+    mixed = highpass(mixed, 120)
     # Correct only the tiny boundary step over 1 ms, not a fade-to-silence dip.
     delta = mixed[0]-mixed[-1]
     for i in range(48):
         mixed[-48+i] += delta*(i/47)**2
-    sample['url'] = 'rolling-metal.wav'
+    sample['url'] = 'rolling-steel-highpass.wav'
     sample['loopEnd'] = len(mixed)/RATE
-    sample['description'] = 'Original 98–108 s rolling recording, 90–4200 Hz, transient control and broad metal resonances blended with the original bass bed; 150 ms cyclic crossfade.'
+    sample['description'] = 'Original 98–108 s rolling recording, 90–4200 Hz, transient control, broad recording-excited metal bands (Q 2.5), added unresonated friction texture and a restrained layer of the eight damped rail modes, blended with the original bass bed; 150 ms cyclic crossfade; final 120 Hz fourth-order high-pass.'
     write(sample['url'], mixed)
 
 

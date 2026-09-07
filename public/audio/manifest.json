@@ -101,7 +101,7 @@
     {
       "id": "rolling",
       "kind": "rolling",
-      "url": "rolling-metal.wav",
+      "url": "rolling-steel-highpass.wav",
       "source": "https://commons.wikimedia.org/wiki/File:Complete_train_ride_4_minutes.ogg",
       "license": "Public domain",
       "author": "stephan",
@@ -110,7 +110,7 @@
       "loopStart": 0,
       "loopEnd": 9.85,
       "sourceOffsetSeconds": 98,
-      "description": "Original 98–108 s rolling recording, 90–4200 Hz, transient control and broad metal resonances blended with the original bass bed; 150 ms cyclic crossfade."
+      "description": "Original 98–108 s rolling recording, 90–4200 Hz, transient control, broad recording-excited metal bands (Q 2.5), added unresonated friction texture and a restrained layer of the eight damped rail modes, blended with the original bass bed; 150 ms cyclic crossfade; final 120 Hz fourth-order high-pass."
     },
     {
       "id": "traction",

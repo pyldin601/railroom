@@ -1,5 +1,5 @@
 import {RecordedMotor} from './recorded-motor.js?v=coach61779';
-import {TractionMotor} from './traction.js?v=coach61779';
+import {TractionMotor} from './traction.js?v=motor-start';
 /** Recorded rolling/braking plus continuously synthesized traction. */
 export class RollingLayers{
  constructor(context,bank,mixer){Object.assign(this,{context,bank,mixer});this.layers=[];this.started=false;this.motor=new TractionMotor(context,mixer);this.recordedMotor=new RecordedMotor(context,bank,mixer);}

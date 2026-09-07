@@ -51,28 +51,32 @@ export class TractionMotor {
       filter.connect(gain).connect(fade).connect(this.mixer.emitters.get(`${axle.id}:center`).gain);
       const oscillators = [carrier, modulator, gear, body, drift];
       const nodes = [...oscillators, deviation, gearLevel, bodyLevel, driftDepth, filter, gain, fade];
-      const voice = {carrier, modulator, gear, body, deviation, filter, gain, fade, oscillators, nodes, detune: 1 + i * .0013};
+      const voice = {carrier, modulator, gear, body, deviation, filter, gain, fade, oscillators, nodes, needsInitialTune: true, detune: 1 + i * .0013};
       this.voices.push(voice);
-      this.tune(voice, motorParameters(0, 0), ctx.currentTime, bogies.length);
+      this.tune(voice, motorParameters(0, 0), ctx.currentTime, bogies.length, true);
       for (const oscillator of oscillators) oscillator.start();
     }
   }
 
-  tune(voice, p, time, count) {
-    const smooth = (param, value, seconds = .09) => param.setTargetAtTime(value, time, seconds);
+  tune(voice, p, time, count, immediate = false) {
+    // Set pitch before sound becomes audible; smooth only subsequent changes.
+    const smooth = (param, value, seconds = .09) => immediate ? param.setValueAtTime(value, time) : param.setTargetAtTime(value, time, seconds);
     smooth(voice.carrier.frequency, p.electrical * voice.detune);
     smooth(voice.modulator.frequency, p.electrical * 2.013 * voice.detune);
     smooth(voice.gear.frequency, p.gear * voice.detune);
     smooth(voice.body.frequency, p.body * voice.detune);
     smooth(voice.deviation.gain, p.deviation, .16);
     smooth(voice.filter.frequency, p.cutoff, .18);
-    smooth(voice.gain.gain, p.gain * (this.mixer.levels.traction ?? 1) / Math.sqrt(count), .12);
+    voice.gain.gain.setTargetAtTime(p.gain * (this.mixer.levels.traction ?? 1) / Math.sqrt(count), time, .12);
   }
 
   update(state, controls, running) {
     if (!this.started) return;
     const p = motorParameters(state.speed, running ? controls.throttle || 0 : 0, controls.brake || controls.emergency);
-    for (const voice of this.voices) this.tune(voice, p, this.context.currentTime, this.voices.length);
+    for (const voice of this.voices) {
+      this.tune(voice, p, this.context.currentTime, this.voices.length, voice.needsInitialTune);
+      voice.needsInitialTune = false;
+    }
   }
 
   stop(at = this.context.currentTime) {

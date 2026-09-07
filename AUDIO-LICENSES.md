@@ -42,3 +42,29 @@ The target is the harder metallic character requested by the listener. A specifi
 Current impacts are `joint-1-rail.wav` through `joint-8-rail.wav`; the earlier `-metal.wav` assets remain preserved. Source recording, source offsets, licences and approximate 10 ms contact onset are unchanged. The 2.9 kHz attack band is emphasized, and the recorded carriage body is shortened. Eight inharmonic resonances (390–4187 Hz, 35–145 ms decay constants) are excited by the first 40 ms of recorded contact, with quiet early returns at 7.3, 13.1, 22.7 and 37.9 ms. The full file is 650 ms including a 40 ms final fade, peak-normalized to −6 dBFS.
 
 This is a modeled rail response, not a measured rail impulse response. The contact and its decay share the existing wheelset emitter and carriage isolation; propagation along a spatially extended rail is not simulated. No room-reverb effect is added. Regeneration uses `scripts/prepare-metallic-audio.py`. Rolling and motor assets are unchanged by this revision.
+
+## Rolling rail resonance
+
+The current rolling asset is `rolling-rail.wav`; `rolling-metal.wav` remains available. It uses the same eight damped rail modes and early-return delays as the approved impact sound, continuously excited by the existing recorded rolling texture. A one-second cyclic preroll settles resonators before processing the usable region. The resonant component is energy-matched at 45% of the pre-bass dry texture's RMS, then blended before the existing cyclic crossfade and bass mix. This ratio is a sound-design parameter, not a measured carriage response.
+
+The loop retains its 9.85 s duration, 48 kHz mono format, −6 dBFS peak and seam correction. Original provenance and licence remain unchanged. The shared mode definition produces byte-identical impact WAVs, preserving the approved wheel impact sound. Regenerate both derivatives with `python3 scripts/prepare-metallic-audio.py`.
+
+## Broader rolling texture
+
+The manifest now selects `rolling-rough.wav`. The rolling-only resonance mix retains the same centre frequencies but adds broad Q=2.5 bands excited by the recorded friction texture (65% energy-matched RMS relative to the pre-bass dry texture). The narrow resonance component is reduced from 45% to 16% RMS, and an additional 0.25 gain of the unresonated normalized recording restores irregular broadband detail. No generated white-noise source is added. Impact processing is unchanged. Previous rolling variants remain available; duration, crossfade, mono format and peak normalization are retained.
+
+## Stronger metallic rolling mix
+
+The current asset is `rolling-steel.wav`, preserving earlier variants. Broad recorded metal bands rise from 65% to 105% energy-matched RMS relative to the pre-bass dry texture; narrow rail resonance rises modestly from 16% to 24%. Unresonated friction increases from 0.25 to 0.35 gain, and the bass/texture blend changes from 0.48/0.72 to 0.38/0.85 before peak normalization. This brings steel texture forward while retaining the broad noisy character. Source, licence, loop duration and processing safeguards are unchanged; impacts and motor sounds are unchanged.
+
+## Further metallic emphasis
+
+The selected asset is now `rolling-steel-rich.wav`. Broad metal-band RMS matching increases from 105% to 145%, narrow resonance from 24% to 32%, and the bass/texture blend moves from 0.38/0.85 to 0.30/0.95 before peak normalization. The unresonated friction component remains at 0.35 gain. Earlier variants and all impact/motor assets are preserved.
+
+## Narrow resonance overlay
+
+The selected rolling asset is `rolling-steel-ring.wav`. Narrow rail-mode RMS matching increases from 32% to 60%, layered over the unchanged 145% broad-band component, 0.35 friction gain and 0.30/0.95 bass/texture mix. Final peak normalization remains −6 dBFS. This restores a more prominent pitched metallic ring without removing the underlying broad texture. Earlier variants and impact/motor assets remain preserved.
+
+## Rolling high-pass
+
+The selected asset is `rolling-steel-highpass.wav`. A fourth-order Butterworth high-pass at 120 Hz (24 dB/octave) processes the complete rolling mix, including its bass bed, before seam correction and final normalization. Cyclic preroll avoids filter-startup transients. Measured filter gain: −38.17 dB at 40 Hz, −3.01 dB at 120 Hz, approximately 0 dB at 1 kHz. Earlier variants remain preserved. Impacts, traction and brakes are unaffected.

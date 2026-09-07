@@ -4,8 +4,8 @@ import {SpatialMixer} from '../src/audio/spatial-mixer.js?v=coach61779';
 import {wheelsets,RouteIndex,demoRoute} from '../src/route/route-index.js?v=coach61779';
 import {Transport} from '../src/audio/scheduler.js';
 import {RecordedMotor} from '../src/audio/recorded-motor.js';
-import {TractionMotor} from '../src/audio/traction.js';
-import {RollingLayers} from '../src/audio/rolling.js?v=coach61779';
+import {TractionMotor} from '../src/audio/traction.js?v=motor-start';
+import {RollingLayers} from '../src/audio/rolling.js?v=motor-start';
 const results=[];const assert=(condition,message)=>{if(!condition)throw Error(message);results.push('PASS '+message);};
 try{
  const rate=48000,context=new OfflineAudioContext(2,rate*3,rate);const bank=await new SampleBank(context).load('../public/audio/manifest.json');
