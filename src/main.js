@@ -1,14 +1,17 @@
+import {createRenderLoop} from './ui/render-loop.js';
 import {RouteIndex,demoRoute,wheelsets,listenerSeat} from './route/route-index.js?v=coach61779';
 import {Transport} from './audio/scheduler.js';
 import {SampleBank} from './audio/sample-bank.js';
 import {SpatialMixer} from './audio/spatial-mixer.js?v=coach61779';
-import {RollingLayers} from './audio/rolling.js?v=motor-start';
+import {RollingLayers} from './audio/rolling.js?v=wheel-rolling';
 import {drawTrack} from './ui/track-view.js?v=coach61779';
 const $=id=>document.getElementById(id);
+let requestRender=()=>{};
+function setText(id,text){const el=$(id),value=String(text);if(el.textContent!==value)el.textContent=value;}
 let routeData,route,context,bank,mixer,rolling,transport,axles=wheelsets(Number($('cars').value)),seat=listenerSeat(Number($('cars').value)),loading=false,ready=false;
 let emergency=false;const controls=()=>({throttle:Number($('throttle').value)/100,brake:Number($('brake').value)/100,emergency});
 function error(message){$('error').textContent=message;$('error').hidden=!message;}
-function setStatus(text){$('status').textContent=text;}
+function setStatus(text){setText('status',text);requestRender();}
 function displayRoute(){
  $('route-map').replaceChildren();$('station').replaceChildren();
  route.stations.forEach((s,i)=>{const marker=document.createElement('div');marker.className='station-marker';marker.style.left=`${s.position/route.length*100}%`;const dot=document.createElement('i'),label=document.createElement('span');label.textContent=s.name.replace('Kyiv-Pasazhyrskyi','Kyiv-Pas.');marker.append(dot,label);$('route-map').append(marker);const option=document.createElement('option');option.value=s.position;option.textContent=s.name;$('station').append(option);});
@@ -66,18 +69,23 @@ setInterval(()=>{
 },25);
 function render(){
  if(route){const state=transport?.snapshot()||{position:pendingPosition,speed:0,acceleration:0};const running=!!transport?.running;
-  $('speed').textContent=Math.round(state.speed*3.6);$('speed-bar').style.width=`${state.speed*3.6/120*100}%`;$('distance').textContent=`${(state.position/1000).toFixed(3)} / 64.000 km`;
+  setText('speed',Math.round(state.speed*3.6));$('speed-bar').style.width=`${state.speed*3.6/120*100}%`;setText('distance',`${(state.position/1000).toFixed(3)} / 64.000 km`);
   $('route-head').style.left=`${state.position/route.length*100}%`;
-  const next=route.stations.find(s=>s.position>state.position+.1);$('next-station').textContent=next?.name||'End of route';$('next-distance').textContent=next?`${((next.position-state.position)/1000).toFixed(2)} km`:'Arrived';
-  $('play-label').textContent=running?'Pause journey':state.position||state.speed?'Resume journey':'Start journey';$('play-icon').textContent=running?'Ⅱ':'▶';$('status-dot').classList.toggle('running',running);
-  $('motion-label').textContent=!running?'PAUSED':state.position>=route.length?'END OF ROUTE':state.speed<.05?'STATIONARY':emergency?'EMERGENCY':Number($('brake').value)>0?'BRAKING':state.acceleration>.01?'ACCELERATING':'COASTING';
+  const next=route.stations.find(s=>s.position>state.position+.1);setText('next-station',next?.name||'End of route');setText('next-distance',next?`${((next.position-state.position)/1000).toFixed(2)} km`:'Arrived');
+  setText('play-label',running?'Pause journey':state.position||state.speed?'Resume journey':'Start journey');setText('play-icon',running?'Ⅱ':'▶');$('status-dot').classList.toggle('running',running);
+  setText('motion-label',!running?'PAUSED':state.position>=route.length?'END OF ROUTE':state.speed<.05?'STATIONARY':emergency?'EMERGENCY':Number($('brake').value)>0?'BRAKING':state.acceleration>.01?'ACCELERATING':'COASTING');
   drawTrack($('track'),state,axles,route,mixer,seat);
-  if(mixer){const peak=mixer.peak();$('meter').style.width=`${Math.min(100,peak*100)}%`;$('peak').textContent=peak>1e-6?`${(20*Math.log10(peak)).toFixed(1)} dB`:'−∞ dB';$('meter').style.background=peak>.9?'var(--red)':'var(--mint)';
+  if(mixer){const peak=mixer.peak();$('meter').style.width=`${Math.min(100,peak*100)}%`;setText('peak',peak>1e-6?`${(20*Math.log10(peak)).toFixed(1)} dB`:'−∞ dB');$('meter').style.background=peak>.9?'var(--red)':'var(--mint)';
    for(const a of axles){const at=Math.max(mixer.lastImpacts.get(`${a.id}:left`)??-Infinity,mixer.lastImpacts.get(`${a.id}:right`)??-Infinity);$(`cell-${a.id}`).classList.toggle('flash',context.currentTime>=at&&context.currentTime-at<.12);}
-   $('diagnostics').textContent=`${context.sampleRate} Hz · ${mixer.voices.size}/128 impact voices · ${axles.length} wheelsets · ${transport.underruns} scheduling interruptions · ${Math.round((context.baseLatency||0)*1000)} ms base latency · ${route.events.length} route contacts`;
+   setText('diagnostics',`${context.sampleRate} Hz · ${mixer.voices.size}/128 impact voices · ${axles.length} wheelsets · ${transport.underruns} scheduling interruptions · ${Math.round((context.baseLatency||0)*1000)} ms base latency · ${route.events.length} route contacts`);
   }
  }
- requestAnimationFrame(render);
+ return !!transport?.running;
 }
 try{const r=await fetch('./public/route.json');if(!r.ok)throw new Error('Route asset could not be loaded');routeData=await r.json();route=new RouteIndex(routeData);displayRoute();axleButtons();ready=true;$('play').disabled=false;setStatus('Ready · headphones recommended');}catch(e){error(e.message);setStatus('Route unavailable');}
-render();
+requestRender=createRenderLoop(render);
+for(const event of ['input','change','click'])document.addEventListener(event,()=>{requestRender();setTimeout(requestRender,160);});
+document.addEventListener('visibilitychange',requestRender);
+document.addEventListener('keydown',requestRender);
+new ResizeObserver(requestRender).observe($('track'));
+requestRender();

@@ -68,3 +68,11 @@ The selected rolling asset is `rolling-steel-ring.wav`. Narrow rail-mode RMS mat
 ## Rolling high-pass
 
 The selected asset is `rolling-steel-highpass.wav`. A fourth-order Butterworth high-pass at 120 Hz (24 dB/octave) processes the complete rolling mix, including its bass bed, before seam correction and final normalization. Cyclic preroll avoids filter-startup transients. Measured filter gain: −38.17 dB at 40 Hz, −3.01 dB at 120 Hz, approximately 0 dB at 1 kHz. Earlier variants remain preserved. Impacts, traction and brakes are unaffected.
+
+## Longer impact decay
+
+Current impacts are `joint-1-rail-long.wav` through `joint-8-rail-long.wav`, lasting 750 ms instead of 650 ms. Impact-only resonator decay constants increase by 71/61 to extend the decay after the 40 ms excitation interval; frequencies, recorded onset and early-return delays are retained. The final fade remains 40 ms. The previous impact files are preserved and rolling resonance is unchanged.
+
+## Restored narrow rolling version
+
+At the listener's request, the manifest again selects the original `rolling-rail.wav`, from before the broad/noisy revisions. Regeneration matches that preserved WAV byte-for-byte. This restores its 45% narrow resonance mix and original bass blend, including the original filtering rather than the later final 120 Hz high-pass. The 750 ms impact revision remains active.

@@ -1,5 +1,8 @@
 import {RecordedMotor} from './recorded-motor.js?v=coach61779';
 import {TractionMotor} from './traction.js?v=motor-start';
+export function rollingWheels(axles, occupied=1){
+ return axles.filter(a=>(a.car??1)===occupied).flatMap(a=>['left','right'].map(side=>({axle:a,side}))).map((w,i)=>({...w,offset:(i*.371)%1,rate:1+(i-3.5)*.0008}));
+}
 /** Recorded rolling/braking plus continuously synthesized traction. */
 export class RollingLayers{
  constructor(context,bank,mixer){Object.assign(this,{context,bank,mixer});this.layers=[];this.started=false;this.motor=new TractionMotor(context,mixer);this.recordedMotor=new RecordedMotor(context,bank,mixer);}
@@ -8,24 +11,25 @@ export class RollingLayers{
    const pool=this.bank.pool(kind);if(!pool.length)continue;
    const audible=this.mixer.audibleAxles??this.mixer.axles;
    const local=audible.find(a=>a.car===this.mixer.occupied)??audible[0];
-   const axles=kind==='rolling'?audible:[local];
-   for(const [i,axle] of axles.entries()){
+   const feeds=kind==='rolling'?rollingWheels(audible,this.mixer.occupied??1):[{axle:local,side:'center',offset:0,rate:1}];
+   for(const [i,feed] of feeds.entries()){
+    const {axle,side}=feed;
     const sample=pool[i%pool.length],source=this.context.createBufferSource(),gain=this.context.createGain(),fade=this.context.createGain();source.buffer=sample.buffer;source.loop=true;source.loopStart=sample.loopStart||0;source.loopEnd=sample.loopEnd||sample.buffer.duration;gain.gain.value=0;
-    source.connect(gain).connect(fade).connect(this.mixer.emitters.get(`${axle.id}:center`).gain);
-    source.start(0,source.loopStart+(source.loopEnd-source.loopStart)*((i*.371)%1));this.layers.push({kind,source,gain,fade,sample});
+    source.connect(gain).connect(fade).connect(this.mixer.emitters.get(`${axle.id}:${side}`).gain);
+    source.start(0,source.loopStart+(source.loopEnd-source.loopStart)*feed.offset);this.layers.push({kind,source,gain,fade,sample,wheelsetId:axle.id,side,rate:feed.rate});
    }
   }
  }
  update(state,controls,running){if(!this.started)return;this.motor.update(state,controls,running);this.recordedMotor.update(state,controls,running);const speed=state.speed,t=this.context.currentTime;
   for(const layer of this.layers){let level=0;
    if(running){
-    if(layer.kind==='rolling')level=Math.min(1,speed/22)*.14/Math.sqrt((this.mixer.audibleAxles??this.mixer.axles).length/4)*this.mixer.levels.rolling;
+    if(layer.kind==='rolling')level=Math.min(1,speed/22)*.14/Math.sqrt((this.mixer.audibleAxles??this.mixer.axles).length/4)*this.mixer.levels.rolling/Math.sqrt(2);
     if(layer.kind==='brake')level=Math.min(1,speed/3)*(controls.emergency?1:(controls.brake||0))*.16*this.mixer.levels.brake;
     if(layer.kind==='idle')level=.025;
     if(layer.kind==='air')level=Math.min(1,speed/33)*.045;
    }
    layer.gain.gain.setTargetAtTime(level*(layer.sample.gain??1),t,.12);
-   if(layer.kind==='rolling')layer.source.playbackRate.setTargetAtTime(.94+.12*Math.min(1,speed/33),t,.25);
+   if(layer.kind==='rolling')layer.source.playbackRate.setTargetAtTime((.94+.12*Math.min(1,speed/33))*layer.rate,t,.25);
   }
  }
  setMotorMode(mode){

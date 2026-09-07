@@ -5,103 +5,103 @@
     {
       "id": "joint-1",
       "kind": "joint",
-      "url": "joint-1-rail.wav",
+      "url": "joint-1-rail-long.wav",
       "source": "https://commons.wikimedia.org/wiki/File:Стук_колёс_поезда.ogg",
       "license": "CC0-1.0",
       "author": "Ural-66",
       "onset": 0.01,
       "gain": 0.75,
       "sourceOffsetSeconds": 61.06,
-      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 650 ms total, original 10 ms onset retained."
+      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 750 ms total with extended rail decay, original 10 ms onset retained."
     },
     {
       "id": "joint-2",
       "kind": "joint",
-      "url": "joint-2-rail.wav",
+      "url": "joint-2-rail-long.wav",
       "source": "https://commons.wikimedia.org/wiki/File:Стук_колёс_поезда.ogg",
       "license": "CC0-1.0",
       "author": "Ural-66",
       "onset": 0.01,
       "gain": 0.75,
       "sourceOffsetSeconds": 65.77,
-      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 650 ms total, original 10 ms onset retained."
+      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 750 ms total with extended rail decay, original 10 ms onset retained."
     },
     {
       "id": "joint-3",
       "kind": "joint",
-      "url": "joint-3-rail.wav",
+      "url": "joint-3-rail-long.wav",
       "source": "https://commons.wikimedia.org/wiki/File:Стук_колёс_поезда.ogg",
       "license": "CC0-1.0",
       "author": "Ural-66",
       "onset": 0.01,
       "gain": 0.75,
       "sourceOffsetSeconds": 68.51,
-      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 650 ms total, original 10 ms onset retained."
+      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 750 ms total with extended rail decay, original 10 ms onset retained."
     },
     {
       "id": "joint-4",
       "kind": "joint",
-      "url": "joint-4-rail.wav",
+      "url": "joint-4-rail-long.wav",
       "source": "https://commons.wikimedia.org/wiki/File:Стук_колёс_поезда.ogg",
       "license": "CC0-1.0",
       "author": "Ural-66",
       "onset": 0.01,
       "gain": 0.75,
       "sourceOffsetSeconds": 69.745,
-      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 650 ms total, original 10 ms onset retained."
+      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 750 ms total with extended rail decay, original 10 ms onset retained."
     },
     {
       "id": "joint-5",
       "kind": "joint",
-      "url": "joint-5-rail.wav",
+      "url": "joint-5-rail-long.wav",
       "source": "https://commons.wikimedia.org/wiki/File:Стук_колёс_поезда.ogg",
       "license": "CC0-1.0",
       "author": "Ural-66",
       "onset": 0.01,
       "gain": 0.75,
       "sourceOffsetSeconds": 71.015,
-      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 650 ms total, original 10 ms onset retained."
+      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 750 ms total with extended rail decay, original 10 ms onset retained."
     },
     {
       "id": "joint-6",
       "kind": "joint",
-      "url": "joint-6-rail.wav",
+      "url": "joint-6-rail-long.wav",
       "source": "https://commons.wikimedia.org/wiki/File:Стук_колёс_поезда.ogg",
       "license": "CC0-1.0",
       "author": "Ural-66",
       "onset": 0.01,
       "gain": 0.75,
       "sourceOffsetSeconds": 77.26,
-      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 650 ms total, original 10 ms onset retained."
+      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 750 ms total with extended rail decay, original 10 ms onset retained."
     },
     {
       "id": "joint-7",
       "kind": "joint",
-      "url": "joint-7-rail.wav",
+      "url": "joint-7-rail-long.wav",
       "source": "https://commons.wikimedia.org/wiki/File:Стук_колёс_поезда.ogg",
       "license": "CC0-1.0",
       "author": "Ural-66",
       "onset": 0.01,
       "gain": 0.75,
       "sourceOffsetSeconds": 79.765,
-      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 650 ms total, original 10 ms onset retained."
+      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 750 ms total with extended rail decay, original 10 ms onset retained."
     },
     {
       "id": "joint-8",
       "kind": "joint",
-      "url": "joint-8-rail.wav",
+      "url": "joint-8-rail-long.wav",
       "source": "https://commons.wikimedia.org/wiki/File:Стук_колёс_поезда.ogg",
       "license": "CC0-1.0",
       "author": "Ural-66",
       "onset": 0.01,
       "gain": 0.75,
       "sourceOffsetSeconds": 80.77,
-      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 650 ms total, original 10 ms onset retained."
+      "description": "Recorded contact with sharpened 2.9 kHz attack, shortened carriage thump, eight recording-excited rail modes and quiet early returns; 750 ms total with extended rail decay, original 10 ms onset retained."
     },
     {
       "id": "rolling",
       "kind": "rolling",
-      "url": "rolling-steel-highpass.wav",
+      "url": "rolling-rail.wav",
       "source": "https://commons.wikimedia.org/wiki/File:Complete_train_ride_4_minutes.ogg",
       "license": "Public domain",
       "author": "stephan",
@@ -110,7 +110,7 @@
       "loopStart": 0,
       "loopEnd": 9.85,
       "sourceOffsetSeconds": 98,
-      "description": "Original 98–108 s rolling recording, 90–4200 Hz, transient control, broad recording-excited metal bands (Q 2.5), added unresonated friction texture and a restrained layer of the eight damped rail modes, blended with the original bass bed; 150 ms cyclic crossfade; final 120 Hz fourth-order high-pass."
+      "description": "Original 98–108 s rolling recording, 90–4200 Hz, transient control, broad metal texture plus the same eight damped rail modes and early returns as the impact layer, blended with the original bass bed; 150 ms cyclic crossfade."
     },
     {
       "id": "traction",

@@ -72,3 +72,11 @@ Ten carriages remain visible, but only carriages 3–7 produce sound around the 
 Verification: 39 Node tests pass. Browser checks confirm 20 rolling sources, ten motor voices, no distant impact sources, preserved timing and stereo, clean fades and no clipping (peak 0.42179).
 
 Current coach geometry: [КВБЗ 61-779 with ТВЗ-ЦНИИ-М bogies](COACH-GEOMETRY.md). This supersedes earlier generic geometry and timing figures in the historical verification notes.
+
+## Rolling at individual wheels
+
+Rolling now uses eight independent mono sources at the occupied carriage's four left and four right wheels. Each uses the approved narrow recording with a distinct loop offset and a slight fixed playback-rate variation (within ±0.28%). They follow their corresponding wheelset's spatial emitter and mute/solo controls. Rolling sources are not created for other carriages; neighbouring impact and motor isolation remains unchanged. A √2 gain correction compensates for replacing each central axle source with two wheel sources. These are independent playbacks of one recording, not eight independently recorded wheels.
+
+## UI rendering cost
+
+The dashboard no longer runs an unconditional animation-frame loop. It redraws on control/status changes and resize while paused, stops visual work when hidden, and schedules active animation at no more than 30 fps. Repeated text writes are skipped when values are unchanged. The separate 25 ms audio scheduling interval is retained. Browser start/pause checks passed; an OS-level CPU before/after benchmark has not been recorded.
