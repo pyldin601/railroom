@@ -1,3 +1,5 @@
+import {impactDistance} from './impact-distance.js?v=seat-isolation';
+import {listenerSeat} from '../route/route-index.js';
 import {PneumaticAudio} from './pneumatic.js?v=release-tail';
 import {CabinAmbience} from './ambient.js';
 import {splitRolling,updateRollingBands,disposeRollingBands} from './rolling-bands.js';
@@ -25,7 +27,7 @@ export class RollingLayers{
     const bands=kind==='rolling'?splitRolling(this.context,source,gain):{};
     if(kind!=='rolling')source.connect(gain);
     gain.connect(fade).connect(this.mixer.emitters.get(`${axle.id}:${side}`).gain);
-    source.start(0,source.loopStart+(source.loopEnd-source.loopStart)*feed.offset);this.layers.push({bands,kind,source,gain,fade,sample,wheelsetId:axle.id,side,rate:feed.rate});
+    source.start(0,source.loopStart+(source.loopEnd-source.loopStart)*feed.offset);this.layers.push({bands,kind,source,gain,fade,sample,axle,wheelsetId:axle.id,side,rate:feed.rate});
    }
   }
  }
@@ -36,6 +38,7 @@ export class RollingLayers{
     if(layer.kind==='idle')level=.025;
     if(layer.kind==='air')level=Math.min(1,speed/33)*.045;
    }
+   if(layer.kind==='rolling')level*=impactDistance(layer.axle,this.mixer.seat??listenerSeat(this.mixer.axles.length/4),this.mixer.occupied??1,layer.side).metal;
    updateRollingBands(layer.bands,this.mixer.levels,t);
    layer.gain.gain.setTargetAtTime(level*(layer.sample.gain??1),t,.12);
   }

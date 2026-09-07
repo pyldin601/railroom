@@ -1,5 +1,6 @@
 import test from 'node:test';import assert from 'node:assert/strict';
 import {rollingWheels} from '../src/audio/rolling.js';
+import {impactDistance} from '../src/audio/impact-distance.js';
 import {wheelsets} from '../src/route/route-index.js';
 test('rolling uses eight distinct wheel feeds only in the occupied carriage',()=>{
  const feeds=rollingWheels(wheelsets(10),5);assert.equal(feeds.length,8);
@@ -24,4 +25,12 @@ test('rolling pitch stays fixed from low speed through maximum speed',async()=>{
  const rates=rolling.layers.map(l=>l.source.playbackRate.value);
  assert.deepEqual(rates,rollingWheels(axles,1).map(w=>w.rate));
  for(const speed of [0,1,10,20,33.333]){rolling.update({speed},{},true);assert.deepEqual(rolling.layers.map(l=>l.source.playbackRate.value),rates);}
+ for(const seat of [2,10.7,19.4]){
+  mixer.seat=seat;rolling.update({speed:22},{},true);
+  for(const layer of rolling.layers){
+   const axle=axles.find(a=>a.id===layer.wheelsetId);
+   const expected=.28/Math.sqrt(2)*impactDistance(axle,seat,1,layer.side).metal;
+   assert.ok(Math.abs(layer.gain.gain.value-expected)<1e-10,'rolling follows each wheel’s metal distance gain after seat changes');
+  }
+ }
 });

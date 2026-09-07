@@ -5,7 +5,7 @@ import {RouteIndex,demoRoute,wheelsets,listenerSeat} from './route/route-index.j
 import {Transport} from './audio/scheduler.js?v=speed360';
 import {SampleBank} from './audio/sample-bank.js';
 import {SpatialMixer,MAX_IMPACT_VOICES} from './audio/spatial-mixer.js?v=seat-isolation';
-import {RollingLayers} from './audio/rolling.js?v=speed360';
+import {RollingLayers} from './audio/rolling.js?v=rolling-distance';
 import {drawTrack,wheelAt} from './ui/track-view.js?v=wheel-click';
 const $=id=>document.getElementById(id);
 let requestRender=()=>{};
