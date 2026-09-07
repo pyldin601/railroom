@@ -1,4 +1,4 @@
-import {impactDistance} from './impact-distance.js?v=seat-isolation';
+import {impactDistance} from './impact-distance.js?v=louder-neighbours';
 import {listenerSeat} from '../route/route-index.js';
 import {PneumaticAudio} from './pneumatic.js?v=release-tail';
 import {CabinAmbience} from './ambient.js';

@@ -1,6 +1,6 @@
 import {hornBuffer,hornDistanceGain} from './horn.js?v=ambient-horn';
 import {metalHissBuffer} from './metal-hiss.js';
-import {impactDistance} from './impact-distance.js?v=seat-isolation';
+import {impactDistance,endHissGain} from './impact-distance.js?v=smooth-end-hiss';
 import {powerSwitchBuffer} from './power-switch.js';
 import {LocomotiveSpace} from './locomotive-space.js';
 import {carriageGain,occupiedCarriage} from './carriage-isolation.js?v=coach61779';
@@ -30,8 +30,9 @@ export class SpatialMixer{
  applyMute(){const t=this.context.currentTime;for(const [key,{gain,impact,metal}]of this.emitters){
   const id=key.split(':')[0],side=key.split(':')[1],axle=this.axles.find(a=>a.id===id),enabled=!this.muted.has(id)&&(!this.solo||this.solo===id);
   gain.gain.setTargetAtTime(this.isAudible(id)?this.transmission(id):0,t,.015);
-  const levels=impactDistance(axle,this.seat,this.occupied,side);
-  impact.gain.setTargetAtTime(enabled?levels.direct:0,t,.03);metal.gain.setTargetAtTime(enabled?levels.metal:0,t,.03);
+  const levels=impactDistance(axle,this.seat,this.occupied,side,4);
+  const endHiss=endHissGain(axle,this.occupied,this.axles.length/4);
+  impact.gain.setTargetAtTime(enabled?levels.direct:0,t,.03);metal.gain.setTargetAtTime(enabled?levels.metal*endHiss:0,t,.03);
  }}
  horn(when=this.context.currentTime,generation=0){
   if([...this.voices].some(v=>v.kind==='horn'))return;
@@ -66,7 +67,7 @@ export class SpatialMixer{
   source.connect(gain).connect(emitter.impact);
   const metalGain=ctx.createGain(),metalSource=ctx.createBufferSource();
   metalSource.buffer=metalHissBuffer(ctx,sample.buffer);metalSource.playbackRate.value=rate;
-  const metalDuration=metalSource.buffer.duration/rate,metalLevel=level*.35*(this.levels.impactMetal??1);
+  const metalDuration=metalSource.buffer.duration/rate,metalLevel=level*.7*(this.levels.impactMetal??1);
   metalGain.gain.setValueAtTime(0,start);metalGain.gain.linearRampToValueAtTime(metalLevel,start+.002);
   metalGain.gain.setValueAtTime(metalLevel,start+metalDuration-.025);metalGain.gain.linearRampToValueAtTime(0,start+metalDuration);
   metalSource.connect(metalGain).connect(emitter.metal);

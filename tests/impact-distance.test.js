@@ -32,3 +32,36 @@ test('every wheel in the occupied carriage is louder than external wheels at all
   for(const layer of ['direct','metal'])assert.ok(Math.min(...inside.map(g=>g[layer]))>Math.max(...outside.map(g=>g[layer])),`${layer} at seat ${localSeat}`);
  }
 });
+test('adjacent carriage impacts are more audible from the middle seat',()=>{
+ const g=impactDistance({car:4,offset:101.488},117.484,5,'left');
+ assert.ok(g.direct>.24&&g.direct<.26);
+ assert.ok(g.metal*.35>.23&&g.metal*.35<.25);
+});
+test('double metal reach preserves direct impacts and increases distant metal energy',()=>{
+ const axle={car:9,offset:220},seat=117.484;
+ const normal=impactDistance(axle,seat,5,'left');
+ const extended=impactDistance(axle,seat,5,'left',2);
+ assert.equal(extended.direct,normal.direct);
+ assert.ok(extended.metal>normal.metal*2,'far metal decays more slowly');
+ const farther=impactDistance(axle,seat,5,'left',4);
+ assert.ok(farther.metal>extended.metal);
+ assert.equal(farther.direct,normal.direct);
+ for(const reach of [2,4])for(const localSeat of [2,10.7,19.4]){
+  const s=4*26.696+localSeat;
+  const inside=[0,2.4,19,21.4].map(x=>impactDistance({car:5,offset:4*26.696+x},s,5,'left',reach).metal);
+  for(let car=1;car<=10;car++)if(car!==5)for(const x of [0,2.4,19,21.4])assert.ok(impactDistance({car,offset:(car-1)*26.696+x},s,5,'left',reach).metal<Math.min(...inside));
+ }
+});
+test('end-carriage hiss fades smoothly by wheel position rather than carriage boundaries',async()=>{
+ const {endHissGain}=await import('../src/audio/impact-distance.js');
+ const length=9*26.696+21.4;
+ assert.ok(Math.abs(endHissGain({car:1,offset:0},5,10)-.1)<1e-10);
+ assert.equal(endHissGain({car:5,offset:117},5,10),1);
+ for(const x of [10,26.696,53.392,70]){
+  const left=endHissGain({car:2,offset:x},5,10);
+  const right=endHissGain({car:9,offset:length-x},5,10);
+  assert.ok(Math.abs(left-right)<1e-10);
+  assert.ok(Math.abs(endHissGain({car:2,offset:x+.01},5,10)-left)<.001);
+ }
+ assert.ok(endHissGain({car:3,offset:60},5,10)>endHissGain({car:2,offset:30},5,10));
+});

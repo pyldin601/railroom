@@ -1,11 +1,11 @@
 <!doctype html><html><head><meta charset="utf-8"><title>Railroom audio verification</title></head><body><h1>Audio verification</h1><pre id="results">Running…</pre><script type="module">
 import {SampleBank} from '../src/audio/sample-bank.js';
-import {SpatialMixer} from '../src/audio/spatial-mixer.js?v=ambient-horn';
+import {SpatialMixer} from '../src/audio/spatial-mixer.js?v=smooth-end-hiss';
 import {wheelsets,RouteIndex,demoRoute} from '../src/route/route-index.js?v=impact-reverb500';
 import {Transport} from '../src/audio/scheduler.js?v=horn';
 import {RecordedMotor} from '../src/audio/recorded-motor.js';
 import {TractionMotor} from '../src/audio/traction.js?v=impact-reverb500';
-import {RollingLayers} from '../src/audio/rolling.js?v=rolling-distance';
+import {RollingLayers} from '../src/audio/rolling.js?v=louder-neighbours';
 import {CabinAmbience} from '../src/audio/ambient.js';
 import {PneumaticAudio} from '../src/audio/pneumatic.js';
 const results=[];const assert=(condition,message)=>{if(!condition)throw Error(message);results.push('PASS '+message);};

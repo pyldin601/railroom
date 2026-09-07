@@ -1,11 +1,27 @@
 import {COACH} from '../route/coach-geometry.js';
-/** Artistic continuous transmission curves; not measured carriage acoustics. */
-export function impactDistance(axle,seat,occupied,side){
- const longitudinal=Math.abs(axle.offset-seat);
+function transmission(longitudinal,side,metalReach){
  const distance=Math.hypot(longitudinal,side==='center'?0:.76,1.5);
- // Distance attenuation stays continuous along the train. The occupied
- // carriage additionally shields the listener from external wheel sources.
  const travel=Math.max(0,longitudinal-COACH.centre)/COACH.pitch;
- const outside=(axle.car??occupied)!==occupied;
- return {direct:(outside?.4:1)*Math.pow(.3,travel)/(1+distance/18),metal:(outside?.7:1)*Math.pow(.62,travel)/Math.sqrt(1+distance/35)};
+ return {direct:Math.pow(.3,travel)/(1+distance/18),metal:Math.pow(.62,Math.max(0,longitudinal/metalReach-COACH.centre)/COACH.pitch)/Math.sqrt(1+distance/(35*metalReach))};
+}
+/** Artistic continuous transmission curves; not measured carriage acoustics. */
+export function impactDistance(axle,seat,occupied,side,metalReach=1){
+ const gain=transmission(Math.abs(axle.offset-seat),side,metalReach);
+ if((axle.car??occupied)===occupied)return gain;
+ const base=(occupied-1)*COACH.pitch;
+ const farthestLocal=Math.max(...COACH.axles.map(offset=>Math.abs(base+offset-seat)));
+ const nearestExternal=Math.min(Math.abs(base-COACH.pitch+COACH.axles.at(-1)-seat),Math.abs(base+COACH.pitch-seat));
+ const local=transmission(farthestLocal,side,metalReach),external=transmission(nearestExternal,side,metalReach);
+ // Boost outside wheels, but keep even the nearest below the quietest local
+ // wheel. One factor per layer preserves distance contrast along every coach.
+ return {direct:gain.direct*Math.min(.6,.9*local.direct/external.direct),metal:gain.metal*Math.min(.9,.9*local.metal/external.metal)};
+}
+
+/** Smooth end isolation over three coach lengths; never reduce the local car. */
+export function endHissGain(axle,occupied,cars){
+ if(axle.car===occupied)return 1;
+ const last=(cars-1)*COACH.pitch+COACH.axles.at(-1);
+ const edgeDistance=Math.max(0,Math.min(axle.offset,last-axle.offset));
+ const t=Math.min(1,edgeDistance/(3*COACH.pitch));
+ return .1+.9*t*t*(3-2*t);
 }
