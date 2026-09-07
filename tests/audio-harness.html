@@ -3,6 +3,7 @@ import {SampleBank} from '../src/audio/sample-bank.js';
 import {SpatialMixer} from '../src/audio/spatial-mixer.js';
 import {wheelsets,RouteIndex,demoRoute} from '../src/route/route-index.js';
 import {Transport} from '../src/audio/scheduler.js';
+import {RecordedMotor} from '../src/audio/recorded-motor.js';
 import {TractionMotor} from '../src/audio/traction.js';
 import {RollingLayers} from '../src/audio/rolling.js';
 const results=[];const assert=(condition,message)=>{if(!condition)throw Error(message);results.push('PASS '+message);};
@@ -38,6 +39,18 @@ try{
  assert(motorEnergy>.1&&motorPeak<.5,'synthesized traction is audible and has mix headroom');
  assert(Math.abs(motorAudio[Math.round(.4*rate)])<1e-8,'synthesized traction stops cleanly');
  results.push('Motor peak '+motorPeak.toFixed(5));
+ const recordContext=new OfflineAudioContext(1,rate*.5,rate);
+ const recordBank=await new SampleBank(recordContext).load('../public/audio/manifest.json');
+ const recordMixer={axles:wheelsets(3),levels:{traction:1},emitters:new Map(wheelsets(3).map(a=>[a.id+':center',{gain:recordContext.destination}]))};
+ const recorded=new RecordedMotor(recordContext,recordBank,recordMixer);recorded.start();recorded.update({speed:20},{throttle:1},true);
+ const recordVoices=[...recorded.voices];assert(recordVoices.length===6,'recorded motor has six spatial voice feeds');
+ assert(recordVoices.every(v=>v.sources.size<=4),'recorded grains have a bounded lookahead queue');
+ recorded.stop(.25);const recordAudio=(await recordContext.startRendering()).getChannelData(0);
+ let recordPeak=0,recordEnergy=0;for(const v of recordAudio){if(!Number.isFinite(v))throw Error('Non-finite recorded motor output');recordPeak=Math.max(recordPeak,Math.abs(v));recordEnergy+=v*v;}
+ assert(recordEnergy>.01&&recordPeak<.5,'recorded texture renders audible audio with headroom');
+ assert(Math.abs(recordAudio[Math.round(.4*rate)])<1e-8,'recorded texture fades to silence on stop');
+ assert(recordVoices.every(v=>v.sources.size===0),'recorded grain sources are reclaimed');
+ results.push('Recorded texture peak '+recordPeak.toFixed(5));
  document.body.dataset.result='pass';
 }catch(e){results.push('FAIL '+e.stack);document.body.dataset.result='fail';}
 document.getElementById('results').textContent=results.join('\n');

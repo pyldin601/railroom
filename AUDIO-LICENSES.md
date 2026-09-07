@@ -1,6 +1,6 @@
 # Recording credits and processing
 
-Wheel impacts, rolling and braking use field recordings. As requested, powered traction now uses live oscillator/FM synthesis; the original traction recording is retained for provenance but is no longer played. Original compressed recordings and license metadata are preserved in `audio-sources/`.
+Wheel impacts, rolling and braking use field recordings. As requested, powered traction now uses live oscillator/FM synthesis; the synthesized option does not play the original traction clip. The optional smooth recorded mode reuses that clip in overlapping, speed-selected grains rather than looping the entire acceleration sweep. Original compressed recordings and license metadata are preserved in `audio-sources/`.
 
 | Shipped layer | Recording | Creator | Licence |
 |---|---|---|---|

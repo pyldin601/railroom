@@ -1,8 +1,9 @@
+import {RecordedMotor} from './recorded-motor.js';
 import {TractionMotor} from './traction.js';
 /** Recorded rolling/braking plus continuously synthesized traction. */
 export class RollingLayers{
- constructor(context,bank,mixer){Object.assign(this,{context,bank,mixer});this.layers=[];this.started=false;this.motor=new TractionMotor(context,mixer);}
- start(){if(this.started)return;this.started=true;this.motor.start();
+ constructor(context,bank,mixer){Object.assign(this,{context,bank,mixer});this.layers=[];this.started=false;this.motor=new TractionMotor(context,mixer);this.recordedMotor=new RecordedMotor(context,bank,mixer);}
+ start(){if(this.started)return;this.started=true;if(this.mixer.motorMode==='recorded')this.recordedMotor.start();else this.motor.start();
   for(const kind of ['rolling','brake','idle','air']){
    const pool=this.bank.pool(kind);if(!pool.length)continue;
    const axles=kind==='rolling'?this.mixer.axles:[this.mixer.axles[0]];
@@ -13,7 +14,7 @@ export class RollingLayers{
    }
   }
  }
- update(state,controls,running){if(!this.started)return;this.motor.update(state,controls,running);const speed=state.speed,t=this.context.currentTime;
+ update(state,controls,running){if(!this.started)return;this.motor.update(state,controls,running);this.recordedMotor.update(state,controls,running);const speed=state.speed,t=this.context.currentTime;
   for(const layer of this.layers){let level=0;
    if(running){
     if(layer.kind==='rolling')level=Math.min(1,speed/22)*.14/Math.sqrt(this.mixer.axles.length/4)*this.mixer.levels.rolling;
@@ -25,8 +26,12 @@ export class RollingLayers{
    if(layer.kind==='rolling')layer.source.playbackRate.setTargetAtTime(.94+.12*Math.min(1,speed/33),t,.25);
   }
  }
+ setMotorMode(mode){
+  this.motor.stop();this.recordedMotor.stop();this.mixer.motorMode=mode;
+  if(this.started){if(mode==='recorded')this.recordedMotor.start();else this.motor.start();}
+ }
  stop(at=this.context.currentTime){
-  this.motor.stop(at);
+  this.motor.stop(at);this.recordedMotor.stop(at);
   for(const l of this.layers){
    l.fade.gain.setValueAtTime(1,at);
    l.fade.gain.linearRampToValueAtTime(0,at+.03);
