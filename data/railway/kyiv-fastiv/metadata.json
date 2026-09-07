@@ -1,0 +1,43 @@
+{
+  "dataset": "Synthetic Kyiv-Pasazhyrskyi to Fastiv I single-track model",
+  "surveyed": false,
+  "lengthMeters": 64000.0,
+  "trackCount": 1,
+  "railCount": 2,
+  "positionDefinition": "Distance along an abstract track centreline from Kyiv-Pasazhyrskyi toward Fastiv I; meters. No geographic geometry or official railway chainage.",
+  "railLengthMeters": 25.0,
+  "sleeperDensityPerKm": 1840,
+  "fasteningSpacingMeters": 0.5434782608695652,
+  "fasteningDefinition": "One complete rail-to-sleeper fastening assembly per rail seat; individual clips and bolts are not separate objects. Left and right fastenings share a sleeper position; sleepers are implicit.",
+  "connectionDefinition": "Every internal 25 m boundary has one connection per rail. Simulated insulated bonded joints are at 2000, 4000, 6000 m, then every 2000 m from 9000 through 63000 m; other boundaries are welds. Existing assets retain their IDs and shift by 7000 m. Joint positions are arbitrary model assumptions, not actual signal locations. Physical connection widths are abstracted.",
+  "railDefinition": "position is the rail start; length is its nominal longitudinal span. The model ignores weld allowances, thermal expansion and insulating end-post thickness.",
+  "stationDefinition": "Eight selected station/stop markers, not a complete list of passenger stops. Positions and 64 km endpoint distance are rounded modelling approximations, not surveyed platform positions.",
+  "scope": "One linear track, two rail sides viewed toward Fastiv. No turnouts, sidings, curves, platforms, signals, crossings or overhead electrification modelled.",
+  "uuidDefinition": "Deterministic UUIDv5, unique per object.",
+  "sources": [
+    {
+      "url": "https://fastiv-rada.gov.ua/7145-2/",
+      "use": "Municipal description gives 57 km rail distance to Kyiv; approximate corridor scale only."
+    },
+    {
+      "url": "https://crust.ust.edu.ua/server/api/core/bitstreams/2d61cc13-4e4d-4e51-a80d-e94bc58d026e/content",
+      "use": "25 m standard rail lengths."
+    },
+    {
+      "url": "https://crust.ust.edu.ua/server/api/core/bitstreams/9e847c78-2a9a-4944-8741-a2907f94f4a7/content",
+      "use": "R65 continuously welded track and 1840 sleepers/km as a realistic construction basis, not a specification of this route."
+    },
+    {
+      "url": "https://boyarka-shop.in.ua/ukr/train2/sel/5/13/",
+      "use": "Station sequence on Kyiv\u2013Fastiv corridor; distances are model assumptions."
+    }
+  ],
+  "counts": {
+    "rail": 5120,
+    "station": 8,
+    "fastening": 235520,
+    "weld": 5056,
+    "joint": 62
+  },
+  "totalObjects": 245766
+}

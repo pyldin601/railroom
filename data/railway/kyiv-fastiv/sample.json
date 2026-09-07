@@ -1,0 +1,60 @@
+[
+  {
+    "id": "1ab4bcaf-7fd3-51d9-a08f-1d0954e05cc9",
+    "type": "rail",
+    "position": 0.0,
+    "side": "left",
+    "length": 25.0,
+    "profile": "R65"
+  },
+  {
+    "id": "fd50e232-4eda-561b-b805-144ae723d760",
+    "type": "rail",
+    "position": 0.0,
+    "side": "right",
+    "length": 25.0,
+    "profile": "R65"
+  },
+  {
+    "id": "4fc5723e-bf3f-5fe3-a82f-9c9a289bf735",
+    "type": "station",
+    "position": 0.0,
+    "name": "Kyiv-Pasazhyrskyi",
+    "positionAccuracy": "approximate"
+  },
+  {
+    "id": "2be81528-5e76-5dd5-ae1e-4d95615ea885",
+    "type": "fastening",
+    "position": 0.271739,
+    "side": "left",
+    "railId": "1ab4bcaf-7fd3-51d9-a08f-1d0954e05cc9"
+  },
+  {
+    "id": "6ce92953-02bf-52b6-863f-a091dd614958",
+    "type": "fastening",
+    "position": 0.271739,
+    "side": "right",
+    "railId": "fd50e232-4eda-561b-b805-144ae723d760"
+  },
+  {
+    "id": "438ec35d-8478-5633-8ef0-cd63a9cfdd42",
+    "type": "fastening",
+    "position": 0.815217,
+    "side": "left",
+    "railId": "1ab4bcaf-7fd3-51d9-a08f-1d0954e05cc9"
+  },
+  {
+    "id": "986731f5-b7a7-5f69-a6da-55af7138af2a",
+    "type": "fastening",
+    "position": 0.815217,
+    "side": "right",
+    "railId": "fd50e232-4eda-561b-b805-144ae723d760"
+  },
+  {
+    "id": "aaebeea6-b3ab-5f5a-9266-86d2f51ff61c",
+    "type": "fastening",
+    "position": 1.358696,
+    "side": "left",
+    "railId": "1ab4bcaf-7fd3-51d9-a08f-1d0954e05cc9"
+  }
+]
