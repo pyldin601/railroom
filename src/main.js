@@ -29,7 +29,7 @@ function buildAudio(position=0){
 }
 async function enableAudio(){
  if(bank)return;if(loading)throw new Error('Audio is still loading');loading=true;$('play').disabled=true;setStatus('Loading recorded sounds');
- try{context ||= new AudioContext({latencyHint:'interactive'});await context.resume();const nextBank=new SampleBank(context);await nextBank.load();bank=nextBank;buildAudio(pendingPosition);$('sound-note').textContent=$('motor-mode').value==='recorded'?'Recorded motor texture · speed-selected overlapping excerpts':'Live motor synthesis · recorded wheel impacts, rolling and braking';}
+ try{context ||= new AudioContext({latencyHint:'interactive'});await context.resume();const nextBank=new SampleBank(context);await nextBank.load();bank=nextBank;buildAudio(pendingPosition);$('sound-note').textContent=$('motor-mode').value==='recorded'?'Recorded motor tone · pitch follows speed':'Live motor synthesis · recorded wheel impacts, rolling and braking';}
  finally{loading=false;$('play').disabled=!ready;}
 }
 async function play(audition=false){
@@ -55,7 +55,7 @@ $('cars').onchange=()=>{const position=transport?.snapshot().position??pendingPo
 $('master').oninput=()=>{$('master-value').textContent=$('master').value+'%';if(mixer)mixer.master.gain.setTargetAtTime(Number($('master').value)/100,context.currentTime,.03);};
 $('yaw').oninput=()=>{$('yaw-value').textContent=$('yaw').value+'°';mixer?.setListener(seat,Number($('yaw').value));};
 for(const button of $('seats').children)button.onclick=()=>{seat=Number(button.dataset.seat);for(const b of $('seats').children){b.classList.toggle('selected',b===button);b.setAttribute('aria-pressed',String(b===button));}mixer?.setListener(seat,Number($('yaw').value));};
-$('motor-mode').onchange=()=>{rolling?.setMotorMode($('motor-mode').value);$('sound-note').textContent=$('motor-mode').value==='recorded'?'Recorded motor texture · speed-selected overlapping excerpts':'Live motor synthesis · recorded wheel impacts, rolling and braking';};
+$('motor-mode').onchange=()=>{rolling?.setMotorMode($('motor-mode').value);$('sound-note').textContent=$('motor-mode').value==='recorded'?'Recorded motor tone · pitch follows speed':'Live motor synthesis · recorded wheel impacts, rolling and braking';};
 $('spatial').onchange=()=>mixer?.setSpatial($('spatial').checked);
 for(const kind of ['impact','rolling','traction','brake'])$(kind+'-mix').oninput=()=>{if(mixer)mixer.levels[kind]=Number($(kind+'-mix').value)/100;};
 document.addEventListener('keydown',e=>{if(['INPUT','SELECT','BUTTON','SUMMARY','TEXTAREA'].includes(e.target.tagName))return;if(e.code==='Space'){e.preventDefault();play();}if(e.code==='ArrowUp'||e.code==='ArrowDown'){e.preventDefault();$('throttle').value=Math.max(0,Math.min(100,Number($('throttle').value)+(e.code==='ArrowUp'?5:-5)));updateControls();}if(e.code==='KeyB'){$('brake').value=Math.min(100,Number($('brake').value)+10);updateControls();}});

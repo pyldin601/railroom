@@ -2,18 +2,20 @@
 const DURATION = .18;
 const HOP = .06;
 export const grainWindow = phase => phase <= 0 || phase >= 1 ? 0 : (1 - Math.cos(2 * Math.PI * phase)) / 3;
-export function sourcePosition(speed, duration) {
-  const low = Math.min(.15, Math.max(0, duration - DURATION));
-  const high = Math.max(low, duration - DURATION - .22); // avoid the old loop seam
-  return low + (high - low) * Math.min(1, Math.max(0, speed) / (120 / 3.6));
+export function recordedPitchRate(speed) {
+  return .68 + 1.12 * Math.min(1, Math.max(0, speed) / (120 / 3.6));
+}
+export function sourcePosition(_speed, duration) {
+  // Hold the motor-dominated section. Scanning the old clip exposed hiss and inverter transitions.
+  return Math.max(0, Math.min(.3, duration - DURATION * 1.8 - .03));
 }
 
 /** Match overlapping waveform phase locally to reduce granular flutter. */
-export function alignGrain(data, sampleRate, desired, previous) {
+export function alignGrain(data, sampleRate, desired, previous, playbackRate = 1) {
   if (previous == null) return desired;
   const target = Math.round(desired * sampleRate);
-  const reference = Math.round((previous + HOP) * sampleRate);
-  const limit = data.length - Math.ceil(DURATION * sampleRate) - 1;
+  const reference = Math.round((previous + HOP * playbackRate) * sampleRate);
+  const limit = data.length - Math.ceil(DURATION * playbackRate * sampleRate) - 1;
   let best = Math.max(0, Math.min(limit, target)), score = -Infinity;
   const radius = Math.floor(.006 * sampleRate);
   for (let candidate = Math.max(0, target - radius); candidate <= Math.min(limit, target + radius); candidate += 4) {
@@ -51,7 +53,7 @@ export class RecordedMotor {
       const output = this.context.createGain(), fade = this.context.createGain();
       output.gain.value = 0;
       output.connect(fade).connect(this.mixer.emitters.get(`${axle.id}:center`).gain);
-      return {output, fade, nextTime:this.context.currentTime + .015 + i * .002, sources:new Set(), previous:null, index:i};
+      return {output, fade, nextTime:this.context.currentTime + .015 + i * .002, sources:new Set(), previous:null, rate:null, lastUpdate:null, index:i};
     });
   }
   update(state, controls, running) {
@@ -62,12 +64,17 @@ export class RecordedMotor {
     const buffer = this.sample.buffer, data = buffer.getChannelData(0);
     for (const voice of this.voices) {
       voice.output.gain.setTargetAtTime(gain, now, .12);
+      const targetRate = recordedPitchRate(state.speed);
+      const dt = Math.max(0, now - (voice.lastUpdate ?? now));
+      voice.rate = voice.rate == null ? targetRate : voice.rate + (targetRate - voice.rate) * (1 - Math.exp(-dt / .18));
+      voice.lastUpdate = now;
       if (voice.nextTime < now) {voice.nextTime = now + .01; voice.previous = null;}
       while (voice.nextTime < now + .15) {
         const desired = sourcePosition(state.speed, buffer.duration);
-        const offset = alignGrain(data, buffer.sampleRate, desired, voice.previous);
+        const offset = alignGrain(data, buffer.sampleRate, desired, voice.previous, voice.rate);
         const source = this.context.createBufferSource(), envelope = this.context.createGain();
-        source.buffer = buffer; // playbackRate stays 1: preserve recorded pitch within this region
+        source.buffer = buffer;
+        source.playbackRate.value = voice.rate;
         const normalizer = textureNormalization(data, buffer.sampleRate, offset);
         envelope.gain.setValueCurveAtTime(this.window.map(v => v * normalizer), voice.nextTime, DURATION);
         source.connect(envelope).connect(voice.output);
@@ -76,7 +83,7 @@ export class RecordedMotor {
           source.disconnect(); envelope.disconnect(); voice.sources.delete(source);
           if (voice.stopping && !voice.sources.size) {voice.output.disconnect();voice.fade.disconnect();}
         };
-        source.start(voice.nextTime, offset, DURATION);
+        source.start(voice.nextTime, offset, DURATION * voice.rate);
         voice.previous = offset; voice.nextTime += HOP;
       }
     }

@@ -25,3 +25,7 @@ The planning document's uncompleted listening and soak-test checkboxes remain me
 ## Traction revision
 
 Replaced the repeating acceleration recording with continuous, speed- and load-driven motor synthesis (user explicitly authorized FM). Two independent motor voices per carriage combine a body tone, gear harmonics, restrained FM and subtle frequency drift. Controls are smoothed and all oscillators fade out and disconnect on stop. Recorded wheel/rolling/braking sources remain. Numerical suite: 26 tests.
+
+## Recorded motor tone correction
+
+Replaced the broadband 9–13 second traction excerpt with the more tonal 18–19 second source region. The recorded mode now holds a fixed region, varies playback pitch smoothly with speed, and accounts for playback rate in overlap phase alignment and source duration. The approved synth is unchanged. All 32 Node tests and browser offline audio checks pass; perceived naturalness remains subject to listening review.

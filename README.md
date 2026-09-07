@@ -35,7 +35,7 @@ The route and component positions are synthetic. This is not an engineering or t
 
 Run `npm test` for numerical and lifecycle tests. Open `/tests/audio-harness.html` on the same local server for actual browser offline-audio checks: asset decoding, bounded voices, finite unclipped output, stereo differences, exact event timing before spatial effects, and source reclamation.
 
-At implementation handoff: 31 Node tests pass. The in-app browser's offline render decoded all 11 samples, rendered non-silent stereo with a measured peak of 0.40376, preserved exact test event frames at 1.06/1.16 seconds, and reclaimed finished impact sources. A follow-up offline test confirmed the continuous layer remains connected during its 30 ms stop fade and reaches silence without an abrupt cut. Interactive playback and reset-after-seek were checked in that browser.
+At implementation handoff: 32 Node tests pass. The in-app browser's offline render decoded all 11 samples, rendered non-silent stereo with a measured peak of 0.40376, preserved exact test event frames at 1.06/1.16 seconds, and reclaimed finished impact sources. A follow-up offline test confirmed the continuous layer remains connected during its 30 ms stop fade and reaches silence without an abrupt cut. Interactive playback and reset-after-seek were checked in that browser.
 
 A 30-minute real-time foreground soak, separate Safari/Chrome compatibility sign-off, and subjective listening approval have not been completed. Passing an accelerated simulation or a short offline render is not a substitute for those checks.
 
@@ -51,4 +51,4 @@ A 30-minute real-time foreground soak, separate Safari/Chrome compatibility sign
 
 ## Motor comparison
 
-The approved synthesized motor was preserved in commit `3c96ddc`. The Motor sound selector also offers **Recorded · smooth texture**. This uses 180 ms overlapping Hann-windowed grains from a speed-selected region of the original recording, with local waveform alignment. At steady speed the source region stays fixed: the full acceleration sweep is never repeatedly restarted. This is a time-stretched texture from one recording, not a newly recorded steady-speed engine. Some granular coloration can remain. Switching modes fades the old motor and keeps the journey running.
+The approved synthesized motor was preserved in commit `3c96ddc`. The Motor sound selector also offers **Recorded · motor tone**. This uses 180 ms overlapping Hann-windowed grains from a fixed, motor-dominated region of the original recording, with local waveform alignment. Pitch follows simulated speed through smoothed playback-rate control. At steady speed both region and pitch stay fixed: the full acceleration sweep is never repeatedly restarted. This is a time-stretched texture from one recording, not a newly recorded steady-speed engine. Some granular coloration can remain. Switching modes fades the old motor and keeps the journey running.

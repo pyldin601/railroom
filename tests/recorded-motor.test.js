@@ -6,3 +6,5 @@ test('three overlapping Hann grains have constant summed envelope',()=>{for(let 
 test('phase alignment stays within valid source bounds',()=>{const data=Float32Array.from({length:48000},(_,i)=>Math.sin(i*.02));const p=alignGrain(data,48000,.3,.2);assert.ok(Math.abs(p-.3)<=.006);});
 
 test('quiet recording regions get bounded loudness matching',()=>{assert.equal(textureNormalization(new Float32Array(48000),48000,.2),4);assert.ok(textureNormalization(new Float32Array(48000).fill(.2),48000,.2)<1);});
+
+test('motor holds the clean source region and changes pitch with speed',async()=>{const {recordedPitchRate}=await import('../src/audio/recorded-motor.js');assert.equal(sourcePosition(0,1),sourcePosition(30,1));assert.ok(recordedPitchRate(30)>recordedPitchRate(3));assert.ok(sourcePosition(30,1)+.18*recordedPitchRate(40)<1);});

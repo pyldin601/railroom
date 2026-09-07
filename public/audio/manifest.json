@@ -115,16 +115,16 @@
     {
       "id": "traction",
       "kind": "traction",
-      "url": "traction.wav",
+      "url": "traction-tonal.wav",
       "source": "https://commons.wikimedia.org/wiki/File:E233-3000Accelerate.ogg",
       "license": "CC0-1.0",
       "author": "E217",
       "onset": 0,
       "gain": 1,
       "loopStart": 0,
-      "loopEnd": 3.85,
-      "sourceOffsetSeconds": 9,
-      "description": "Filtered mono field-recording excerpt with a 150 ms equal-power seam crossfade"
+      "loopEnd": 1.0,
+      "sourceOffsetSeconds": 18,
+      "description": "Motor-dominated 18–19 s excerpt, mono, high-pass 160 Hz and low-pass 1500 Hz; normalized to -6 dBFS. Used as pitch-controlled, phase-aligned grains; not played as a one-second loop."
     },
     {
       "id": "brake",

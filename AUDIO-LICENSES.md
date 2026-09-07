@@ -20,3 +20,7 @@ All app WAVs are mono, 48 kHz, signed 16-bit PCM, peak-normalized to approximate
 - Continuous excerpts receive a 150 ms equal-power seam crossfade, shortening the loop by that overlap. Modest playback-rate adjustment changes rolling texture; it does not imply separately recorded reference-speed bands.
 
 The research report also describes a yard retarder sound that was deliberately **not shipped or used** because it would misrepresent passenger train braking. No redistribution attribution is required by these public-domain/CC0 grants, but provenance is retained here.
+
+## Recorded motor tone revision
+
+The current traction manifest points to `traction-tonal.wav`, taken from E233 original 18–19 seconds, high-passed at 160 Hz, low-passed at 1500 Hz, mono 48 kHz PCM and peak-normalized to −6 dBFS. Spectral inspection of the original showed a dominant approximately 273 Hz component and its harmonic at 18 seconds, whereas the previously used region had a less concentrated spectrum. Playback holds a fixed region and changes rate smoothly with simulated speed. Phase alignment accounts for that rate, keeping grain duration at 180 ms in output time. The older `traction.wav` is retained but is not loaded by the current manifest.
