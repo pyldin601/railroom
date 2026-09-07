@@ -1,9 +1,10 @@
+import {drawRouteMap} from './ui/route-map.js?v=map-badges';
 import {createRenderLoop} from './ui/render-loop.js';
-import {RouteIndex,demoRoute,wheelsets,listenerSeat} from './route/route-index.js?v=coach61779';
-import {Transport} from './audio/scheduler.js';
+import {RouteIndex,demoRoute,wheelsets,listenerSeat} from './route/route-index.js?v=power-zones';
+import {Transport} from './audio/scheduler.js?v=power-zones';
 import {SampleBank} from './audio/sample-bank.js';
-import {SpatialMixer} from './audio/spatial-mixer.js?v=locomotive-space';
-import {RollingLayers} from './audio/rolling.js?v=locomotive-space';
+import {SpatialMixer} from './audio/spatial-mixer.js?v=power-zones';
+import {RollingLayers} from './audio/rolling.js?v=power-zones';
 import {drawTrack} from './ui/track-view.js?v=coach61779';
 const $=id=>document.getElementById(id);
 let requestRender=()=>{};
@@ -13,9 +14,9 @@ let emergency=false;const controls=()=>({throttle:Number($('throttle').value)/10
 function error(message){$('error').textContent=message;$('error').hidden=!message;}
 function setStatus(text){setText('status',text);requestRender();}
 function displayRoute(){
- $('route-map').replaceChildren();$('station').replaceChildren();
- route.stations.forEach((s,i)=>{const marker=document.createElement('div');marker.className='station-marker';marker.style.left=`${s.position/route.length*100}%`;const dot=document.createElement('i'),label=document.createElement('span');label.textContent=s.name.replace('Kyiv-Pasazhyrskyi','Kyiv-Pas.');marker.append(dot,label);$('route-map').append(marker);const option=document.createElement('option');option.value=s.position;option.textContent=s.name;$('station').append(option);});
- const head=document.createElement('i');head.id='route-head';head.className='route-head';$('route-map').append(head);
+ drawRouteMap($('route-map'),$('route-mode').value==='demo'?{length:route.length,stations:route.stations}:routeData);
+ $('station').replaceChildren();
+ for(const s of route.stations){const option=document.createElement('option');option.value=s.position;option.textContent=s.name;$('station').append(option);}
  $('route-caption').textContent=$('route-mode').value==='demo'?'25 m jointed test track · separate from the Kyiv route':'64 km · 25 m rails / welded strings ≤800 m · approximate route';
 }
 function axleButtons(){
@@ -26,7 +27,7 @@ function axleButtons(){
 }
 function buildAudio(position=0){
  rolling?.stop();mixer?.dispose();mixer=new SpatialMixer(context,bank,axles);mixer.motorMode=$('motor-mode').value;rolling=new RollingLayers(context,bank,mixer);
- const sink={hit:(...args)=>mixer.hit(...args),cancelFrom:t=>mixer.cancelFrom(t),silence:()=>{mixer.silence();rolling.stop();}};
+ const sink={power:(...args)=>mixer.power(...args),hit:(...args)=>mixer.hit(...args),cancelFrom:t=>mixer.cancelFrom(t),silence:()=>{mixer.silence();rolling.stop();}};
  transport=new Transport({clock:()=>context.currentTime,sink,route,axles});transport.seek(position);transport.updateControls(controls());mixer.master.gain.value=Number($('master').value)/100;mixer.setListener(seat,Number($('yaw').value));mixer.setSpatial($('spatial').checked);
  for(const kind of ['impact','rolling','rollingLow','rollingHigh','ambient','traction','brake'])mixer.levels[kind]=Number($(kind+'-mix').value)/100;axleButtons();
 }
@@ -63,7 +64,7 @@ $('spatial').onchange=()=>mixer?.setSpatial($('spatial').checked);
 for(const kind of ['impact','rolling','rollingLow','rollingHigh','ambient','traction','brake'])$(kind+'-mix').oninput=()=>{if(mixer)mixer.levels[kind]=Number($(kind+'-mix').value)/100;};
 document.addEventListener('keydown',e=>{if(['INPUT','SELECT','BUTTON','SUMMARY','TEXTAREA'].includes(e.target.tagName))return;if(e.code==='Space'){e.preventDefault();play();}if(e.code==='ArrowUp'||e.code==='ArrowDown'){e.preventDefault();$('throttle').value=Math.max(0,Math.min(100,Number($('throttle').value)+(e.code==='ArrowUp'?5:-5)));updateControls();}if(e.code==='KeyB'){$('brake').value=Math.min(100,Number($('brake').value)+10);updateControls();}});
 setInterval(()=>{
- if(!transport)return;const wasRunning=transport.running;transport.tick();rolling.update(transport.snapshot(),transport.controls,transport.running);
+ if(!transport)return;const wasRunning=transport.running;transport.tick();const snapshot=transport.snapshot();rolling.update(snapshot,{...transport.controls,powerAvailable:route.powerAt(snapshot.position)},transport.running);
  if(wasRunning&&!transport.running)setStatus('Paused · audio timing interruption');
  if(context.state!=='running'&&transport.running){transport.pause();setStatus('Paused · audio interrupted');}
 },25);

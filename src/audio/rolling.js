@@ -28,7 +28,7 @@ export class RollingLayers{
    }
   }
  }
- update(state,controls,running){if(!this.started)return;this.ambient.update(state,controls,running);this.motor.update(state,controls,running);this.recordedMotor.update(state,controls,running);this.braking.update(state,controls,running);const speed=state.speed,t=this.context.currentTime;
+ update(state,controls,running){if(!this.started)return;this.ambient.update(state,controls,running);this.motor.update(state,controls,running&&controls.powerAvailable!==false);this.recordedMotor.update(state,controls,running&&controls.powerAvailable!==false);this.braking.update(state,controls,running);const speed=state.speed,t=this.context.currentTime;
   for(const layer of this.layers){let level=0;
    if(running){
     if(layer.kind==='rolling')level=Math.min(1,speed/22)*.28/Math.sqrt((this.mixer.audibleAxles??this.mixer.axles).length/4)*this.mixer.levels.rolling/Math.sqrt(2);

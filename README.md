@@ -102,3 +102,9 @@ The synthesized motor adds a Taurus 1016/1116-inspired fourteen-note Dorian sequ
 The added PWM sequence is mixed at one-third of its initial level (−9.54 dB), independently of the underlying synthesized motor.
 
 Synthesized traction and PWM share a locomotive transmission bus ahead of the train, with a 2.2 kHz low-pass and three quiet reflections at 23/41/67 ms. The direct HRTF source stays at the locomotive; reflection directions surround the forward part of the listener’s carriage and respond to head rotation. This is an artistic interior transmission model, not a measured carriage impulse response. Wheel mute/solo controls do not mute the locomotive.
+
+Speed and Boiarka electrical markers are documented in [OPERATING-MARKERS.md](OPERATING-MARKERS.md). All numeric limits and positions are explicitly estimated; no current official route profile was verified.
+
+Boiarka power-off/on markers now trigger spatial contactor clunks. Traction is disabled inside the neutral zone, overriding positive acceleration smoothing; rolling resistance and brakes remain active. Motor/PWM audio is muted while unpowered, and the selected throttle resumes after power-on. Speed limits remain unenforced estimates.
+
+The route overview shows station bubbles with hover/focus labels, estimated speed bands, and separate power-off/on markers. Labels include route distance and uncertainty; speed bands are informational and do not enforce limits.

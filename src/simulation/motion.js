@@ -11,10 +11,11 @@ export function advanceMotion(input,controls={},dt,options={}){
  if(!Number.isFinite(dt)||dt<0||dt>60)throw new Error('Motion interval must be between 0 and 60 seconds');
  let state={...input},remaining=dt;const segments=[];
  while(remaining>1e-10){
-  const step=Math.min(.01,remaining);const brake=clamp(controls.brake||0,0,1),throttle=clamp(controls.throttle||0,0,1);
+  let step=Math.min(.01,remaining);const powered=options.powerAt?.(state.position)??true;const brake=clamp(controls.brake||0,0,1),throttle=powered?clamp(controls.throttle||0,0,1):0;
   const resistance=state.speed>0?c.resistance+c.drag*state.speed**2:0;
   let target=controls.emergency?-c.emergencyBrake:brake>0?-brake*c.serviceBrake:throttle*c.traction*(1-c.tractionFade*state.speed/c.maxSpeed)-resistance;
   let acceleration=controls.emergency?target:clamp(target,state.acceleration-c.jerk*step,state.acceleration+c.jerk*step);
+  if(!powered&&acceleration>0)acceleration=Math.min(0,target);
   if(state.speed<=0&&acceleration<0)acceleration=0;
   if(state.speed>=c.maxSpeed&&acceleration>0)acceleration=0;
   if(state.position>=c.length){state.position=c.length;state.speed=0;acceleration=0;}
@@ -25,6 +26,12 @@ export function advanceMotion(input,controls={},dt,options={}){
   if(state.position+distance>c.length){
    const d=c.length-state.position;
    duration=acceleration===0?d/state.speed:2*d/(state.speed+Math.sqrt(Math.max(0,state.speed**2+2*acceleration*d)));
+  }
+  const boundary=options.nextPower?.(state.position);
+  if(boundary!==undefined&&state.position+state.speed*duration+.5*acceleration*duration**2>boundary){
+   const d=boundary-state.position;
+   duration=2*d/(state.speed+Math.sqrt(Math.max(0,state.speed**2+2*acceleration*d)));
+   step=duration;
   }
   const seg={start:{...state},duration,acceleration};segments.push(seg);state=stateInSegment(seg,state.time+duration);
   state.speed=clamp(state.speed,0,c.maxSpeed);state.position=Math.min(state.position,c.length);

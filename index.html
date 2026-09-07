@@ -1,11 +1,12 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Railroom — train sound simulator</title><meta name="description" content="A local train sound simulator with recorded wheel impacts and spatial audio."><link rel="stylesheet" href="src/style.css"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Railroom — train sound simulator</title><meta name="description" content="A local train sound simulator with recorded wheel impacts and spatial audio."><link rel="stylesheet" href="src/style.css?v=map-badges"></head>
 <body>
 <header><a class="brand" href="./" aria-label="Railroom home"><span class="brand-icon">Ⅱ</span> railroom<span class="tag">SOUND SIMULATOR</span></a><div class="live"><i id="status-dot"></i><span id="status">Loading route</span></div></header>
 <main>
 <section class="route-panel">
  <div class="section-line"><div><span class="eyebrow">YOUR JOURNEY</span><h1>Kyiv <span>→</span> Fastiv</h1></div><label class="route-picker"><span>Track</span><select id="route-mode"><option value="route">Kyiv–Fastiv · mixed track</option><option value="demo">25 m jointed demo</option></select></label></div>
- <div class="route-map" id="route-map" aria-label="Route stations"></div>
+ <div class="route-map" id="route-map" aria-label="Route stations, estimated speed limits and power switching markers"></div>
+ <div class="map-legend">○ Stations · numbered badges: speed limit (km/h) · power off / on · hover or focus for details · limits estimated</div>
  <div class="route-caption"><span id="route-caption">64 km · 25 m rails / welded strings ≤800 m · approximate route</span><span id="distance">0.000 / 64.000 km</span></div>
 </section>
 <div class="workspace">
@@ -49,4 +50,4 @@
 <div class="footer-row"><span class="recording-badge"><i></i> LIVE MOTOR · REAL RAIL SOUNDS</span><span id="sound-note">Continuous motor · metallic wheel impacts and rolling. Headphones recommended.</span><details><summary>About the sounds</summary><p>Choose continuous motor synthesis or a recorded motor tone with speed-controlled pitch. The recorded option holds a local texture instead of restarting the full acceleration sweep. Wheel, rolling and braking sounds use public-domain and CC0 recordings from different trains. It is not a recording of the Kyiv–Fastiv service. Wheel impacts have short modeled metal resonances; the rolling bed restores metallic midrange from one ride; braking separates a speed-controlled recorded tone from an unpitched friction-hiss texture. Pneumatic brake hiss and independent speed-band recordings are not included.</p><p>You hear your carriage, its two neighbours at 30%, and the next two at 5%; farther carriages are silent. Welds are subtle. The jointed demo has a stronger clatter. Fastenings do not trigger impacts.</p><a href="AUDIO-LICENSES.md" target="_blank">Recording credits and processing notes ↗</a></details></div>
 <p id="error" role="alert" hidden></p>
 <details class="diagnostics"><summary>Playback diagnostics</summary><span id="diagnostics">Start the journey to enable audio.</span></details>
-</main><script type="module" src="src/main.js?v=locomotive-space"></script></body></html>
+</main><script type="module" src="src/main.js?v=map-badges"></script></body></html>

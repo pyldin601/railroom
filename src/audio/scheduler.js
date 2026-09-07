@@ -1,4 +1,4 @@
-import {advanceMotion,initialState,stateInSegment} from '../simulation/motion.js';
+import {advanceMotion,initialState,stateInSegment} from '../simulation/motion.js?v=power-zones';
 import {findCrossings} from '../simulation/crossings.js';
 /** Predict ahead on the audio clock; no animation-frame timing enters this class. */
 export class Transport{
@@ -27,9 +27,11 @@ export class Transport{
   if(now>this.predicted.time+this.origin+.025){this.state={...this.predicted};this.underruns++;this.pause();return;}
   const target=now+.15-this.origin;
   if(target<=this.predicted.time)return;
-  const {state,segments}=advanceMotion(this.predicted,this.controls,target-this.predicted.time,{...this.vehicle,length:this.route.length});
+  const {state,segments}=advanceMotion(this.predicted,this.controls,target-this.predicted.time,{...this.vehicle,length:this.route.length,powerAt:p=>this.route.powerAt?.(p)??true,nextPower:p=>this.route.nextPower?.(p)});
   const events=findCrossings(segments,this.axles,this.route);
   for(const event of events){this.sink.hit(event,this.origin+event.simulationTime,this.generation);this.impacts++;}
+  const powerRoute={between:(start,end)=>(this.route.powerMarkers||[]).filter(m=>m.position>start+1e-8&&m.position<=end+1e-8).map(m=>({...m,side:'center'}))};
+  for(const event of findCrossings(segments,[{id:'locomotive',offset:0}],powerRoute))this.sink.power?.(event,this.origin+event.simulationTime,this.generation);
   this.segments.push(...segments);this.predicted=state;
   this.segments=this.segments.filter(s=>s.start.time+s.duration>=now-this.origin-.2);
  }

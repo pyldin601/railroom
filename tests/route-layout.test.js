@@ -28,7 +28,7 @@ test('jointed station approaches and long welded stretches follow an explicit pl
  const at=p=>data.sections.find(s=>p>=s.position&&p<s.position+s.length).construction;
  for(const p of [0,7000,35000,63999])assert.equal(at(p),'jointed');
  for(const p of [3500,12000,23000,47000])assert.equal(at(p),'welded');
- assert.equal(data.stations.length,8);assert.equal(data.synthetic,true);
+ assert.equal(data.stations.length,19);assert.equal(data.synthetic,true);
 });
 test('welded sections have direct string joints without short adjustment clusters',()=>{
  for(const section of data.sections.filter(s=>s.construction==='welded')){
@@ -39,4 +39,9 @@ test('welded sections have direct string joints without short adjustment cluster
    assert.deepEqual(joints.map(e=>e.position),spans.slice(1).map(r=>r.position));
   }
  }
+});
+
+test('all nineteen passenger stopping points are present in route order',()=>{
+ assert.deepEqual(data.stations.map(s=>s.name),['Kyiv-Pasazhyrskyi','Karavaievi Dachi','Kyiv-Volynskyi','Vyshneve','Tarasivka','Boiarka','Maliutynka','Shliakhova','Hlevakha','Danylivka (888 km)','Vasylkiv I','Korchi','Motovylivka','Bilky','Pivni','Vyshniaky','Sorochyi Brid','Snitynka','Fastiv I']);
+ data.stations.forEach((s,i)=>{assert.ok(uuid.test(s.id));assert.equal(s.positionStatus,'estimated');if(i)assert.ok(s.position>data.stations[i-1].position);});
 });

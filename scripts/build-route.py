@@ -1,4 +1,5 @@
 """Build a deterministic mixed-track variant; preserve the original asset inventory."""
+from operating_markers import build_markers
 import json
 import math
 from pathlib import Path
@@ -16,6 +17,21 @@ def identity(kind, *parts):
 def build_route(objects):
     stations = [{k: o[k] for k in ('id', 'name', 'position')}
                 for o in objects if o['type'] == 'station']
+    # Stop names/order checked against the local 2026 all-stops timetable.
+    # Preserve existing anchors; added distances are illustrative, not chainage.
+    extra_stops = [
+        ('Tarasivka', 19000.0), ('Maliutynka', 26000.0),
+        ('Shliakhova', 28000.0), ('Hlevakha', 30000.0),
+        ('Danylivka (888 km)', 32500.0), ('Korchi', 41000.0),
+        ('Bilky', 49500.0), ('Pivni', 52500.0), ('Vyshniaky', 55000.0),
+        ('Sorochyi Brid', 58000.0), ('Snitynka', 61000.0),
+    ]
+    stations += [dict(id=identity('stop', name), name=name, position=position)
+                 for name, position in extra_stops]
+    for station in stations:
+        station['positionStatus'] = 'estimated'
+        station['sourceUrl'] = 'https://boyarka-shop.in.ua/ukr/train2s/6/1/'
+    stations.sort(key=lambda station: station['position'])
     # Deliberate illustrative renewal pattern, NOT observed infrastructure.
     # Small passenger stops do not automatically interrupt welded running rails.
     plan = [
@@ -58,10 +74,17 @@ def build_route(objects):
     events = [dict(id=o['id'], position=o['position'], side=o['side'],
                    type='joint' if o['position'] in boundaries else 'weld')
               for o in objects if o['type'] in ('joint', 'weld')]
-    assert len(events) == 5118 and len(stations) == 8
+    assert len(events) == 5118 and len(stations) == 19
     assert all(a['position'] <= b['position'] for a, b in zip(events, events[1:]))
     return dict(length=64000.0, synthetic=True, layout='mixed-25m-800m-direct-joints-v2',
-                stations=stations, sections=sections, rails=rails, events=events)
+                stations=stations, sections=sections, rails=rails, events=events,
+                operatingMarkers=build_markers(sections),
+                operatingMetadata=dict(schemaVersion=1, researchedOn='2026-09-07',
+                    operationallyVerified=False, dataOnly=False, speedLimitsEnforced=False,
+                    coordinateSystem='meters from synthetic Kyiv-Pasazhyrskyi origin; not railway chainage',
+                    sources=[dict(id='boiarka-2020', url='https://explorer.lviv.ua/forum/index.php?topic=8599.0',
+                        sourceDate='2020-08-14', kind='firsthand-public-report',
+                        supports='Reported presence near station throat only; no surveyed positions or current confirmation')]))
 
 
 if __name__ == '__main__':

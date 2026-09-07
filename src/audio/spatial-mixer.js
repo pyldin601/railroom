@@ -1,3 +1,4 @@
+import {powerSwitchBuffer} from './power-switch.js';
 import {LocomotiveSpace} from './locomotive-space.js';
 import {carriageGain,occupiedCarriage} from './carriage-isolation.js?v=coach61779';
 /** Point contacts are fixed relative to an onboard listener; no artificial pass-by. */
@@ -23,6 +24,14 @@ export class SpatialMixer{
  setSpatial(enabled){this.locomotive.setSpatial(enabled);for(const {pan} of this.emitters.values())pan.panningModel=enabled?'HRTF':'equalpower';}
  isAudible(id){return this.transmission(id)>0&&!this.muted.has(id)&&(!this.solo||this.solo===id);}
  applyMute(){const t=this.context.currentTime;for(const [key,{gain}]of this.emitters)gain.gain.setTargetAtTime(this.isAudible(key.split(':')[0])?this.transmission(key.split(':')[0]):0,t,.015);}
+ power(event,when,generation){
+  const source=this.context.createBufferSource(),gain=this.context.createGain();
+  source.buffer=powerSwitchBuffer(this.context,event.kind==='power_on');gain.gain.value=.6;
+  source.connect(gain).connect(this.locomotive.input);
+  const voice={source,gain,when,kind:event.kind,generation};this.voices.add(voice);
+  source.onended=()=>{this.voices.delete(voice);source.disconnect();gain.disconnect();};
+  source.start(Math.max(when,this.context.currentTime));
+ }
  hit(event,when,generation){
   if(!this.isAudible(event.wheelsetId))return;
   if(this.voices.size>=128){if(event.kind==='weld')return;const quiet=[...this.voices].find(v=>v.kind==='weld');if(quiet)this.stopVoice(quiet,this.context.currentTime);else return;}
