@@ -3,7 +3,7 @@ import {RouteIndex,demoRoute,wheelsets,listenerSeat} from './route/route-index.j
 import {Transport} from './audio/scheduler.js';
 import {SampleBank} from './audio/sample-bank.js';
 import {SpatialMixer} from './audio/spatial-mixer.js?v=louder-mix';
-import {RollingLayers} from './audio/rolling.js?v=brake-grains';
+import {RollingLayers} from './audio/rolling.js?v=rolling-bands';
 import {drawTrack} from './ui/track-view.js?v=coach61779';
 const $=id=>document.getElementById(id);
 let requestRender=()=>{};
@@ -28,7 +28,7 @@ function buildAudio(position=0){
  rolling?.stop();mixer?.dispose();mixer=new SpatialMixer(context,bank,axles);mixer.motorMode=$('motor-mode').value;rolling=new RollingLayers(context,bank,mixer);
  const sink={hit:(...args)=>mixer.hit(...args),cancelFrom:t=>mixer.cancelFrom(t),silence:()=>{mixer.silence();rolling.stop();}};
  transport=new Transport({clock:()=>context.currentTime,sink,route,axles});transport.seek(position);transport.updateControls(controls());mixer.master.gain.value=Number($('master').value)/100;mixer.setListener(seat,Number($('yaw').value));mixer.setSpatial($('spatial').checked);
- for(const kind of ['impact','rolling','traction','brake'])mixer.levels[kind]=Number($(kind+'-mix').value)/100;axleButtons();
+ for(const kind of ['impact','rolling','rollingLow','rollingHigh','traction','brake'])mixer.levels[kind]=Number($(kind+'-mix').value)/100;axleButtons();
 }
 async function enableAudio(){
  if(bank)return;if(loading)throw new Error('Audio is still loading');loading=true;$('play').disabled=true;setStatus('Loading recorded sounds');
@@ -60,7 +60,7 @@ $('yaw').oninput=()=>{$('yaw-value').textContent=$('yaw').value+'°';mixer?.setL
 for(const button of $('seats').children)button.onclick=()=>{seat=listenerSeat(axles.length/4,Number(button.dataset.seat));for(const b of $('seats').children){b.classList.toggle('selected',b===button);b.setAttribute('aria-pressed',String(b===button));}mixer?.setListener(seat,Number($('yaw').value));};
 $('motor-mode').onchange=()=>{rolling?.setMotorMode($('motor-mode').value);$('sound-note').textContent=$('motor-mode').value==='recorded'?'Recorded motor tone · pitch follows speed':'Live motor synthesis · recorded wheel impacts, rolling and braking';};
 $('spatial').onchange=()=>mixer?.setSpatial($('spatial').checked);
-for(const kind of ['impact','rolling','traction','brake'])$(kind+'-mix').oninput=()=>{if(mixer)mixer.levels[kind]=Number($(kind+'-mix').value)/100;};
+for(const kind of ['impact','rolling','rollingLow','rollingHigh','traction','brake'])$(kind+'-mix').oninput=()=>{if(mixer)mixer.levels[kind]=Number($(kind+'-mix').value)/100;};
 document.addEventListener('keydown',e=>{if(['INPUT','SELECT','BUTTON','SUMMARY','TEXTAREA'].includes(e.target.tagName))return;if(e.code==='Space'){e.preventDefault();play();}if(e.code==='ArrowUp'||e.code==='ArrowDown'){e.preventDefault();$('throttle').value=Math.max(0,Math.min(100,Number($('throttle').value)+(e.code==='ArrowUp'?5:-5)));updateControls();}if(e.code==='KeyB'){$('brake').value=Math.min(100,Number($('brake').value)+10);updateControls();}});
 setInterval(()=>{
  if(!transport)return;const wasRunning=transport.running;transport.tick();rolling.update(transport.snapshot(),transport.controls,transport.running);

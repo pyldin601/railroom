@@ -75,7 +75,7 @@ Current coach geometry: [КВБЗ 61-779 with ТВЗ-ЦНИИ-М bogies](COACH-G
 
 ## Rolling at individual wheels
 
-Rolling now uses eight independent mono sources at the occupied carriage's four left and four right wheels. Each uses the approved narrow recording with a distinct loop offset and a slight fixed playback-rate variation (within ±0.28%). They follow their corresponding wheelset's spatial emitter and mute/solo controls. Rolling sources are not created for other carriages; neighbouring impact and motor isolation remains unchanged. A √2 gain correction compensates for replacing each central axle source with two wheel sources. These are independent playbacks of one recording, not eight independently recorded wheels.
+Rolling now uses eight independent mono sources at the occupied carriage's four left and four right wheels. Each uses the approved narrow recording with a distinct loop offset and a slight fixed playback-rate variation (within ±1%). They follow their corresponding wheelset's spatial emitter and mute/solo controls. Rolling sources are not created for other carriages; neighbouring impact and motor isolation remains unchanged. A √2 gain correction compensates for replacing each central axle source with two wheel sources. These are independent playbacks of one recording, not eight independently recorded wheels.
 
 ## UI rendering cost
 
@@ -88,3 +88,9 @@ Master volume defaults to 100%. A fixed 1.4× mix gain (+2.92 dB) sits before th
 ## Braking without repeated deceleration sweeps
 
 Braking now combines a held, speed-pitched recorded tone with an independently scattered, unpitched friction-hiss texture. The same overlapping-grain engine used by recorded traction supplies smooth envelopes. Both components follow brake pressure, fade near rest, and are located at the occupied carriage's bogies. No full deceleration clip is looped. See [recording notes](AUDIO-LICENSES.md) for sources and limitations.
+
+Rolling playback pitch is fixed: speed affects rolling volume, not pitch. Each wheel keeps its small, constant rate variation (within ±1%) and separate source offset. Motor and brake tone speed behaviour is unchanged.
+
+The eight rolling wheels now use fixed, irregular detuning of −17, +7, +15, −8, +11, −14, −4 and +10 cents. Their average in cents is zero, preserving the overall pitch centre while broadening the combined resonance. This is a sound-design variation, not measured wheel-specific tuning. Pitches remain constant with speed and across restarts.
+
+Each wheel's rolling playback is split at 500 Hz into low rumble and high metal layers, with independent 0–150% controls. Both default to 100%; the existing Rolling control scales their combined level. A fourth-order Linkwitz–Riley crossover keeps the combined frequency response flat at equal levels. Both bands share the same playback, offset, fixed pitch and spatial emitter, so they stay synchronized. Browser frequency-response checks verify the crossover and the full mix renders without clipping at default levels; all 54 Node tests pass.
