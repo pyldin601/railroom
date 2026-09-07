@@ -6,7 +6,7 @@ from pathlib import Path
 from uuid import NAMESPACE_URL, uuid5
 
 APP = Path(__file__).resolve().parents[1]
-ROOT = APP.parents[1]
+ROOT = APP
 
 
 def identity(kind, *parts):
