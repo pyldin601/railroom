@@ -98,9 +98,9 @@ npm run build:route
 - Vehicle maximum speed **360 km/h**, requested by the user. This does not raise track speed markers.
 - Route length 64 km, starts at Kyiv-Pasazhyrskyi and ends at Fastiv I.
 - 19 station/stop names in order: Kyiv-Pasazhyrskyi, Karavaievi Dachi, Kyiv-Volynskyi, Vyshneve, Tarasivka, Boiarka, Maliutynka, Shliakhova, Hlevakha, Danylivka (888 km), Vasylkiv I, Korchi, Motovylivka, Bilky, Pivni, Vyshniaky, Sorochyi Brid, Snitynka, Fastiv I.
-- Track combines 12 km of 25 m jointed areas, 6 km of 12.5 m jointed areas and 46 km of 725–800 m welded strings. Strings connect with single joints, not inserted series of 25 m rails.
+- Track combines 18 km of predominantly 25 m jointed areas with one or two 12.5 m rails after every 5–10 full 25 m rails and 46 km of 725–800 m welded strings. Strings connect with single joints, not inserted series of 25 m rails.
 - **Internal welds are completely silent**: retained in route data, skipped by crossing scheduling and rejected by the mixer. String-end joints still produce impacts. Rolling continues over welds.
-- 25 m jointed areas: 0–1,500; 6,250–7,750; 14,000–17,000; 34,250–35,750; 42,000–45,000; 62,500–64,000 m. 12.5 m jointed areas: 23,250–25,250; 51,250–53,250; 60,500–62,500 m.
+- 25 m jointed areas: 0–1,500; 6,250–7,750; 14,000–17,000; 34,250–35,750; 42,000–45,000; 62,500–64,000 m. Additional 25 m jointed areas: 23,250–25,250; 51,250–53,250; 60,500–62,500 m. There are no entire 12.5 m zones; see TRACK-LAYOUT.md for the short-rail placement rule.
 - Speed limits: all 25 m and 12.5 m jointed sections 40 km/h, except terminal approaches at 25 km/h. Only welded strings receive 120 km/h. Autopilot follows these markers; manual driving can exceed them.
 - Estimated Boiarka power-off/on positions: 23,500 / 23,800 m. Power switching sounds play; traction is unavailable in the neutral section, while coasting/braking continue.
 - Positions and operating limits are **illustrative estimates**, not verified current railway operating data. Stop order was checked against a timetable; don't describe the route as an exact infrastructure survey. See `OPERATING-MARKERS.md` and `TRACK-LAYOUT.md`.

@@ -41,15 +41,15 @@ def build_route(objects):
         (7750, 14000, None, 'Renewed running track'),
         (14000, 17000, 25, 'Illustrative older jointed running section'),
         (17000, 23250, None, 'Renewed running track toward Boiarka'),
-        (23250, 25250, 12.5, 'Illustrative short-rail section near Boiarka'),
+        (23250, 25250, 25, 'Illustrative jointed section near Boiarka'),
         (25250, 34250, None, 'Renewed running track'),
         (34250, 35750, 25, 'Vasylkiv I approach'),
         (35750, 42000, None, 'Renewed running track'),
         (42000, 45000, 25, 'Illustrative older jointed running section'),
         (45000, 51250, None, 'Renewed running track through Motovylivka'),
-        (51250, 53250, 12.5, 'Illustrative short-rail section near Pivni'),
+        (51250, 53250, 25, 'Illustrative jointed section near Pivni'),
         (53250, 60500, None, 'Renewed running track'),
-        (60500, 62500, 12.5, 'Illustrative short-rail section near Snitynka'),
+        (60500, 62500, 25, 'Illustrative jointed section near Snitynka'),
         (62500, 64000, 25, 'Fastiv I arrival approach'),
     ]
     sections, spans = [], []
@@ -60,7 +60,27 @@ def build_route(objects):
                              length=float(end-start), construction=construction, reason=reason))
         if construction == 'jointed':
             assert (end-start) % rail_length == 0
-            sizes = [(rail_length, 'jointed', reason)] * int((end-start)/rail_length)
+            # Work in half-rail units. Feasible remainders preserve exact
+            # section ends without adding a third short rail or a long gap.
+            units = int((end-start)/12.5)
+            feasible = set(range(2, 21, 2))
+            for remaining in range(2, units + 1):
+                if any(remaining - 2 * full - short in feasible
+                       for full in range(5, 11) for short in (1, 2)):
+                    feasible.add(remaining)
+            lengths, cycle = [], 0
+            gaps = (5, 8, 6, 10, 7, 9)
+            while units > 20 or units % 2:
+                candidates = [(gaps[(cycle + shift) % len(gaps)], short)
+                              for shift in range(len(gaps))
+                              for short in (1 + cycle % 2, 2 - cycle % 2)]
+                full, short = next((full, short) for full, short in candidates
+                                  if units - 2 * full - short in feasible)
+                lengths += [25] * full + [12.5] * short
+                units -= 2 * full + short
+                cycle += 1
+            lengths += [25] * (units // 2)
+            sizes = [(length, 'jointed', reason) for length in lengths]
         else:
             # Direct string-to-string joints. Balance lengths on the 25 m
             # fabrication grid, keeping each string at most 800 m.
@@ -82,9 +102,13 @@ def build_route(objects):
     boundaries = {s['position'] for s in spans[1:]}
     # Retain original event UUIDs/positions. Their connection type now follows
     # the physical string ends; seams inside each string remain quiet welds.
+    welded_sections = [section for section in sections if section['construction'] == 'welded']
     events = [dict(id=o['id'], position=o['position'], side=o['side'],
                    type='joint' if o['position'] in boundaries else 'weld')
-              for o in objects if o['type'] in ('joint', 'weld')]
+              for o in objects if o['type'] in ('joint', 'weld')
+              and (o['position'] in boundaries or any(
+                  section['position'] < o['position'] < section['position'] + section['length']
+                  for section in welded_sections))]
     existing = {(e['position'], e['side']) for e in events}
     for position in sorted(boundaries):
         for side in ('left', 'right'):
@@ -94,7 +118,7 @@ def build_route(objects):
     events.sort(key=lambda event: (event['position'], event['side']))
     assert len(stations) == 19
     assert all(a['position'] <= b['position'] for a, b in zip(events, events[1:]))
-    return dict(length=64000.0, synthetic=True, layout='mixed-12.5m-25m-800m-direct-joints-v3',
+    return dict(length=64000.0, synthetic=True, layout='mixed-25m-interspersed-short-rails-v5',
                 stations=stations, sections=sections, rails=rails, events=events,
                 operatingMarkers=build_markers(sections),
                 operatingMetadata=dict(schemaVersion=1, researchedOn='2026-09-07',

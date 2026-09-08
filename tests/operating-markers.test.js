@@ -34,7 +34,7 @@ test('Boiarka electrical markers are paired and never enter the impact scheduler
   );
   assert.ok(pair[0].position < pair[1].position);
   const index = new RouteIndex(route);
-  assert.equal(index.events.length, 5598);
+  assert.equal(index.events.length, route.events.length);
   assert.ok(index.events.every((e) => ['joint', 'weld'].includes(e.type)));
   assert.equal(route.operatingMetadata.speedLimitsEnforced, false);
 });

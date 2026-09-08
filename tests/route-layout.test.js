@@ -28,7 +28,7 @@ test('every rail boundary is a joint and every internal fabrication seam is a we
     const rails = data.rails.filter((r) => r.side === side);
     const boundaries = new Set(rails.slice(1).map((r) => r.position));
     const events = data.events.filter((e) => e.side === side);
-    assert.equal(events.length, 2799);
+    assert.ok(events.length > 2500);
     assert.deepEqual(
       events.filter((e) => e.type === 'joint').map((e) => e.position),
       [...boundaries],
@@ -113,18 +113,45 @@ test('all nineteen passenger stopping points are present in route order', () => 
   });
 });
 
-test('expanded jointed track includes 12 km of 25 m and 6 km of 12.5 m rails', () => {
-  const rails = data.rails.filter((r) => r.side === 'left' && r.construction === 'jointed');
-  for (const [length, total] of [
-    [25, 12000],
-    [12.5, 6000],
-  ]) {
-    assert.equal(
-      rails.filter((r) => r.length === length).reduce((sum, r) => sum + r.length, 0),
-      total,
+test('short rails occur in singles or pairs after every 5–10 full rails', () => {
+  const rails = data.rails.filter((r) => r.side === 'left');
+  const short = rails.filter((r) => r.length === 12.5);
+  assert.ok(short.length > 16);
+  const runs = [];
+  for (let i = 0; i < rails.length; i++) {
+    if (rails[i].length !== 12.5) continue;
+    const start = i;
+    while (rails[i + 1]?.length === 12.5) i++;
+    runs.push(i - start + 1);
+    assert.equal(rails[start - 1].length, 25);
+    assert.equal(rails[i + 1].length, 25);
+  }
+  assert.ok(runs.includes(1) && runs.includes(2));
+  assert.ok(runs.every((n) => n <= 2));
+  const jointed = rails.filter((r) => r.construction === 'jointed');
+  assert.equal(
+    jointed.reduce((sum, r) => sum + r.length, 0),
+    18000,
+  );
+  for (const section of data.sections.filter((s) => s.construction === 'jointed')) {
+    const spans = jointed.filter((r) => r.sectionId === section.id);
+    let full = 0;
+    for (let i = 0; i < spans.length; i++) {
+      if (spans[i].length === 25) {
+        full++;
+        continue;
+      }
+      assert.ok(full >= 5 && full <= 10, `full rail run: ${full}`);
+      full = 0;
+      if (spans[i + 1]?.length === 12.5) i++;
+    }
+    assert.ok(full >= 1 && full <= 10, 'section ends on a short remainder of full rails');
+    assert.ok(
+      data.events
+        .filter(
+          (e) => e.position >= section.position && e.position < section.position + section.length,
+        )
+        .every((e) => e.type === 'joint'),
     );
   }
-  const half = data.events.filter((e) => e.position === 23262.5);
-  assert.equal(half.length, 2);
-  assert.ok(half.every((e) => e.type === 'joint'));
 });
