@@ -77,6 +77,8 @@
         const speedMarkers = [...doc.querySelectorAll('.map-speed')];
         const routeAsset = await (await win.fetch('./public/kyiv-lisbon.json')).json();
         const paris = routeAsset.stations.find(station => station.name === 'Paris');
+        assert([...$('station').options].find(option => Number(option.value) === paris.position).textContent.includes('10 min stop'), 'station selector shows hub dwell');
+        assert([...doc.querySelectorAll('.map-station')].some(marker => marker.getAttribute('aria-label').includes('Shepetivka') && marker.getAttribute('aria-label').includes('5 min stop')), 'map station tooltip shows passenger dwell');
         assert($('route-caption').textContent.includes('4,447 km') && $('route-caption').textContent.includes('approximate'), 'simplified distance and assumptions are visible');
         assert(!$('route-assumptions').hidden, 'Lisbon exposes simplified scenario attribution');
         assert(speedMarkers.length === routeAsset.operatingMarkers.length, 'long route overview shows every speed limit');

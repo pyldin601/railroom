@@ -61,15 +61,15 @@ test('Lisbon asset preserves the approved itinerary, rounded corridor distances 
 });
 test('new-route autopilot approaches, dwells, resumes and finishes at Lisbon', () => {
   const route = new RouteIndex(load());
-  for (const station of [route.stations[1], route.stations[14], route.stations.at(-1)]) {
+  for (const station of [route.stations[1], route.stations[2], route.stations[14], route.stations.at(-1)]) {
     const state = { position: station.position - 500, speed: 20, time: 0 };
     const pilot = new Autopilot(route, state);
     const approaching = pilot.update(state);
     assert.ok(approaching.brake > 0);
     Object.assign(state, { position: station.position, speed: 0, time: 100 });
     assert.equal(pilot.update(state).stopPosition, station.position);
-    assert.match(pilot.status, /60s/);
-    state.time = 161;
+    assert.ok(pilot.status.includes(station.dwellSeconds ? `${station.dwellSeconds / 60}m 00s` : '60s'));
+    state.time = 100 + (station.dwellSeconds ?? 60);
     pilot.update(state);
     assert.equal(pilot.status, station === route.stations.at(-1) ? 'Journey complete' : 'Departure horn');
   }
@@ -83,7 +83,7 @@ test('committed asset matches the deterministic builder', () => {
 
 test('short motion simulations stop gently and dwell at Shepetivka, Irún and Lisbon', () => {
   const route = new RouteIndex(load());
-  for (const station of [route.stations[1], route.stations[14], route.stations.at(-1)]) {
+  for (const station of [route.stations[1], route.stations[2], route.stations[14], route.stations.at(-1)]) {
     const previous = route.stations[route.stations.indexOf(station) - 1];
     const start = Math.max(station.position - 2500, previous.position + 100);
     let state = { ...initialState(start), speed: 20 };
@@ -102,7 +102,7 @@ test('short motion simulations stop gently and dwell at Shepetivka, Irún and Li
     }
     assert.equal(state.position, station.position, `${station.name} was the station actually reached`);
     assert.equal(pilot.index, 1, `${station.name} stop completed`);
-    assert.ok(arrivalTime !== null && state.time - arrivalTime >= 60);
+    assert.ok(arrivalTime !== null && state.time - arrivalTime >= (station.dwellSeconds ?? 60));
     assert.equal(pilot.status, station === route.stations.at(-1) ? 'Journey complete' : 'Departure horn');
   }
 });
@@ -139,4 +139,13 @@ test('local speed restrictions do not require short rails outside replacement wo
   assert.equal(sectionAt(data.length-1).construction, 'long-rail');
   assert.equal(speedAt(data.length-1), 25);
   assert.ok(data.sections.filter(s => s.purpose === 'rail-replacement').reduce((n,s) => n+s.length,0) <= 12000);
+});
+
+test('Lisbon passenger stops allocate ten minutes to hubs and five to other intermediate stations', () => {
+  const stops = load().stations.slice(1,-1);
+  assert.ok(stops.every(s => [300,600].includes(s.dwellSeconds)));
+  assert.equal(stops.filter(s => s.dwellSeconds === 600).length, 10);
+  assert.equal(stops.find(s => s.name === 'Paris').dwellSeconds, 600);
+  assert.equal(stops.find(s => s.name === 'Shepetivka').dwellSeconds, 300);
+  assert.equal(stops.reduce((n,s) => n+s.dwellSeconds,0), 8700);
 });

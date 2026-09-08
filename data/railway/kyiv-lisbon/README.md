@@ -113,8 +113,8 @@ profile. Twelve local speed zones retain their existing 40/50/60 km/h restrictio
 retain 1 km approaches/departures at 40/50/60 km/h (25 at the termini). Overlapping
 restrictions take the lowest speed. All adjacent equal speed intervals merge.
 The locomotive and high-speed running cap remain 260 km/h. Autopilot follows
-limits and stops at each city with the existing 60-second dwell. No power-switch
-locations are added.
+limits and uses the passenger dwell schedule below. No power-switch locations
+are added.
 
 ## Runtime adaptation
 
@@ -139,3 +139,17 @@ The scrolling map shows stations, speed changes and colored area bands. Tooltips
 describe the 800 m, 1,500 m and reduced-area patterns. At most 1,000 km is visible;
 the view follows the train and clamps at route endpoints. Speed badges remain
 readable in separate rows and carried-in limits stay visible at the left edge.
+
+## Passenger stops
+
+These are scenario timetable choices based on hub importance, not official schedules.
+Ten-minute stops: Lviv, Przemyśl, Kraków, Wrocław, Dresden, Leipzig, Frankfurt am Main,
+Strasbourg, Paris and Bordeaux. The other nine intermediate stops take five minutes.
+`dwellSeconds` in `corridors.json` controls each stop; countdowns use simulation time,
+so pausing also pauses the stop. Station tooltips and navigation show the duration.
+
+Intermediate dwell totals 2 h 25 min. Combined with distance divided by each limit,
+arrival is approximately 33 h 29 min; acceleration and braking add further time.
+Kyiv starts immediately and Lisbon retains the existing one-minute completion dwell
+after arrival (excluded from that arrival estimate). Routes without station dwell
+metadata, including Kyiv–Fastiv, retain their one-minute dwell.

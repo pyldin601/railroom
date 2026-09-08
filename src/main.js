@@ -1,11 +1,11 @@
 import { DEFAULT_CARRIAGES, SEAT_POSITIONS } from './route/coach-geometry.js';
-import { TrainSession } from './session.js?v=review-fixes';
+import { TrainSession } from './session.js?v=passenger-dwells';
 import { AUDIO_SETTINGS, MIX_LEVELS } from './audio/settings.js';
-import { drawRouteMap } from './ui/route-map.js?v=short-worksites';
+import { drawRouteMap } from './ui/route-map.js?v=passenger-dwells';
 import { createRenderLoop } from './ui/render-loop.js';
-import { RouteIndex, demoRoute, wheelsets, listenerSeat } from './route/route-index.js?v=short-worksites';
+import { RouteIndex, demoRoute, wheelsets, listenerSeat } from './route/route-index.js?v=passenger-dwells';
 import { wheelAt } from './ui/track-view.js?v=wheel-click';
-import { renderDashboard } from './ui/dashboard.js?v=short-worksites';
+import { renderDashboard } from './ui/dashboard.js?v=passenger-dwells';
 import { setText } from './ui/dom.js';
 const $ = (id) => document.getElementById(id);
 $('cars').value = String(DEFAULT_CARRIAGES);
@@ -54,7 +54,7 @@ function displayRoute() {
   for (const s of route.stations) {
     const option = document.createElement('option');
     option.value = s.position;
-    option.textContent = s.name;
+    option.textContent = `${s.name}${s.dwellSeconds ? ` · ${s.dwellSeconds / 60} min stop` : ''}`;
     $('station').append(option);
   }
   $('route-title').textContent = demoSpacing() ? `${demoSpacing()} m jointed test track` : routeData.name;

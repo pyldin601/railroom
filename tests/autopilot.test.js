@@ -139,3 +139,19 @@ test('autopilot uses the same vehicle forces as motion for comfortable accelerat
   assert.ok(deceleration >= -0.33, `comfort deceleration was ${deceleration}`);
   assert.ok(deceleration < -0.3);
 });
+
+test('station dwell metadata holds for five or ten minutes and defaults to one minute', () => {
+  for (const dwell of [300, 600, undefined, -5]) {
+    const seconds = dwell >= 0 ? dwell : 60;
+    const route = { stations: [{ name: 'Hub', position: 100, dwellSeconds: dwell }, { name: 'Next', position: 1000 }], speedMarkers: [] };
+    const pilot = new Autopilot(route, { position: 0, speed: 10, time: 0 });
+    const state = { position: 100, speed: 0, time: 10 };
+    pilot.update(state);
+    if (seconds >= 300) assert.match(pilot.status, new RegExp(`${seconds / 60}m 00s`));
+    pilot.update({ ...state, time: 10 + seconds - 0.1 });
+    assert.equal(pilot.index, 0, 'cannot leave early');
+    pilot.update({ ...state, time: 10 + seconds });
+    assert.equal(pilot.index, 1);
+    assert.equal(pilot.status, 'Departure horn');
+  }
+});

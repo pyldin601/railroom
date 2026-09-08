@@ -9,79 +9,98 @@
     },
     {
       "country": "UA",
-      "name": "Shepetivka"
+      "name": "Shepetivka",
+      "dwellSeconds": 300
     },
     {
       "country": "UA",
-      "name": "Lviv"
+      "name": "Lviv",
+      "dwellSeconds": 600
     },
     {
       "country": "PL",
-      "name": "Przemyśl"
+      "name": "Przemyśl",
+      "dwellSeconds": 600
     },
     {
       "country": "PL",
-      "name": "Kraków"
+      "name": "Kraków",
+      "dwellSeconds": 600
     },
     {
       "country": "PL",
-      "name": "Katowice"
+      "name": "Katowice",
+      "dwellSeconds": 300
     },
     {
       "country": "PL",
-      "name": "Wrocław"
+      "name": "Wrocław",
+      "dwellSeconds": 600
     },
     {
       "country": "DE",
-      "name": "Dresden"
+      "name": "Dresden",
+      "dwellSeconds": 600
     },
     {
       "country": "DE",
-      "name": "Leipzig"
+      "name": "Leipzig",
+      "dwellSeconds": 600
     },
     {
       "country": "DE",
-      "name": "Frankfurt am Main"
+      "name": "Frankfurt am Main",
+      "dwellSeconds": 600
     },
     {
       "country": "FR",
-      "name": "Strasbourg"
+      "name": "Strasbourg",
+      "dwellSeconds": 600
     },
     {
       "country": "FR",
-      "name": "Paris"
+      "name": "Paris",
+      "dwellSeconds": 600
     },
     {
       "country": "FR",
-      "name": "Bordeaux"
+      "name": "Bordeaux",
+      "dwellSeconds": 600
     },
     {
       "country": "FR",
-      "name": "Hendaye"
+      "name": "Hendaye",
+      "dwellSeconds": 300
     },
     {
       "country": "ES",
-      "name": "Irún"
+      "name": "Irún",
+      "dwellSeconds": 300
     },
     {
       "country": "ES",
-      "name": "Burgos"
+      "name": "Burgos",
+      "dwellSeconds": 300
     },
     {
       "country": "ES",
-      "name": "Valladolid"
+      "name": "Valladolid",
+      "dwellSeconds": 300
     },
     {
       "country": "ES",
-      "name": "Salamanca"
+      "name": "Salamanca",
+      "dwellSeconds": 300
     },
     {
       "country": "PT",
-      "name": "Guarda"
+      "name": "Guarda",
+      "dwellSeconds": 300
     },
     {
       "country": "PT",
-      "name": "Coimbra"
+      "name": "Coimbra",
+      "dwellSeconds": 300
     },
     {
       "country": "PT",
@@ -557,5 +576,6 @@
       "positionKm": 4080,
       "lengthKm": 2
     }
-  ]
+  ],
+  "dwellBasis": "Scenario passenger stops: 10 minutes at major hubs, 5 at other intermediate stations; not an official timetable."
 }

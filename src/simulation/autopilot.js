@@ -69,8 +69,14 @@ export class Autopilot {
     const distance = stop.position - state.position;
     if (distance < 0.15 && state.speed < 0.08) {
       this.arrivedAt ??= state.time;
-      const remaining = Math.max(0, COMFORT.dwellSeconds - (state.time - this.arrivedAt));
-      this.status = `${stop.name} · ${Math.ceil(remaining)}s`;
+      const dwell = Number.isFinite(stop.dwellSeconds) && stop.dwellSeconds >= 0
+        ? stop.dwellSeconds : COMFORT.dwellSeconds;
+      const remaining = Math.max(0, dwell - (state.time - this.arrivedAt));
+      const seconds = Math.ceil(remaining);
+      const countdown = dwell >= 300
+        ? `${Math.floor(seconds / 60)}m ${String(seconds % 60).padStart(2, '0')}s`
+        : `${seconds}s`;
+      this.status = `${stop.name} · ${countdown}`;
       if (remaining > 0) {
         return {
           throttle: 0,

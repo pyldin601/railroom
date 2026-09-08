@@ -19,6 +19,7 @@
       "id": "kyiv-lisbon/station/1",
       "country": "UA",
       "name": "Shepetivka",
+      "dwellSeconds": 300,
       "position": 305000,
       "positionStatus": "estimated"
     },
@@ -26,6 +27,7 @@
       "id": "kyiv-lisbon/station/2",
       "country": "UA",
       "name": "Lviv",
+      "dwellSeconds": 600,
       "position": 575000,
       "positionStatus": "estimated"
     },
@@ -33,6 +35,7 @@
       "id": "kyiv-lisbon/station/3",
       "country": "PL",
       "name": "Przemyśl",
+      "dwellSeconds": 600,
       "position": 670000,
       "positionStatus": "estimated"
     },
@@ -40,6 +43,7 @@
       "id": "kyiv-lisbon/station/4",
       "country": "PL",
       "name": "Kraków",
+      "dwellSeconds": 600,
       "position": 925000,
       "positionStatus": "estimated"
     },
@@ -47,6 +51,7 @@
       "id": "kyiv-lisbon/station/5",
       "country": "PL",
       "name": "Katowice",
+      "dwellSeconds": 300,
       "position": 1000000,
       "positionStatus": "estimated"
     },
@@ -54,6 +59,7 @@
       "id": "kyiv-lisbon/station/6",
       "country": "PL",
       "name": "Wrocław",
+      "dwellSeconds": 600,
       "position": 1180000,
       "positionStatus": "estimated"
     },
@@ -61,6 +67,7 @@
       "id": "kyiv-lisbon/station/7",
       "country": "DE",
       "name": "Dresden",
+      "dwellSeconds": 600,
       "position": 1450000,
       "positionStatus": "estimated"
     },
@@ -68,6 +75,7 @@
       "id": "kyiv-lisbon/station/8",
       "country": "DE",
       "name": "Leipzig",
+      "dwellSeconds": 600,
       "position": 1570000,
       "positionStatus": "estimated"
     },
@@ -75,6 +83,7 @@
       "id": "kyiv-lisbon/station/9",
       "country": "DE",
       "name": "Frankfurt am Main",
+      "dwellSeconds": 600,
       "position": 1945000,
       "positionStatus": "estimated"
     },
@@ -82,6 +91,7 @@
       "id": "kyiv-lisbon/station/10",
       "country": "FR",
       "name": "Strasbourg",
+      "dwellSeconds": 600,
       "position": 2165000,
       "positionStatus": "estimated"
     },
@@ -89,6 +99,7 @@
       "id": "kyiv-lisbon/station/11",
       "country": "FR",
       "name": "Paris",
+      "dwellSeconds": 600,
       "position": 2605000,
       "positionStatus": "estimated"
     },
@@ -96,6 +107,7 @@
       "id": "kyiv-lisbon/station/12",
       "country": "FR",
       "name": "Bordeaux",
+      "dwellSeconds": 600,
       "position": 3140000,
       "positionStatus": "estimated"
     },
@@ -103,6 +115,7 @@
       "id": "kyiv-lisbon/station/13",
       "country": "FR",
       "name": "Hendaye",
+      "dwellSeconds": 300,
       "position": 3375000,
       "positionStatus": "estimated"
     },
@@ -110,6 +123,7 @@
       "id": "kyiv-lisbon/station/14",
       "country": "ES",
       "name": "Irún",
+      "dwellSeconds": 300,
       "position": 3377000,
       "positionStatus": "estimated"
     },
@@ -117,6 +131,7 @@
       "id": "kyiv-lisbon/station/15",
       "country": "ES",
       "name": "Burgos",
+      "dwellSeconds": 300,
       "position": 3642000,
       "positionStatus": "estimated"
     },
@@ -124,6 +139,7 @@
       "id": "kyiv-lisbon/station/16",
       "country": "ES",
       "name": "Valladolid",
+      "dwellSeconds": 300,
       "position": 3772000,
       "positionStatus": "estimated"
     },
@@ -131,6 +147,7 @@
       "id": "kyiv-lisbon/station/17",
       "country": "ES",
       "name": "Salamanca",
+      "dwellSeconds": 300,
       "position": 3892000,
       "positionStatus": "estimated"
     },
@@ -138,6 +155,7 @@
       "id": "kyiv-lisbon/station/18",
       "country": "PT",
       "name": "Guarda",
+      "dwellSeconds": 300,
       "position": 4062000,
       "positionStatus": "estimated"
     },
@@ -145,6 +163,7 @@
       "id": "kyiv-lisbon/station/19",
       "country": "PT",
       "name": "Coimbra",
+      "dwellSeconds": 300,
       "position": 4232000,
       "positionStatus": "estimated"
     },

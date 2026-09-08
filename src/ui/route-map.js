@@ -76,7 +76,7 @@ export function drawRouteMap(container, data) {
   for (const station of data.stations || [])
     marker(
       station.position,
-      `${station.name} · ${(station.position / 1000).toFixed(2)} km${station.positionStatus === 'estimated' ? ' · approximate position' : ''}`,
+      `${station.name} · ${(station.position / 1000).toFixed(2)} km${station.positionStatus === 'estimated' ? ' · approximate position' : ''}${station.dwellSeconds ? ` · ${station.dwellSeconds / 60} min stop` : ''}`,
       'map-station',
     );
   if (data.contactModel) {
