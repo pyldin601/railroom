@@ -3,15 +3,20 @@ import { loadSimulation } from './data/load-simulation';
 import { trainTemplate } from './ui/template';
 import './ui/style.css';
 
-const app = document.querySelector<HTMLDivElement>('#app');
-if (!app) throw new Error('Missing application container');
+async function main() {
+  const app = document.querySelector<HTMLDivElement>('#app');
+  if (!app) throw new Error('Missing application container');
 
-render(trainTemplate(), app);
+  const { track, train } = await loadSimulation(
+    './tracks/kyiv-fastiv.json',
+    './trains/generic.json',
+  );
 
-loadSimulation('./tracks/kyiv-fastiv.json', './trains/generic.json')
-  .then((data) => {
-    console.log('Track and train ready', data);
-  })
-  .catch((error: unknown) => {
-    console.error('Failed to load track and train', error);
-  });
+  console.log('Track and train ready', { track, train });
+
+  render(trainTemplate(), app);
+}
+
+main().catch((error: unknown) => {
+  console.error('Failed to start simulation', error);
+});
