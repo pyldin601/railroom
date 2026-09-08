@@ -124,7 +124,8 @@ test('short rails occur in singles or pairs after every 5–10 full rails', () =
     while (rails[i + 1]?.length === 12.5) i++;
     runs.push(i - start + 1);
     assert.equal(rails[start - 1].length, 25);
-    assert.equal(rails[i + 1].length, 25);
+    if (rails[i + 1]?.sectionId === rails[i].sectionId)
+      assert.equal(rails[i + 1].length, 25);
   }
   assert.ok(runs.includes(1) && runs.includes(2));
   assert.ok(runs.every((n) => n <= 2));
@@ -145,7 +146,9 @@ test('short rails occur in singles or pairs after every 5–10 full rails', () =
       full = 0;
       if (spans[i + 1]?.length === 12.5) i++;
     }
-    assert.ok(full >= 1 && full <= 10, 'section ends on a short remainder of full rails');
+    assert.equal(full, 0, 'every jointed section ends with short rails');
+    assert.equal(spans.at(-1).length, 12.5);
+    assert.equal(spans.at(-1).position + 12.5, section.position + section.length);
     assert.ok(
       data.events
         .filter(

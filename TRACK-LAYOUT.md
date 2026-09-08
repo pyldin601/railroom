@@ -23,8 +23,8 @@ This is an illustrative, deterministic layout on the existing approximate 64 km 
 
 Totals: **18 km of predominantly 25 m jointed track and 46 km of welded track**.
 Every 5–10 full 25 m rails are followed by one or two 12.5 m rails.
-No consecutive short-rail run exceeds two. Each section ends with 1–10 full
-rails to preserve its exact boundary. Placement varies deterministically and
+No consecutive short-rail run exceeds two. Each jointed section ends with one or two 12.5 m rails
+at its exact boundary. Placement varies deterministically and
 is identical on both sides. The additional sections are illustrative choices
 for varied listening rhythm. Jointed sections are limited to 40 km/h, with 25 km/h at the departure and
 arrival approaches. Only welded strings have the full 120 km/h route limit.
