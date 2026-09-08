@@ -22,7 +22,11 @@ test('every construction zone has the requested scenario speed coverage', () => 
     assert.equal(m.verifiedSpeedKmh, null);
     const p = section.position;
     const expected =
-      section.construction === 'welded' ? 120 : p === 0 || p === 62500 ? 25 : 40;
+      section.construction === 'welded' || section.purpose === 'string connector'
+        ? 120
+        : p === 0 || p === 62500
+          ? 25
+          : 40;
     assert.equal(m.speedKmh, expected);
   }
 });
@@ -37,4 +41,21 @@ test('Boiarka electrical markers are paired and never enter the impact scheduler
   assert.equal(index.events.length, route.events.length);
   assert.ok(index.events.every((e) => ['joint', 'weld'].includes(e.type)));
   assert.equal(route.operatingMetadata.speedLimitsEnforced, false);
+});
+
+test('short connectors preserve the surrounding full speed', () => {
+  const connectors = route.sections.filter((s) => s.purpose === 'string connector');
+  assert.ok(connectors.length > 0);
+  for (const s of connectors) {
+    const markers = route.operatingMarkers.filter((m) => m.type === 'speed_limit');
+    for (const position of [
+      s.position - 0.1,
+      s.position,
+      s.position + s.length - 0.1,
+      s.position + s.length,
+    ]) {
+      const marker = markers.find((m) => position >= m.position && position < m.endPosition);
+      assert.equal(marker.speedKmh, 120);
+    }
+  }
 });

@@ -28,8 +28,8 @@ Every 5–10 full 25 m rails are followed by one or two 12.5 m rails.
 Within the 25 m jointed sections, no consecutive short-rail run exceeds two. Each jointed section ends with one or two 12.5 m rails
 at its exact boundary. Placement varies deterministically and
 is identical on both sides. The additional sections are illustrative choices
-for varied listening rhythm. Jointed sections are limited to 40 km/h, with 25 km/h at the departure and
-arrival approaches. Only welded strings have the full 120 km/h route limit.
+for varied listening rhythm. Long jointed sections are limited to 40 km/h, with 25 km/h at the departure and
+arrival approaches. Welded strings and their short connectors have the full 120 km/h route limit.
 These are scenario choices followed by autopilot; manual driving can exceed them.
 
 Most welded strings join directly: **43 direct joins and 10 connector groups**.
@@ -54,8 +54,9 @@ Connector lengths are reserved within existing corridor boundaries. Remaining
 length is balanced among strings on a 12.5 m grid, producing **712.5–800 m**
 strings. Fabrication welds occur every 25 m relative to each string’s start;
 a string may have a trimmed 12.5 m end piece. Both sides use identical boundaries.
-Each connector is an explicit jointed section limited to 40 km/h, followed by
-restoration of 120 km/h on the next string. Autopilot follows these limits.
+Each connector remains an explicit jointed section in the physical layout but
+inherits the surrounding 120 km/h limit. It introduces no slowdown; only the
+long jointed areas and terminal approaches have lower limits.
 
 Internal fabrication welds are silent. Jointed rail ends and welded string ends
 produce wheel impacts. Interspersed 12.5 m rails briefly shorten the interval between joint impacts. Separate all-jointed 25 m and 12.5 m demos are available in the route selector.
