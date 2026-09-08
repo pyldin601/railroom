@@ -69,7 +69,7 @@ strings still produce impacts. A Boiarka neutral section cuts traction and trigg
 power-switch sounds. Long jointed sections are limited to 40 km/h (25 km/h at the
 terminal approaches); welded strings and their short connectors permit 120 km/h. Autopilot follows these
 limits. Positions and speed limits are illustrative estimates, not
-verified operating data. See [track layout](TRACK-LAYOUT.md),
+verified operating data. See [track build blocks and item types](TRACK-BLOCKS.md), [track layout](TRACK-LAYOUT.md),
 [operating markers](OPERATING-MARKERS.md), and [coach geometry](COACH-GEOMETRY.md).
 
 This is a relaxation simulator. It has no grades or operational railway protection
