@@ -1,0 +1,1107 @@
+{
+  "id": "kyiv-lisbon",
+  "name": "Kyiv → Lisbon",
+  "length": 4610000,
+  "synthetic": true,
+  "contactModel": "periodic-v1",
+  "description": "4,610 km · varied track · approximate route",
+  "assumptions": "City-level stops and scenario distances, not surveyed chainage. Borders, transfers and gauge changes are abstracted. Track construction and speeds are illustrative.",
+  "stations": [
+    {
+      "id": "kyiv-lisbon/station/0",
+      "country": "UA",
+      "name": "Kyiv",
+      "position": 0,
+      "positionStatus": "estimated"
+    },
+    {
+      "id": "kyiv-lisbon/station/1",
+      "country": "UA",
+      "name": "Shepetivka",
+      "position": 300000,
+      "positionStatus": "estimated"
+    },
+    {
+      "id": "kyiv-lisbon/station/2",
+      "country": "UA",
+      "name": "Lviv",
+      "position": 580000,
+      "positionStatus": "estimated"
+    },
+    {
+      "id": "kyiv-lisbon/station/3",
+      "country": "PL",
+      "name": "Przemyśl",
+      "position": 680000,
+      "positionStatus": "estimated"
+    },
+    {
+      "id": "kyiv-lisbon/station/4",
+      "country": "PL",
+      "name": "Kraków",
+      "position": 930000,
+      "positionStatus": "estimated"
+    },
+    {
+      "id": "kyiv-lisbon/station/5",
+      "country": "PL",
+      "name": "Katowice",
+      "position": 1010000,
+      "positionStatus": "estimated"
+    },
+    {
+      "id": "kyiv-lisbon/station/6",
+      "country": "PL",
+      "name": "Wrocław",
+      "position": 1210000,
+      "positionStatus": "estimated"
+    },
+    {
+      "id": "kyiv-lisbon/station/7",
+      "country": "DE",
+      "name": "Dresden",
+      "position": 1480000,
+      "positionStatus": "estimated"
+    },
+    {
+      "id": "kyiv-lisbon/station/8",
+      "country": "DE",
+      "name": "Leipzig",
+      "position": 1600000,
+      "positionStatus": "estimated"
+    },
+    {
+      "id": "kyiv-lisbon/station/9",
+      "country": "DE",
+      "name": "Frankfurt am Main",
+      "position": 1980000,
+      "positionStatus": "estimated"
+    },
+    {
+      "id": "kyiv-lisbon/station/10",
+      "country": "FR",
+      "name": "Strasbourg",
+      "position": 2200000,
+      "positionStatus": "estimated"
+    },
+    {
+      "id": "kyiv-lisbon/station/11",
+      "country": "FR",
+      "name": "Paris",
+      "position": 2690000,
+      "positionStatus": "estimated"
+    },
+    {
+      "id": "kyiv-lisbon/station/12",
+      "country": "FR",
+      "name": "Bordeaux",
+      "position": 3270000,
+      "positionStatus": "estimated"
+    },
+    {
+      "id": "kyiv-lisbon/station/13",
+      "country": "FR",
+      "name": "Hendaye",
+      "position": 3500000,
+      "positionStatus": "estimated"
+    },
+    {
+      "id": "kyiv-lisbon/station/14",
+      "country": "ES",
+      "name": "Irún",
+      "position": 3505000,
+      "positionStatus": "estimated"
+    },
+    {
+      "id": "kyiv-lisbon/station/15",
+      "country": "ES",
+      "name": "Burgos",
+      "position": 3785000,
+      "positionStatus": "estimated"
+    },
+    {
+      "id": "kyiv-lisbon/station/16",
+      "country": "ES",
+      "name": "Valladolid",
+      "position": 3905000,
+      "positionStatus": "estimated"
+    },
+    {
+      "id": "kyiv-lisbon/station/17",
+      "country": "ES",
+      "name": "Salamanca",
+      "position": 4030000,
+      "positionStatus": "estimated"
+    },
+    {
+      "id": "kyiv-lisbon/station/18",
+      "country": "PT",
+      "name": "Guarda",
+      "position": 4190000,
+      "positionStatus": "estimated"
+    },
+    {
+      "id": "kyiv-lisbon/station/19",
+      "country": "PT",
+      "name": "Coimbra",
+      "position": 4390000,
+      "positionStatus": "estimated"
+    },
+    {
+      "id": "kyiv-lisbon/station/20",
+      "country": "PT",
+      "name": "Lisbon",
+      "position": 4610000,
+      "positionStatus": "estimated"
+    }
+  ],
+  "sections": [
+    {
+      "id": "kyiv-lisbon/section/0",
+      "position": 0,
+      "length": 149000,
+      "construction": "welded"
+    },
+    {
+      "id": "kyiv-lisbon/section/149000",
+      "position": 149000,
+      "length": 2000,
+      "construction": "jointed"
+    },
+    {
+      "id": "kyiv-lisbon/section/151000",
+      "position": 151000,
+      "length": 288000,
+      "construction": "welded"
+    },
+    {
+      "id": "kyiv-lisbon/section/439000",
+      "position": 439000,
+      "length": 2000,
+      "construction": "jointed"
+    },
+    {
+      "id": "kyiv-lisbon/section/441000",
+      "position": 441000,
+      "length": 188000,
+      "construction": "welded"
+    },
+    {
+      "id": "kyiv-lisbon/section/629000",
+      "position": 629000,
+      "length": 2000,
+      "construction": "jointed"
+    },
+    {
+      "id": "kyiv-lisbon/section/631000",
+      "position": 631000,
+      "length": 173000,
+      "construction": "welded"
+    },
+    {
+      "id": "kyiv-lisbon/section/804000",
+      "position": 804000,
+      "length": 2000,
+      "construction": "jointed"
+    },
+    {
+      "id": "kyiv-lisbon/section/806000",
+      "position": 806000,
+      "length": 163000,
+      "construction": "welded"
+    },
+    {
+      "id": "kyiv-lisbon/section/969000",
+      "position": 969000,
+      "length": 2000,
+      "construction": "jointed"
+    },
+    {
+      "id": "kyiv-lisbon/section/971000",
+      "position": 971000,
+      "length": 138000,
+      "construction": "welded"
+    },
+    {
+      "id": "kyiv-lisbon/section/1109000",
+      "position": 1109000,
+      "length": 2000,
+      "construction": "jointed"
+    },
+    {
+      "id": "kyiv-lisbon/section/1111000",
+      "position": 1111000,
+      "length": 233000,
+      "construction": "welded"
+    },
+    {
+      "id": "kyiv-lisbon/section/1344000",
+      "position": 1344000,
+      "length": 2000,
+      "construction": "jointed"
+    },
+    {
+      "id": "kyiv-lisbon/section/1346000",
+      "position": 1346000,
+      "length": 193000,
+      "construction": "welded"
+    },
+    {
+      "id": "kyiv-lisbon/section/1539000",
+      "position": 1539000,
+      "length": 2000,
+      "construction": "jointed"
+    },
+    {
+      "id": "kyiv-lisbon/section/1541000",
+      "position": 1541000,
+      "length": 248000,
+      "construction": "welded"
+    },
+    {
+      "id": "kyiv-lisbon/section/1789000",
+      "position": 1789000,
+      "length": 2000,
+      "construction": "jointed"
+    },
+    {
+      "id": "kyiv-lisbon/section/1791000",
+      "position": 1791000,
+      "length": 298000,
+      "construction": "welded"
+    },
+    {
+      "id": "kyiv-lisbon/section/2089000",
+      "position": 2089000,
+      "length": 2000,
+      "construction": "jointed"
+    },
+    {
+      "id": "kyiv-lisbon/section/2091000",
+      "position": 2091000,
+      "length": 353000,
+      "construction": "welded"
+    },
+    {
+      "id": "kyiv-lisbon/section/2444000",
+      "position": 2444000,
+      "length": 2000,
+      "construction": "jointed"
+    },
+    {
+      "id": "kyiv-lisbon/section/2446000",
+      "position": 2446000,
+      "length": 533000,
+      "construction": "welded"
+    },
+    {
+      "id": "kyiv-lisbon/section/2979000",
+      "position": 2979000,
+      "length": 2000,
+      "construction": "jointed"
+    },
+    {
+      "id": "kyiv-lisbon/section/2981000",
+      "position": 2981000,
+      "length": 403000,
+      "construction": "welded"
+    },
+    {
+      "id": "kyiv-lisbon/section/3384000",
+      "position": 3384000,
+      "length": 2000,
+      "construction": "jointed"
+    },
+    {
+      "id": "kyiv-lisbon/section/3386000",
+      "position": 3386000,
+      "length": 258000,
+      "construction": "welded"
+    },
+    {
+      "id": "kyiv-lisbon/section/3644000",
+      "position": 3644000,
+      "length": 2000,
+      "construction": "jointed"
+    },
+    {
+      "id": "kyiv-lisbon/section/3646000",
+      "position": 3646000,
+      "length": 198000,
+      "construction": "welded"
+    },
+    {
+      "id": "kyiv-lisbon/section/3844000",
+      "position": 3844000,
+      "length": 2000,
+      "construction": "jointed"
+    },
+    {
+      "id": "kyiv-lisbon/section/3846000",
+      "position": 3846000,
+      "length": 120500,
+      "construction": "welded"
+    },
+    {
+      "id": "kyiv-lisbon/section/3966500",
+      "position": 3966500,
+      "length": 2000,
+      "construction": "jointed"
+    },
+    {
+      "id": "kyiv-lisbon/section/3968500",
+      "position": 3968500,
+      "length": 140500,
+      "construction": "welded"
+    },
+    {
+      "id": "kyiv-lisbon/section/4109000",
+      "position": 4109000,
+      "length": 2000,
+      "construction": "jointed"
+    },
+    {
+      "id": "kyiv-lisbon/section/4111000",
+      "position": 4111000,
+      "length": 178000,
+      "construction": "welded"
+    },
+    {
+      "id": "kyiv-lisbon/section/4289000",
+      "position": 4289000,
+      "length": 2000,
+      "construction": "jointed"
+    },
+    {
+      "id": "kyiv-lisbon/section/4291000",
+      "position": 4291000,
+      "length": 208000,
+      "construction": "welded"
+    },
+    {
+      "id": "kyiv-lisbon/section/4499000",
+      "position": 4499000,
+      "length": 2000,
+      "construction": "jointed"
+    },
+    {
+      "id": "kyiv-lisbon/section/4501000",
+      "position": 4501000,
+      "length": 109000,
+      "construction": "welded"
+    }
+  ],
+  "operatingMarkers": [
+    {
+      "id": "kyiv-lisbon/speed/0",
+      "type": "speed_limit",
+      "position": 0,
+      "endPosition": 1000,
+      "speedKmh": 25,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/1000",
+      "type": "speed_limit",
+      "position": 1000,
+      "endPosition": 149000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/149000",
+      "type": "speed_limit",
+      "position": 149000,
+      "endPosition": 151000,
+      "speedKmh": 60,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/151000",
+      "type": "speed_limit",
+      "position": 151000,
+      "endPosition": 299000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/299000",
+      "type": "speed_limit",
+      "position": 299000,
+      "endPosition": 301000,
+      "speedKmh": 40,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/301000",
+      "type": "speed_limit",
+      "position": 301000,
+      "endPosition": 439000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/439000",
+      "type": "speed_limit",
+      "position": 439000,
+      "endPosition": 441000,
+      "speedKmh": 40,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/441000",
+      "type": "speed_limit",
+      "position": 441000,
+      "endPosition": 579000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/579000",
+      "type": "speed_limit",
+      "position": 579000,
+      "endPosition": 581000,
+      "speedKmh": 50,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/581000",
+      "type": "speed_limit",
+      "position": 581000,
+      "endPosition": 629000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/629000",
+      "type": "speed_limit",
+      "position": 629000,
+      "endPosition": 631000,
+      "speedKmh": 50,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/631000",
+      "type": "speed_limit",
+      "position": 631000,
+      "endPosition": 679000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/679000",
+      "type": "speed_limit",
+      "position": 679000,
+      "endPosition": 681000,
+      "speedKmh": 60,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/681000",
+      "type": "speed_limit",
+      "position": 681000,
+      "endPosition": 804000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/804000",
+      "type": "speed_limit",
+      "position": 804000,
+      "endPosition": 806000,
+      "speedKmh": 60,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/806000",
+      "type": "speed_limit",
+      "position": 806000,
+      "endPosition": 929000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/929000",
+      "type": "speed_limit",
+      "position": 929000,
+      "endPosition": 931000,
+      "speedKmh": 40,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/931000",
+      "type": "speed_limit",
+      "position": 931000,
+      "endPosition": 969000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/969000",
+      "type": "speed_limit",
+      "position": 969000,
+      "endPosition": 971000,
+      "speedKmh": 40,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/971000",
+      "type": "speed_limit",
+      "position": 971000,
+      "endPosition": 1009000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/1009000",
+      "type": "speed_limit",
+      "position": 1009000,
+      "endPosition": 1011000,
+      "speedKmh": 50,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/1011000",
+      "type": "speed_limit",
+      "position": 1011000,
+      "endPosition": 1109000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/1109000",
+      "type": "speed_limit",
+      "position": 1109000,
+      "endPosition": 1111000,
+      "speedKmh": 50,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/1111000",
+      "type": "speed_limit",
+      "position": 1111000,
+      "endPosition": 1209000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/1209000",
+      "type": "speed_limit",
+      "position": 1209000,
+      "endPosition": 1211000,
+      "speedKmh": 60,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/1211000",
+      "type": "speed_limit",
+      "position": 1211000,
+      "endPosition": 1344000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/1344000",
+      "type": "speed_limit",
+      "position": 1344000,
+      "endPosition": 1346000,
+      "speedKmh": 60,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/1346000",
+      "type": "speed_limit",
+      "position": 1346000,
+      "endPosition": 1479000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/1479000",
+      "type": "speed_limit",
+      "position": 1479000,
+      "endPosition": 1481000,
+      "speedKmh": 40,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/1481000",
+      "type": "speed_limit",
+      "position": 1481000,
+      "endPosition": 1539000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/1539000",
+      "type": "speed_limit",
+      "position": 1539000,
+      "endPosition": 1541000,
+      "speedKmh": 40,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/1541000",
+      "type": "speed_limit",
+      "position": 1541000,
+      "endPosition": 1599000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/1599000",
+      "type": "speed_limit",
+      "position": 1599000,
+      "endPosition": 1601000,
+      "speedKmh": 50,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/1601000",
+      "type": "speed_limit",
+      "position": 1601000,
+      "endPosition": 1789000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/1789000",
+      "type": "speed_limit",
+      "position": 1789000,
+      "endPosition": 1791000,
+      "speedKmh": 50,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/1791000",
+      "type": "speed_limit",
+      "position": 1791000,
+      "endPosition": 1979000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/1979000",
+      "type": "speed_limit",
+      "position": 1979000,
+      "endPosition": 1981000,
+      "speedKmh": 60,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/1981000",
+      "type": "speed_limit",
+      "position": 1981000,
+      "endPosition": 2089000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/2089000",
+      "type": "speed_limit",
+      "position": 2089000,
+      "endPosition": 2091000,
+      "speedKmh": 60,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/2091000",
+      "type": "speed_limit",
+      "position": 2091000,
+      "endPosition": 2199000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/2199000",
+      "type": "speed_limit",
+      "position": 2199000,
+      "endPosition": 2201000,
+      "speedKmh": 40,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/2201000",
+      "type": "speed_limit",
+      "position": 2201000,
+      "endPosition": 2444000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/2444000",
+      "type": "speed_limit",
+      "position": 2444000,
+      "endPosition": 2446000,
+      "speedKmh": 40,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/2446000",
+      "type": "speed_limit",
+      "position": 2446000,
+      "endPosition": 2689000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/2689000",
+      "type": "speed_limit",
+      "position": 2689000,
+      "endPosition": 2691000,
+      "speedKmh": 50,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/2691000",
+      "type": "speed_limit",
+      "position": 2691000,
+      "endPosition": 2979000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/2979000",
+      "type": "speed_limit",
+      "position": 2979000,
+      "endPosition": 2981000,
+      "speedKmh": 50,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/2981000",
+      "type": "speed_limit",
+      "position": 2981000,
+      "endPosition": 3269000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/3269000",
+      "type": "speed_limit",
+      "position": 3269000,
+      "endPosition": 3271000,
+      "speedKmh": 60,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/3271000",
+      "type": "speed_limit",
+      "position": 3271000,
+      "endPosition": 3384000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/3384000",
+      "type": "speed_limit",
+      "position": 3384000,
+      "endPosition": 3386000,
+      "speedKmh": 60,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/3386000",
+      "type": "speed_limit",
+      "position": 3386000,
+      "endPosition": 3499000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/3499000",
+      "type": "speed_limit",
+      "position": 3499000,
+      "endPosition": 3501000,
+      "speedKmh": 40,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/3501000",
+      "type": "speed_limit",
+      "position": 3501000,
+      "endPosition": 3504000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/3504000",
+      "type": "speed_limit",
+      "position": 3504000,
+      "endPosition": 3506000,
+      "speedKmh": 50,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/3506000",
+      "type": "speed_limit",
+      "position": 3506000,
+      "endPosition": 3644000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/3644000",
+      "type": "speed_limit",
+      "position": 3644000,
+      "endPosition": 3646000,
+      "speedKmh": 40,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/3646000",
+      "type": "speed_limit",
+      "position": 3646000,
+      "endPosition": 3784000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/3784000",
+      "type": "speed_limit",
+      "position": 3784000,
+      "endPosition": 3786000,
+      "speedKmh": 60,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/3786000",
+      "type": "speed_limit",
+      "position": 3786000,
+      "endPosition": 3844000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/3844000",
+      "type": "speed_limit",
+      "position": 3844000,
+      "endPosition": 3846000,
+      "speedKmh": 50,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/3846000",
+      "type": "speed_limit",
+      "position": 3846000,
+      "endPosition": 3904000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/3904000",
+      "type": "speed_limit",
+      "position": 3904000,
+      "endPosition": 3906000,
+      "speedKmh": 40,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/3906000",
+      "type": "speed_limit",
+      "position": 3906000,
+      "endPosition": 3966500,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/3966500",
+      "type": "speed_limit",
+      "position": 3966500,
+      "endPosition": 3968500,
+      "speedKmh": 60,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/3968500",
+      "type": "speed_limit",
+      "position": 3968500,
+      "endPosition": 4029000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/4029000",
+      "type": "speed_limit",
+      "position": 4029000,
+      "endPosition": 4031000,
+      "speedKmh": 50,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/4031000",
+      "type": "speed_limit",
+      "position": 4031000,
+      "endPosition": 4109000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/4109000",
+      "type": "speed_limit",
+      "position": 4109000,
+      "endPosition": 4111000,
+      "speedKmh": 40,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/4111000",
+      "type": "speed_limit",
+      "position": 4111000,
+      "endPosition": 4189000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/4189000",
+      "type": "speed_limit",
+      "position": 4189000,
+      "endPosition": 4191000,
+      "speedKmh": 60,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/4191000",
+      "type": "speed_limit",
+      "position": 4191000,
+      "endPosition": 4289000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/4289000",
+      "type": "speed_limit",
+      "position": 4289000,
+      "endPosition": 4291000,
+      "speedKmh": 50,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/4291000",
+      "type": "speed_limit",
+      "position": 4291000,
+      "endPosition": 4389000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/4389000",
+      "type": "speed_limit",
+      "position": 4389000,
+      "endPosition": 4391000,
+      "speedKmh": 40,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/4391000",
+      "type": "speed_limit",
+      "position": 4391000,
+      "endPosition": 4499000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/4499000",
+      "type": "speed_limit",
+      "position": 4499000,
+      "endPosition": 4501000,
+      "speedKmh": 60,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/4501000",
+      "type": "speed_limit",
+      "position": 4501000,
+      "endPosition": 4609000,
+      "speedKmh": 260,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    },
+    {
+      "id": "kyiv-lisbon/speed/4609000",
+      "type": "speed_limit",
+      "position": 4609000,
+      "endPosition": 4610000,
+      "speedKmh": 25,
+      "status": "estimated",
+      "basis": "scenario-assumption"
+    }
+  ]
+}

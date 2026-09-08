@@ -917,3 +917,19 @@ a {
     gap: 16px;
   }
 }
+
+/* Keep offscreen markers out of both the visual map and keyboard navigation. */
+.map-marker[hidden] {
+  display: none;
+}
+.map-window-range {
+  position: absolute;
+  top: -18px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 10px;
+  pointer-events: none;
+}

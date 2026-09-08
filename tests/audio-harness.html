@@ -189,7 +189,7 @@
           sink,
           route: new RouteIndex(demoRoute(1000)),
           axles: wheelsets(1),
-          vehicle: { resistance: 0, drag: 0, jerk: Infinity },
+          vehicle: { maxSpeed: 100, resistance: 0, drag: 0, jerk: Infinity },
         });
         transport.state.speed = 25;
         transport.start();
@@ -421,7 +421,7 @@
           clock: () => loadContext.currentTime,
           route: new RouteIndex(shortRailRoute),
           axles: loadAxles,
-          vehicle: { resistance: 0, drag: 0, jerk: Infinity },
+          vehicle: { maxSpeed: 100, resistance: 0, drag: 0, jerk: Infinity },
           sink: {
             hit(event, when, generation) {
               loadAttempts++;

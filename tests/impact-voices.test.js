@@ -31,7 +31,7 @@ test('maximum-speed 12.5 m joint scheduling preserves new contacts and occupied-
     clock: () => context.currentTime,
     route: new RouteIndex(route),
     axles,
-    vehicle: { resistance: 0, drag: 0, jerk: Infinity },
+    vehicle: { maxSpeed: 100, resistance: 0, drag: 0, jerk: Infinity },
     sink: {
       hit(event, when, generation) {
         attempted++;

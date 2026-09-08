@@ -1,11 +1,11 @@
 import { DEFAULT_CARRIAGES, SEAT_POSITIONS } from './route/coach-geometry.js';
 import { TrainSession } from './session.js?v=review-fixes';
 import { AUDIO_SETTINGS, MIX_LEVELS } from './audio/settings.js';
-import { drawRouteMap } from './ui/route-map.js?v=speed360';
+import { drawRouteMap } from './ui/route-map.js?v=map-markers';
 import { createRenderLoop } from './ui/render-loop.js';
-import { RouteIndex, demoRoute, wheelsets, listenerSeat } from './route/route-index.js?v=short-rail-demo';
+import { RouteIndex, demoRoute, wheelsets, listenerSeat } from './route/route-index.js?v=lisbon';
 import { wheelAt } from './ui/track-view.js?v=wheel-click';
-import { renderDashboard } from './ui/dashboard.js?v=review-fixes';
+import { renderDashboard } from './ui/dashboard.js?v=map-markers';
 import { setText } from './ui/dom.js';
 const $ = (id) => document.getElementById(id);
 $('cars').value = String(DEFAULT_CARRIAGES);
@@ -46,7 +46,8 @@ const demoSpacing = () => ({ demo: 25, 'demo-12.5': 12.5 })[$('route-mode').valu
 function displayRoute() {
   drawRouteMap(
     $('route-map'),
-    demoSpacing() ? { length: route.length, stations: route.stations } : routeData,
+    demoSpacing()
+      ? { length: route.length, stations: route.stations } : routeData,
   );
   $('station').replaceChildren();
   for (const s of route.stations) {
@@ -55,9 +56,10 @@ function displayRoute() {
     option.textContent = s.name;
     $('station').append(option);
   }
+  $('route-title').textContent = demoSpacing() ? `${demoSpacing()} m jointed test track` : routeData.name;
   $('route-caption').textContent = demoSpacing()
-    ? `${demoSpacing()} m jointed test track · separate from the Kyiv route`
-    : '64 km · 12.5 / 25 m rails / welded strings ≤800 m · approximate route';
+    ? `${demoSpacing()} m jointed test track · synthetic test track`
+    : routeData.description;
 }
 function audioOptions(position = 0) {
   return {
@@ -96,10 +98,12 @@ async function enableAudio() {
 }
 async function play(audition = false) {
   if (loading || !ready) return;
+  const generation = routeGeneration;
   try {
     error('');
     await enableAudio();
     await session.context.resume();
+    if (!ready || generation !== routeGeneration) return;
     if (audition) {
       session.transport.pause();
       if (!demoSpacing()) $('route-mode').value = 'demo';
@@ -134,6 +138,7 @@ function disableAutopilot() {
 }
 async function toggleAutopilot() {
   if (loading || !ready) return;
+  const generation = routeGeneration;
   if (session.transport?.autopilot) {
     disableAutopilot();
     updateControls();
@@ -142,6 +147,7 @@ async function toggleAutopilot() {
   try {
     await enableAudio();
     await session.context.resume();
+    if (!ready || generation !== routeGeneration) return;
     emergency = false;
     session.transport.setAutopilot(true);
     $('autopilot').setAttribute('aria-pressed', 'true');
@@ -268,6 +274,7 @@ function resetJourney() {
 }
 $('reset').onclick = resetJourney;
 function seekStation() {
+  if (!ready) return;
   session.transport?.seek(Number($('station').value));
   if (!session.transport) {
     pendingPosition = Number($('station').value);
@@ -276,15 +283,50 @@ function seekStation() {
 }
 $('seek').onclick = seekStation;
 let pendingPosition = 0;
-function changeRoute() {
+let routeGeneration = 0;
+function setRouteReady(value) {
+  ready = value;
+  for (const id of ['play', 'autopilot', 'audition', 'seek', 'station'])
+    $(id).disabled = !value;
+}
+async function changeRoute() {
+  const generation = ++routeGeneration;
   session.transport?.pause();
-  route = demoSpacing()
-    ? new RouteIndex(demoRoute(64000, demoSpacing()))
-    : new RouteIndex(routeData);
-  pendingPosition = 0;
-  displayRoute();
-  if (session.bank) buildAudio();
-  setStatus('Ready');
+  disableAutopilot();
+  setRouteReady(false);
+  error('');
+  setStatus('Loading route');
+  const mode = $('route-mode').value;
+  try {
+    let data;
+    const spacing = demoSpacing();
+    if (spacing) data = demoRoute(64000, spacing);
+    else {
+      const response = await fetch(mode === 'kyiv-lisbon' ? './public/kyiv-lisbon.json' : './public/route.json');
+      if (!response.ok) throw new Error('Route asset could not be loaded');
+      data = await response.json();
+      if (mode === 'route') data = {
+        ...data, name: 'Kyiv → Fastiv',
+        description: '64 km · 12.5 / 25 m rails / welded strings ≤800 m · approximate route',
+      };
+    }
+    if (generation !== routeGeneration) return;
+    const nextRoute = new RouteIndex(data);
+    routeData = data;
+    route = nextRoute;
+    pendingPosition = 0;
+    emergency = false;
+    $('brake').value = 0;
+    updateControls();
+    displayRoute();
+    if (session.bank) buildAudio();
+    setRouteReady(true);
+    setStatus('Ready · headphones recommended');
+  } catch (e) {
+    if (generation !== routeGeneration) return;
+    error(`${e.message}. Select a track to retry.`);
+    setStatus('Route unavailable');
+  }
 }
 $('route-mode').onchange = changeRoute;
 function changeConsist() {
@@ -377,19 +419,6 @@ function render() {
     emergency,
   });
 }
-try {
-  const r = await fetch('./public/route.json');
-  if (!r.ok) throw new Error('Route asset could not be loaded');
-  routeData = await r.json();
-  route = new RouteIndex(routeData);
-  displayRoute();
-  ready = true;
-  $('play').disabled = false;
-  setStatus('Ready · headphones recommended');
-} catch (e) {
-  error(e.message);
-  setStatus('Route unavailable');
-}
 requestRender = createRenderLoop(render);
 for (const event of ['input', 'change', 'click'])
   document.addEventListener(event, () => {
@@ -400,3 +429,5 @@ document.addEventListener('visibilitychange', requestRender);
 document.addEventListener('keydown', requestRender);
 new ResizeObserver(requestRender).observe($('track'));
 requestRender();
+
+void changeRoute();

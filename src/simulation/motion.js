@@ -3,7 +3,7 @@ import { initialAir, advanceAir } from './pneumatics.js?v=release-tail';
 /** SI units throughout. Coefficients describe a generic vehicle, not operational limits. */
 export const DEFAULT_VEHICLE = Object.freeze({
   length: 64000,
-  maxSpeed: 360 / 3.6,
+  maxSpeed: 260 / 3.6,
   traction: 0.6,
   serviceBrake: 0.8,
   emergencyBrake: 1.2,

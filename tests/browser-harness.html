@@ -29,6 +29,7 @@
     }
     async function navigate(url) {
       const loaded = new Promise((resolve) => (frame.onload = resolve));
+      frame.removeAttribute('srcdoc');
       frame.src = url;
       await loaded;
     }
@@ -44,6 +45,17 @@
           frame.contentDocument.body.dataset.result === 'pass',
           'complete offline audio harness',
         );
+        // A superseded initial fetch must not hold the renderer hostage.
+        const page = await (await fetch('../index.html')).text();
+        const intercept = '<script>const realFetch = window.fetch.bind(window); window.fetch = (...args) => String(args[0]).includes("kyiv-lisbon.json") ? new Promise(resolve => { window.releaseInitial = () => resolve(realFetch(...args)); }) : realFetch(...args);<' + '/script>';
+        frame.srcdoc = page.replace('<head>', '<head><base href="../">' + intercept);
+        await until(() => frame.contentWindow.releaseInitial, 'pending initial fetch');
+        const initialDoc = frame.contentDocument;
+        initialDoc.getElementById('route-mode').value = 'demo';
+        initialDoc.getElementById('route-mode').dispatchEvent(new frame.contentWindow.Event('change'));
+        await until(() => initialDoc.getElementById('route-head')?.style.left === '0%', 'rendering after superseded initial load', 2000);
+        assert(!initialDoc.getElementById('play').disabled, 'demo renders while obsolete initial fetch is pending');
+        frame.contentWindow.releaseInitial();
         await navigate('../index.html');
         const win = frame.contentWindow,
           doc = frame.contentDocument,
@@ -56,6 +68,50 @@
           $(id).dispatchEvent(new win.Event(event, { bubbles: true }));
         };
         await until(() => !$('play').disabled, 'route loading');
+        assert($('route-mode').value === 'kyiv-lisbon', 'Kyiv–Lisbon is the default route');
+        assert($('route-title').textContent === 'Kyiv → Lisbon', 'new route heading');
+        assert($('station').options.length === 21, 'all approved stations are available');
+        const speedMarkers = [...doc.querySelectorAll('.map-speed')];
+        const routeAsset = await (await win.fetch('./public/kyiv-lisbon.json')).json();
+        assert(speedMarkers.length === routeAsset.operatingMarkers.length, 'long route overview shows every speed limit');
+        assert(['25', '40', '50', '60', '260'].every(speed => speedMarkers.some(marker => marker.querySelector('.map-glyph').textContent === speed)), 'map shows varied restrictions and 260 km/h running limits');
+        assert(doc.querySelector('.scale-labels').textContent === '0130260', 'speedometer reflects the 260 km/h maximum');
+        assert($('route-map').dataset.windowStart === '0' && $('route-map').dataset.windowEnd === '1000000', 'map starts with the first 1000 km');
+        assert([...doc.querySelectorAll('.map-station:not([hidden])')].length === 5, 'stations beyond the visible window are hidden');
+        change('station', 2690000, 'change');
+        $('seek').click();
+        await until(() => $('route-map').dataset.windowStart === '2190000', 'map follows jump to Paris');
+        assert($('route-head').style.left === '50%', 'train is centered within the route');
+        const carriedLimit = doc.querySelector('.map-speed:not([hidden])');
+        assert(carriedLimit.style.left === '0%' && carriedLimit.textContent.includes('260'), 'active limit carries into the left edge');
+        change('station', 4610000, 'change');
+        $('seek').click();
+        await until(() => $('distance').textContent.startsWith('4610.000'), 'jump to Lisbon');
+        assert($('route-map').dataset.windowEnd === '4610000' && $('route-head').style.left === '100%', 'map clamps at the terminus');
+        const originalFetch = win.fetch.bind(win);
+        win.fetch = async () => { throw new Error('Simulated route failure'); };
+        change('route-mode', 'route', 'change');
+        await until(() => !$('error').hidden, 'route load failure');
+        assert($('play').disabled, 'failed route cannot start playback');
+        win.fetch = originalFetch;
+        // A late successful fetch must not replace a newer selection.
+        let release;
+        win.fetch = async (...args) => {
+          const response = await originalFetch(...args);
+          await new Promise(resolve => { release = resolve; });
+          return response;
+        };
+        change('route-mode', 'route', 'change');
+        await until(() => release, 'delayed route response');
+        change('route-mode', 'demo', 'change');
+        await until(() => !$('play').disabled, 'demo supersedes pending fetch');
+        release();
+        await delay(100);
+        assert($('route-title').textContent.includes('25 m'), 'stale response does not replace demo');
+        win.fetch = originalFetch;
+        change('route-mode', 'route', 'change');
+        await until(() => !$('play').disabled, 'recover to Kyiv–Fastiv');
+        assert($('error').hidden && $('route-title').textContent === 'Kyiv → Fastiv', 'route loading recovers');
         assert($('cars').value === '10', 'Cairo defaults to ten carriages');
         assert($('seat-label').textContent.includes('5 of 10'), 'listener starts in carriage five');
         assert(
@@ -95,6 +151,16 @@
         $('autopilot').click();
         await until(() => $('autopilot').getAttribute('aria-pressed') === 'true', 'autopilot');
         assert(!$('autopilot-status').hidden, 'autopilot starts and exposes departure status');
+        change('route-mode', 'kyiv-lisbon', 'change');
+        await until(() => !$('play').disabled, 'switch during autopilot');
+        assert($('autopilot').getAttribute('aria-pressed') === 'false', 'route switch disables autopilot');
+        await until(() => Number($('speed').textContent) === 0 && $('distance').textContent.startsWith('0.000'), 'route switch pauses and resets');
+        change('route-mode', 'route', 'change');
+        await until(() => !$('play').disabled, 'return to original route');
+        change('station', 23000, 'change');
+        $('seek').click();
+        $('autopilot').click();
+        await until(() => $('autopilot').getAttribute('aria-pressed') === 'true', 'restart autopilot');
         change('throttle', 35);
         await until(
           () => $('autopilot').getAttribute('aria-pressed') === 'false',
@@ -137,6 +203,19 @@
         );
         $('reset').click();
         await until(() => Number($('speed').textContent) === 0, 'final reset');
+        change('route-mode', 'kyiv-lisbon', 'change');
+        await until(() => !$('play').disabled, 'load long route for moving viewport');
+        change('station', 2690000, 'change');
+        $('seek').click();
+        change('throttle', 35);
+        $('play').click();
+        await until(() => Number($('route-map').dataset.windowStart) > 2190000, 'map scrolls during playback');
+        assert($('route-head').style.left === '50%', 'moving train stays centered');
+        $('play').click();
+        await until(() => $('play-label').textContent === 'Resume journey', 'pause scrolling');
+        const pausedWindow = $('route-map').dataset.windowStart;
+        await delay(150);
+        assert($('route-map').dataset.windowStart === pausedWindow, 'paused viewport stays still');
         assert($('error').hidden && errors.length === 0, 'control lifecycle has no browser errors');
         passed = true;
       } catch (error) {

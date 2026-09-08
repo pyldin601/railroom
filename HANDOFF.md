@@ -95,7 +95,7 @@ npm run build:route
 - Coach profile: user-supplied Cairo dimensions. See `COACH-GEOMETRY.md` and `src/route/coach-geometry.js`.
 - Coach pitch 24.75 m (assumed coupler-to-coupler), bogie centres 17 m, wheelbase 2.4 m. Axle positions within a coach: 0, 2.4, 17, 19.4 m; centre 9.7 m.
 - Four axles/eight wheels per coach, 40 axles/80 wheels total. Default listener position 108.7 m; local seat presets 2, 9.7 and 17.4 m.
-- Vehicle maximum speed **360 km/h**, requested by the user. This does not raise track speed markers.
+- Vehicle maximum speed **260 km/h**, requested by the user. Kyiv–Lisbon running limits are 260 km/h; its terminal restrictions stay at 25 km/h, with varied 40/50/60 km/h restrictions elsewhere. Other routes’ limits remain in place.
 - Route length 64 km, starts at Kyiv-Pasazhyrskyi and ends at Fastiv I.
 - 19 station/stop names in order: Kyiv-Pasazhyrskyi, Karavaievi Dachi, Kyiv-Volynskyi, Vyshneve, Tarasivka, Boiarka, Maliutynka, Shliakhova, Hlevakha, Danylivka (888 km), Vasylkiv I, Korchi, Motovylivka, Bilky, Pivni, Vyshniaky, Sorochyi Brid, Snitynka, Fastiv I.
 - Track combines 18 km of predominantly 25 m jointed areas with one or two 12.5 m rails after every 5–10 full 25 m rails plus 45.675 km of 712.5–800 m welded strings and 325 m of jointed connectors. There are 43 direct string joins and 10 connector groups: 1–5 × 12.5 m or 1–2 × 25 m rails. See TRACK-LAYOUT.md for placements.

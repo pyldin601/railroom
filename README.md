@@ -26,7 +26,7 @@ Python 3 serves files; Node.js 22 or newer runs the verification commands.
   and cancels future contacts. Reset rewinds and stops; station seeking stops at the
   selected marker.
 - **Throttle, service brake, coast, emergency brake:** drive manually. Braking
-  includes rolling and aerodynamic resistance. Vehicle maximum is 360 km/h;
+  includes rolling and aerodynamic resistance. Vehicle maximum is 260 km/h;
   manual driving does not enforce route speed markers.
 - **Autopilot:** follows estimated limits, stops at every remaining passenger stop,
   and dwells for 60 simulation seconds. A departure horn precedes initial and

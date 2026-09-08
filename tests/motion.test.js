@@ -66,20 +66,20 @@ test('state interpolation uses the same quadratic trajectory', () => {
   let s = stateInSegment(segments[0], 0.005);
   close(s.position, 0.00000625);
 });
-test('default train reaches and holds its 360 km/h ceiling', () => {
+test('default train reaches and holds its 260 km/h ceiling', () => {
   const result = advanceMotion(
-    { ...initialState(), speed: 99.9, acceleration: 0.2 },
+    { ...initialState(), speed: 260 / 3.6 - 0.1, acceleration: 0.2 },
     { throttle: 1 },
     5,
   );
-  close(result.state.speed, 100);
-  assert.ok(result.state.position > 499);
+  close(result.state.speed, 260 / 3.6);
+  assert.ok(result.state.position > 360);
 });
 
 test('light service braking slows more than coasting at route and maximum speeds', () => {
   for (const [speed, brake] of [
     [120 / 3.6, 0.01],
-    [100, 0.1],
+    [260 / 3.6, 0.1],
   ]) {
     const start = { ...initialState(), speed };
     const coast = advanceMotion(start, {}, 10).state;

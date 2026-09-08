@@ -1,4 +1,5 @@
-import { DEFAULT_VEHICLE } from '../simulation/motion.js?v=review-fixes';
+import { updateRouteMap } from './route-map.js?v=map-markers';
+import { DEFAULT_VEHICLE } from '../simulation/motion.js?v=speed260';
 import { MAX_IMPACT_VOICES } from '../audio/spatial-mixer.js?v=review-fixes';
 import { drawTrack } from './track-view.js?v=wheel-click';
 import { setText } from './dom.js';
@@ -40,7 +41,7 @@ export function renderDashboard({
       'distance',
       `${(state.position / 1000).toFixed(3)} / ${(route.length / 1000).toFixed(3)} km`,
     );
-    $('route-head').style.left = `${(state.position / route.length) * 100}%`;
+    updateRouteMap($('route-map'), state.position);
     const next = route.stations.find((s) => s.position > state.position + 0.1);
     setText('next-station', next?.name || 'End of route');
     setText(
@@ -81,7 +82,7 @@ export function renderDashboard({
       $('meter').style.background = peak > 0.9 ? 'var(--red)' : 'var(--mint)';
       setText(
         'diagnostics',
-        `${context.sampleRate} Hz · ${mixer.voices.size}/${MAX_IMPACT_VOICES} impact voices · ${axles.length} wheelsets · ${transport.underruns} scheduling interruptions · ${Math.round((context.baseLatency || 0) * 1000)} ms base latency · ${route.events.length} route contacts`,
+        `${context.sampleRate} Hz · ${mixer.voices.size}/${MAX_IMPACT_VOICES} impact voices · ${axles.length} wheelsets · ${transport.underruns} scheduling interruptions · ${Math.round((context.baseLatency || 0) * 1000)} ms base latency · ${route.contactCount} route contacts`,
       );
     }
   }

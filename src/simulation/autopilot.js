@@ -1,4 +1,4 @@
-import { DEFAULT_VEHICLE, resistanceAt, tractionAt } from './motion.js?v=review-fixes';
+import { DEFAULT_VEHICLE, resistanceAt, tractionAt } from './motion.js?v=speed260';
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 const COMFORT = Object.freeze({

@@ -1,3 +1,4 @@
+import { CompactContacts } from './compact-contacts.js';
 import { COACH, DEFAULT_CARRIAGES } from './coach-geometry.js';
 /** Static binary-search index. The audio path never reads the full source-object array. */
 export class RouteIndex {
@@ -7,6 +8,8 @@ export class RouteIndex {
     this.powerMarkers = (data.operatingMarkers || [])
       .filter((m) => ['power_off', 'power_on'].includes(m.type))
       .sort((a, b) => a.position - b.position);
+    if (data.contactModel && data.contactModel !== 'periodic-v1') throw new Error('Unknown contact model');
+    this.compact = data.contactModel ? new CompactContacts(data) : null;
     this.length = data.length;
     this.stations = data.stations || [];
     this.events = data.events || [];
@@ -27,6 +30,9 @@ export class RouteIndex {
       ids.add(e.id);
       last = e.position;
     }
+  }
+  get contactCount() {
+    return this.compact ? this.compact.count : this.events.length;
   }
   powerAt(position) {
     let on = true;
@@ -50,6 +56,7 @@ export class RouteIndex {
     return lo;
   }
   between(start, end) {
+    if (this.compact) return this.compact.between(start, end);
     const result = [];
     for (
       let i = this.upperBound(start + 1e-8);
