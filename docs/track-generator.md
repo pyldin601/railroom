@@ -57,9 +57,9 @@ A sequence of 25 m rails, inserting one or two 12.5 m rails after every fourth o
 [25 m] | [25 m] | [25 m] | [25 m] | [12.5 m] | [12.5 m]
 ```
 
-The two lines illustrate the allowed groups, not a required alternating pattern.
-A group occupies 137.5 m with one short rail or 150 m with two. The rule choosing
-one versus two short rails is not specified yet.
+The four lines illustrate the allowed groups, not a required alternating pattern.
+A group occupies 112.5, 125, 137.5, or 150 m. The rules choosing four versus five
+full rails and one versus two short rails are not specified generally yet.
 
 ## Composition and runtime output
 
@@ -88,3 +88,35 @@ In the diagrams, `|` denotes a joint. All distances are in metres.
 
 The current runtime also supports power-off and power-on markers. Their role in
 generator inputs is outside this initial atom and block definition.
+
+## Kyiv–Fastiv JSON
+
+[public/tracks/kyiv-fastiv.json](../public/tracks/kyiv-fastiv.json) is a rebuilt
+64,000 m route using these patterns and the current `Track` shape:
+`{ length, items: [{ position, object }] }`. It retains the station positions,
+speed-limit intervals, and power-switch positions from `legacy/public/route.json`.
+Those positions and limits remain synthetic scenario data, not verified railway
+operating data. Rail boundaries are rebuilt rather than copied from the legacy
+layout.
+
+For this concrete export:
+
+- The seven 120 km/h areas alternate 800 m and 1500 m strings, starting with
+  800 m strings. In each 800 m area, every fifth full string is followed by one
+  12.5 m connector if there is room for a following string. Other joins are direct.
+- Each reduced-speed area cycles groups of `(4, 1)`, `(5, 2)`, `(4, 2)`, `(5, 1)`
+  full/short rails. Near the area end, the next feasible group in that cycle is
+  selected so the remainder can still be filled with complete allowed groups.
+  The cycle restarts for each area.
+- Final long strings are shortened to fit existing area boundaries, as agreed.
+  This exception introduces no internal fabrication joints. The shortened string
+  lengths, in route order, are 737.5, 250, 637.5, 637.5, 250, and 37.5 m.
+- Existing speeds are retained: 25 km/h at terminal approaches, 40 km/h in the
+  other reduced-speed areas, and 120 km/h in high-speed areas, including connectors.
+- Each internal rail boundary produces one `joint` item. Left/right duplicate
+  events and all internal weld events are omitted. There are no endpoint joints.
+- The file contains 873 joints, 19 stations, 16 speed limits, one `power_off`, and
+  one `power_on`: 910 items total. Equal-position items are sorted by type for
+  deterministic serialization; this does not define simulation event priority.
+
+This is a static JSON asset; a reusable generator has not been added to the app.

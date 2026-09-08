@@ -1,0 +1,5500 @@
+{
+  "length": 64000.0,
+  "items": [
+    {
+      "position": 0.0,
+      "object": {
+        "type": "speedLimit",
+        "speed": 25.0
+      }
+    },
+    {
+      "position": 0.0,
+      "object": {
+        "type": "station",
+        "name": "Kyiv-Pasazhyrskyi"
+      }
+    },
+    {
+      "position": 25.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 50.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 75.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 100.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 112.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 137.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 162.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 187.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 212.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 237.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 250.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 262.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 287.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 312.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 337.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 362.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 375.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 387.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 412.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 437.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 462.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 487.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 512.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 525.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 550.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 575.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 600.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 625.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 637.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 662.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 687.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 712.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 737.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 762.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 775.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 787.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 812.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 837.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 862.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 887.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 900.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 912.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 937.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 962.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 987.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1012.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1037.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1050.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1075.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1100.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1125.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1150.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1162.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1187.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1212.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1237.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1262.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1275.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1300.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1325.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1350.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1375.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1387.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1412.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1437.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1462.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1487.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1500.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 1500.0,
+      "object": {
+        "type": "speedLimit",
+        "speed": 120.0
+      }
+    },
+    {
+      "position": 2300.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 3100.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 3500.0,
+      "object": {
+        "type": "station",
+        "name": "Karavaievi Dachi"
+      }
+    },
+    {
+      "position": 3900.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 4700.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 5500.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 5512.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6250.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6250.0,
+      "object": {
+        "type": "speedLimit",
+        "speed": 40.0
+      }
+    },
+    {
+      "position": 6275.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6300.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6325.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6350.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6362.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6387.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6412.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6437.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6462.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6487.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6500.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6512.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6537.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6562.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6587.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6612.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6625.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6637.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6662.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6687.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6712.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6737.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6762.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6775.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6800.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6825.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6850.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6875.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6887.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6912.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6937.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6962.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 6987.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7000.0,
+      "object": {
+        "type": "station",
+        "name": "Kyiv-Volynskyi"
+      }
+    },
+    {
+      "position": 7012.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7025.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7037.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7062.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7087.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7112.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7137.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7150.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7162.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7187.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7212.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7237.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7262.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7287.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7300.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7325.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7350.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7375.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7400.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7412.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7437.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7462.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7487.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7512.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7525.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7550.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7575.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7600.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7625.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7637.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7662.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7687.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7712.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7737.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7750.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 7750.0,
+      "object": {
+        "type": "speedLimit",
+        "speed": 120.0
+      }
+    },
+    {
+      "position": 9250.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 10750.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 12000.0,
+      "object": {
+        "type": "station",
+        "name": "Vyshneve"
+      }
+    },
+    {
+      "position": 12250.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 13750.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14000.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14000.0,
+      "object": {
+        "type": "speedLimit",
+        "speed": 40.0
+      }
+    },
+    {
+      "position": 14025.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14050.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14075.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14100.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14112.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14137.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14162.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14187.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14212.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14237.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14250.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14262.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14287.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14312.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14337.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14362.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14375.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14387.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14412.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14437.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14462.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14487.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14512.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14525.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14550.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14575.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14600.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14625.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14637.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14662.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14687.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14712.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14737.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14762.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14775.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14787.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14812.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14837.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14862.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14887.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14900.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14912.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14937.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14962.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 14987.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15012.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15037.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15050.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15075.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15100.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15125.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15150.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15162.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15187.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15212.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15237.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15262.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15287.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15300.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15312.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15337.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15362.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15387.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15412.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15425.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15437.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15462.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15487.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15512.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15537.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15562.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15575.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15600.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15625.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15650.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15675.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15687.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15712.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15737.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15762.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15787.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15812.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15825.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15837.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15862.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15887.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15912.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15937.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15950.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15962.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 15987.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16012.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16037.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16062.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16087.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16100.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16125.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16150.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16175.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16200.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16212.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16237.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16262.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16287.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16312.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16337.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16350.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16362.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16387.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16412.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16437.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16462.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16475.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16487.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16512.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16537.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16562.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16587.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16612.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16625.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16650.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16675.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16700.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16725.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16737.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16762.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16787.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16812.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16837.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16862.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16875.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16887.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16912.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16937.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16962.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 16987.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 17000.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 17000.0,
+      "object": {
+        "type": "speedLimit",
+        "speed": 120.0
+      }
+    },
+    {
+      "position": 17800.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 18600.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 19000.0,
+      "object": {
+        "type": "station",
+        "name": "Tarasivka"
+      }
+    },
+    {
+      "position": 19400.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 20200.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 21000.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 21012.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 21812.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 22612.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23000.0,
+      "object": {
+        "type": "station",
+        "name": "Boiarka"
+      }
+    },
+    {
+      "position": 23250.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23250.0,
+      "object": {
+        "type": "speedLimit",
+        "speed": 40.0
+      }
+    },
+    {
+      "position": 23275.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23300.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23325.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23350.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23362.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23387.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23412.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23437.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23462.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23487.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23500.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23500.0,
+      "object": {
+        "type": "power_off"
+      }
+    },
+    {
+      "position": 23512.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23537.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23562.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23587.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23612.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23625.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23637.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23662.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23687.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23712.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23737.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23762.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23775.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23800.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23800.0,
+      "object": {
+        "type": "power_on"
+      }
+    },
+    {
+      "position": 23825.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23850.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23875.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23887.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23912.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23937.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23962.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 23987.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24012.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24025.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24037.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24062.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24087.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24112.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24137.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24150.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24162.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24187.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24212.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24237.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24262.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24287.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24300.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24325.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24350.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24375.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24400.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24412.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24437.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24462.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24487.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24512.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24537.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24550.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24562.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24587.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24612.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24637.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24662.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24675.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24687.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24712.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24737.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24762.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24787.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24812.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24825.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24850.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24875.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24900.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24925.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24950.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24962.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 24975.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 25000.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 25025.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 25050.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 25075.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 25100.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 25112.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 25125.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 25150.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 25175.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 25200.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 25225.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 25237.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 25250.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 25250.0,
+      "object": {
+        "type": "speedLimit",
+        "speed": 120.0
+      }
+    },
+    {
+      "position": 26000.0,
+      "object": {
+        "type": "station",
+        "name": "Maliutynka"
+      }
+    },
+    {
+      "position": 26750.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 28000.0,
+      "object": {
+        "type": "station",
+        "name": "Shliakhova"
+      }
+    },
+    {
+      "position": 28250.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 29750.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 30000.0,
+      "object": {
+        "type": "station",
+        "name": "Hlevakha"
+      }
+    },
+    {
+      "position": 31250.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 32500.0,
+      "object": {
+        "type": "station",
+        "name": "Danylivka (888 km)"
+      }
+    },
+    {
+      "position": 32750.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34250.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34250.0,
+      "object": {
+        "type": "speedLimit",
+        "speed": 40.0
+      }
+    },
+    {
+      "position": 34275.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34300.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34325.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34350.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34362.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34387.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34412.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34437.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34462.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34487.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34500.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34512.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34537.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34562.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34587.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34612.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34625.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34637.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34662.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34687.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34712.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34737.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34762.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34775.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34800.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34825.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34850.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34875.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34887.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34912.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34937.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34962.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 34987.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35000.0,
+      "object": {
+        "type": "station",
+        "name": "Vasylkiv I"
+      }
+    },
+    {
+      "position": 35012.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35025.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35037.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35062.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35087.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35112.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35137.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35150.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35162.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35187.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35212.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35237.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35262.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35287.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35300.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35325.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35350.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35375.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35400.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35412.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35437.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35462.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35487.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35512.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35525.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35550.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35575.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35600.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35625.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35637.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35662.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35687.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35712.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35737.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35750.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 35750.0,
+      "object": {
+        "type": "speedLimit",
+        "speed": 120.0
+      }
+    },
+    {
+      "position": 36550.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 37350.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 38150.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 38950.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 39750.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 39762.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 40562.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 41000.0,
+      "object": {
+        "type": "station",
+        "name": "Korchi"
+      }
+    },
+    {
+      "position": 41362.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42000.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42000.0,
+      "object": {
+        "type": "speedLimit",
+        "speed": 40.0
+      }
+    },
+    {
+      "position": 42025.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42050.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42075.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42100.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42112.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42137.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42162.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42187.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42212.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42237.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42250.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42262.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42287.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42312.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42337.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42362.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42375.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42387.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42412.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42437.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42462.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42487.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42512.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42525.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42550.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42575.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42600.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42625.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42637.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42662.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42687.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42712.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42737.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42762.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42775.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42787.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42812.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42837.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42862.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42887.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42900.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42912.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42937.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42962.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 42987.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43012.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43037.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43050.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43075.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43100.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43125.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43150.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43162.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43187.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43212.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43237.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43262.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43287.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43300.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43312.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43337.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43362.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43387.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43412.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43425.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43437.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43462.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43487.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43512.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43537.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43562.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43575.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43600.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43625.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43650.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43675.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43687.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43712.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43737.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43762.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43787.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43812.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43825.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43837.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43862.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43887.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43912.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43937.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43950.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43962.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 43987.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44012.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44037.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44062.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44087.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44100.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44125.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44150.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44175.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44200.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44212.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44237.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44262.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44287.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44312.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44337.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44350.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44362.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44387.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44412.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44437.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44462.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44475.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44487.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44512.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44537.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44562.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44587.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44612.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44625.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44650.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44675.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44700.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44725.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44737.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44762.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44787.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44812.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44837.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44862.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44875.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44887.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44912.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44937.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44962.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 44987.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 45000.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 45000.0,
+      "object": {
+        "type": "speedLimit",
+        "speed": 120.0
+      }
+    },
+    {
+      "position": 46500.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 47000.0,
+      "object": {
+        "type": "station",
+        "name": "Motovylivka"
+      }
+    },
+    {
+      "position": 48000.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 49500.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 49500.0,
+      "object": {
+        "type": "station",
+        "name": "Bilky"
+      }
+    },
+    {
+      "position": 51000.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51250.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51250.0,
+      "object": {
+        "type": "speedLimit",
+        "speed": 40.0
+      }
+    },
+    {
+      "position": 51275.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51300.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51325.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51350.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51362.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51387.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51412.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51437.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51462.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51487.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51500.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51512.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51537.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51562.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51587.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51612.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51625.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51637.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51662.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51687.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51712.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51737.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51762.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51775.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51800.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51825.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51850.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51875.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51887.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51912.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51937.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51962.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 51987.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52012.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52025.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52037.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52062.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52087.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52112.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52137.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52150.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52162.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52187.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52212.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52237.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52262.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52287.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52300.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52325.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52350.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52375.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52400.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52412.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52437.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52462.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52487.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52500.0,
+      "object": {
+        "type": "station",
+        "name": "Pivni"
+      }
+    },
+    {
+      "position": 52512.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52537.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52550.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52562.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52587.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52612.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52637.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52662.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52675.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52687.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52712.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52737.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52762.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52787.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52812.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52825.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52850.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52875.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52900.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52925.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52950.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52962.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 52975.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 53000.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 53025.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 53050.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 53075.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 53100.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 53112.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 53125.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 53150.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 53175.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 53200.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 53225.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 53237.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 53250.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 53250.0,
+      "object": {
+        "type": "speedLimit",
+        "speed": 120.0
+      }
+    },
+    {
+      "position": 54050.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 54850.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 55000.0,
+      "object": {
+        "type": "station",
+        "name": "Vyshniaky"
+      }
+    },
+    {
+      "position": 55650.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 56450.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 57250.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 57262.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 58000.0,
+      "object": {
+        "type": "station",
+        "name": "Sorochyi Brid"
+      }
+    },
+    {
+      "position": 58062.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 58862.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 59662.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60462.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60500.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60500.0,
+      "object": {
+        "type": "speedLimit",
+        "speed": 40.0
+      }
+    },
+    {
+      "position": 60525.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60550.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60575.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60600.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60612.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60637.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60662.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60687.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60712.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60737.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60750.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60762.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60787.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60812.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60837.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60862.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60875.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60887.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60912.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60937.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60962.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 60987.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61000.0,
+      "object": {
+        "type": "station",
+        "name": "Snitynka"
+      }
+    },
+    {
+      "position": 61012.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61025.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61050.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61075.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61100.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61125.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61137.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61162.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61187.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61212.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61237.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61262.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61275.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61287.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61312.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61337.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61362.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61387.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61400.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61412.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61437.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61462.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61487.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61512.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61537.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61550.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61575.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61600.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61625.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61650.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61662.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61687.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61712.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61737.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61762.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61787.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61800.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61812.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61837.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61862.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61887.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61912.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61925.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61937.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61962.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 61987.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62012.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62037.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62062.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62075.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62100.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62125.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62150.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62175.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62200.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62212.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62225.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62250.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62275.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62300.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62325.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62350.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62362.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62375.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62400.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62425.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62450.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62475.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62487.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62500.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62500.0,
+      "object": {
+        "type": "speedLimit",
+        "speed": 25.0
+      }
+    },
+    {
+      "position": 62525.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62550.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62575.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62600.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62612.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62637.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62662.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62687.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62712.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62737.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62750.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62762.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62787.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62812.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62837.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62862.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62875.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62887.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62912.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62937.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62962.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 62987.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63012.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63025.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63050.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63075.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63100.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63125.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63137.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63162.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63187.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63212.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63237.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63262.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63275.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63287.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63312.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63337.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63362.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63387.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63400.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63412.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63437.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63462.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63487.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63512.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63537.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63550.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63575.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63600.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63625.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63650.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63662.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63687.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63712.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63737.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63762.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63775.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63800.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63825.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63850.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63875.0,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63887.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63912.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63937.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63962.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 63987.5,
+      "object": {
+        "type": "joint"
+      }
+    },
+    {
+      "position": 64000.0,
+      "object": {
+        "type": "station",
+        "name": "Fastiv I"
+      }
+    }
+  ]
+}
