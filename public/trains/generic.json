@@ -1,0 +1,70 @@
+{
+  "config": {
+    "cairos": [
+      {
+        "id": "c1",
+        "length": 24.75,
+        "bogieCentres": 17,
+        "bogieWheelbase": 2.4
+      },
+      {
+        "id": "c2",
+        "length": 24.75,
+        "bogieCentres": 17,
+        "bogieWheelbase": 2.4
+      },
+      {
+        "id": "c3",
+        "length": 24.75,
+        "bogieCentres": 17,
+        "bogieWheelbase": 2.4
+      },
+      {
+        "id": "c4",
+        "length": 24.75,
+        "bogieCentres": 17,
+        "bogieWheelbase": 2.4
+      },
+      {
+        "id": "c5",
+        "length": 24.75,
+        "bogieCentres": 17,
+        "bogieWheelbase": 2.4
+      },
+      {
+        "id": "c6",
+        "length": 24.75,
+        "bogieCentres": 17,
+        "bogieWheelbase": 2.4
+      },
+      {
+        "id": "c7",
+        "length": 24.75,
+        "bogieCentres": 17,
+        "bogieWheelbase": 2.4
+      },
+      {
+        "id": "c8",
+        "length": 24.75,
+        "bogieCentres": 17,
+        "bogieWheelbase": 2.4
+      },
+      {
+        "id": "c9",
+        "length": 24.75,
+        "bogieCentres": 17,
+        "bogieWheelbase": 2.4
+      },
+      {
+        "id": "c10",
+        "length": 24.75,
+        "bogieCentres": 17,
+        "bogieWheelbase": 2.4
+      }
+    ],
+    "seatPosition": {
+      "cairoNumber": 5,
+      "position": 12.375
+    }
+  }
+}
