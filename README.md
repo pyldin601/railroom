@@ -6,6 +6,7 @@ state bindings are defined yet. Controls, route-map content, canvas drawing,
 and audio are not wired yet. The previous implementation is preserved in `legacy/`.
 
 See [state-to-UI architecture](docs/state-to-ui.md) for the proposed update flow.
+See [track generator building blocks](docs/track-generator.md) for the atoms and area patterns.
 
 ## Development
 
