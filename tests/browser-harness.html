@@ -123,6 +123,18 @@
         $('audition').click();
         await until(() => Number($('speed').textContent) >= 71, 'demo audition');
         assert($('route-mode').value === 'demo', 'audition switches to the jointed fixture');
+        change('route-mode', 'demo-12.5', 'change');
+        await until(() => Number($('speed').textContent) === 0, 'short-rail route reset');
+        assert(
+          $('route-caption').textContent.startsWith('12.5 m'),
+          'short-rail demo is selectable',
+        );
+        $('audition').click();
+        await until(() => Number($('speed').textContent) >= 71, 'short-rail audition');
+        assert(
+          $('route-mode').value === 'demo-12.5',
+          'audition preserves the selected 12.5 m demo',
+        );
         $('reset').click();
         await until(() => Number($('speed').textContent) === 0, 'final reset');
         assert($('error').hidden && errors.length === 0, 'control lifecycle has no browser errors');

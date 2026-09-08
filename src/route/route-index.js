@@ -70,13 +70,26 @@ export function wheelsets(cars = DEFAULT_CARRIAGES) {
     })),
   ).flat();
 }
-export function demoRoute(length = 64000) {
+export function demoRoute(length = 64000, railLength = 25) {
+  if (!Number.isFinite(railLength) || railLength <= 0) throw new Error('Invalid demo rail length');
+  const rails = [];
+  for (let position = 0; position < length; position += railLength)
+    for (const side of ['left', 'right'])
+      rails.push({
+        id: `demo-rail-${position}-${side}`,
+        type: 'rail',
+        position,
+        side,
+        length: Math.min(railLength, length - position),
+        construction: 'jointed',
+      });
   const events = [];
-  for (let p = 25; p < length; p += 25)
+  for (let p = railLength; p < length; p += railLength)
     for (const side of ['left', 'right'])
       events.push({ id: `demo-${p}-${side}`, position: p, side, type: 'joint' });
   return {
     length,
+    rails,
     stations: [
       { name: 'Jointed track start', position: 0 },
       { name: 'Test track end', position: length },

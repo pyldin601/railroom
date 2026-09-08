@@ -34,7 +34,8 @@ This yields 725–800 m strings. Both running rails use the same boundaries.
 
 Internal fabrication welds are silent. Jointed rail ends and welded string ends
 produce wheel impacts. The 12.5 m sections double the joint frequency at a given
-speed compared with 25 m sections. The all-jointed 25 m audition track remains separate.
+speed compared with 25 m sections. Separate all-jointed 25 m and 12.5 m demos are available in the route selector.
+Audition at 72 km/h uses the selected demo, defaulting to 25 m from the Kyiv route.
 
 The runtime JSON contains `sections`, `rails`, `events`, and `stations`. Each object has a UUID and a metre `position`; rail spans also have `length`, `side`, and `construction`. A welded `rail` span represents an assembled string, with `fabricationLength: 25.0`, rather than a single rolled rail. Existing connection and station UUIDs are retained; added 12.5 m midpoint joints use deterministic UUIDv5; new spans and sections use deterministic UUIDv5. Original fastening and individual-rail records remain in the preserved source inventory and are not part of this runtime variant.
 

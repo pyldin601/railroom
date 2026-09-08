@@ -3,7 +3,7 @@ import { TrainSession } from './session.js?v=review-fixes';
 import { AUDIO_SETTINGS, MIX_LEVELS } from './audio/settings.js';
 import { drawRouteMap } from './ui/route-map.js?v=speed360';
 import { createRenderLoop } from './ui/render-loop.js';
-import { RouteIndex, demoRoute, wheelsets, listenerSeat } from './route/route-index.js?v=speed360';
+import { RouteIndex, demoRoute, wheelsets, listenerSeat } from './route/route-index.js?v=short-rail-demo';
 import { wheelAt } from './ui/track-view.js?v=wheel-click';
 import { renderDashboard } from './ui/dashboard.js?v=review-fixes';
 import { setText } from './ui/dom.js';
@@ -42,12 +42,11 @@ function setStatus(text) {
   setText('status', text);
   requestRender();
 }
+const demoSpacing = () => ({ demo: 25, 'demo-12.5': 12.5 })[$('route-mode').value];
 function displayRoute() {
   drawRouteMap(
     $('route-map'),
-    $('route-mode').value === 'demo'
-      ? { length: route.length, stations: route.stations }
-      : routeData,
+    demoSpacing() ? { length: route.length, stations: route.stations } : routeData,
   );
   $('station').replaceChildren();
   for (const s of route.stations) {
@@ -56,10 +55,9 @@ function displayRoute() {
     option.textContent = s.name;
     $('station').append(option);
   }
-  $('route-caption').textContent =
-    $('route-mode').value === 'demo'
-      ? '25 m jointed test track · separate from the Kyiv route'
-      : '64 km · 12.5 / 25 m rails / welded strings ≤800 m · approximate route';
+  $('route-caption').textContent = demoSpacing()
+    ? `${demoSpacing()} m jointed test track · separate from the Kyiv route`
+    : '64 km · 12.5 / 25 m rails / welded strings ≤800 m · approximate route';
 }
 function audioOptions(position = 0) {
   return {
@@ -104,8 +102,8 @@ async function play(audition = false) {
     await session.context.resume();
     if (audition) {
       session.transport.pause();
-      $('route-mode').value = 'demo';
-      route = new RouteIndex(demoRoute());
+      if (!demoSpacing()) $('route-mode').value = 'demo';
+      route = new RouteIndex(demoRoute(64000, demoSpacing()));
       displayRoute();
       buildAudio();
       session.transport.state.speed = 20;
@@ -280,8 +278,9 @@ $('seek').onclick = seekStation;
 let pendingPosition = 0;
 function changeRoute() {
   session.transport?.pause();
-  route =
-    $('route-mode').value === 'demo' ? new RouteIndex(demoRoute()) : new RouteIndex(routeData);
+  route = demoSpacing()
+    ? new RouteIndex(demoRoute(64000, demoSpacing()))
+    : new RouteIndex(routeData);
   pendingPosition = 0;
   displayRoute();
   if (session.bank) buildAudio();

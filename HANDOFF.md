@@ -168,3 +168,8 @@ Relevant files: `src/audio/rolling.js`, `rolling-bands.js`.
 ## Suggested first prompt for the new task
 
 > Continue development of Railroom in this project. Read HANDOFF.md and inspect the relevant current code before making changes. Preserve the tuned sound balance and smooth per-wheel distance attenuation. Wait for my next feature or sound adjustment request.
+
+## Jointed demos
+
+The route selector offers separate 25 m and 12.5 m jointed demos. Audition at
+72 km/h preserves the selected demo; from the main route it defaults to 25 m.

@@ -31,7 +31,9 @@ Python 3 serves files; Node.js 22 or newer runs the verification commands.
 - **Wheel audition:** click an individual wheel to hear its spatial impact. It
   works while stopped, using a 72 km/h audition level. There are no wheel mute/solo
   controls.
-- **Audition at 72 km/h:** switches to a separate 25 m jointed test track and coasts.
+- **Track demos:** choose 25 m or 12.5 m jointed track in the route selector.
+  **Audition at 72 km/h** coasts on the selected demo; from the Kyiv route it
+  switches to the 25 m demo.
 - **Sound layers:** adjust impacts, metal tails, rolling and its two frequency
   bands, traction, braking, and cabin ambience. The motor selector offers
   synthesized traction or a recorded tonal texture.
