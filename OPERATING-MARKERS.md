@@ -11,8 +11,10 @@ Research date: 2026-09-07. No current official line speed order, selected statio
 | All short connector groups between welded strings | 120 |
 | Welded strings | 120 |
 
-Each connector interval keeps the surrounding welded limit, with no speed
-reduction at either boundary. See [track layout](TRACK-LAYOUT.md) for the full corridor and connector list.
+Consecutive sections with the same speed are merged into one interval, with
+`sectionIds` recording all covered construction sections. A speed marker appears
+only at the route start or an actual limit change. Short connectors therefore
+produce no repeated 120 km/h markers. See [track layout](TRACK-LAYOUT.md) for the full corridor and connector list.
 
 This meets the requested station-zone versus welded-running-zone contrast as a scenario assumption. A 25 m rail does not inherently require a low speed, and an 800 m welded string does not prove that 120 km/h is allowed. Station track selection, curves, infrastructure condition, vehicle limits and temporary restrictions can change the real profile. The 120 value is the simulator scenario's full speed, not a verified route maximum.
 

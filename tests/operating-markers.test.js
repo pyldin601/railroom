@@ -5,8 +5,7 @@ import { RouteIndex } from '../src/route/route-index.js';
 const route = JSON.parse(fs.readFileSync(new URL('../public/route.json', import.meta.url)));
 test('operating markers are unique, sorted and explicitly estimated', () => {
   const markers = route.operatingMarkers;
-  assert.equal(markers.length, route.sections.length + 2);
-  assert.equal(new Set(markers.map((m) => m.id)).size, route.sections.length + 2);
+  assert.equal(new Set(markers.map((m) => m.id)).size, markers.length);
   markers.forEach((m, i) => {
     assert.match(m.id, /^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
     assert.ok(Number.isFinite(m.position) && m.position >= 0 && m.position < route.length);
@@ -16,9 +15,13 @@ test('operating markers are unique, sorted and explicitly estimated', () => {
 });
 test('every construction zone has the requested scenario speed coverage', () => {
   for (const section of route.sections) {
-    const m = route.operatingMarkers.find((m) => m.sectionId === section.id);
-    assert.equal(m.position, section.position);
-    assert.equal(m.endPosition, section.position + section.length);
+    const m = route.operatingMarkers.find(
+      (m) =>
+        m.type === 'speed_limit' &&
+        m.position <= section.position &&
+        m.endPosition >= section.position + section.length,
+    );
+    assert.ok(m.sectionIds.includes(section.id));
     assert.equal(m.verifiedSpeedKmh, null);
     const p = section.position;
     const expected =
@@ -57,5 +60,15 @@ test('short connectors preserve the surrounding full speed', () => {
       const marker = markers.find((m) => position >= m.position && position < m.endPosition);
       assert.equal(marker.speedKmh, 120);
     }
+  }
+});
+
+test('speed markers cover the route continuously without repeated limits', () => {
+  const markers = route.operatingMarkers.filter((m) => m.type === 'speed_limit');
+  assert.equal(markers[0].position, 0);
+  assert.equal(markers.at(-1).endPosition, route.length);
+  for (let i = 1; i < markers.length; i++) {
+    assert.equal(markers[i - 1].endPosition, markers[i].position);
+    assert.notEqual(markers[i - 1].speedKmh, markers[i].speedKmh);
   }
 });

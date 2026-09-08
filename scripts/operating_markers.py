@@ -8,10 +8,14 @@ def build_markers(sections):
         # Short connectors inherit the welded corridor speed; only long jointed areas slow down.
         limit = (120 if section['construction'] == 'welded' or section.get('purpose') == 'string connector' else
                  25 if start in (0, 62500) else 40)
+        if markers and markers[-1]['speedKmh'] == limit and markers[-1]['endPosition'] == start:
+            markers[-1]['endPosition'] = float(start + section['length'])
+            markers[-1]['sectionIds'].append(section['id'])
+            continue
         markers.append(dict(
             id=str(uuid5(NAMESPACE_URL, f'railroom/kyiv-fastiv/marker/speed/{start}')),
             type='speed_limit', position=float(start), speedKmh=float(limit),
-            endPosition=float(start+section['length']), sectionId=section['id'],
+            endPosition=float(start+section['length']), sectionIds=[section['id']],
             direction='kyiv-to-fastiv', appliesTo='passenger',
             status='estimated', positionStatus='synthetic-route-coordinate',
             basis='scenario-assumption', verifiedSpeedKmh=None,
