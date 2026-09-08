@@ -4,6 +4,12 @@ A local browser train-sound simulator for relaxed listening on an illustrative
 64 km Kyiv-Pasazhyrskyi–Fastiv route. Recorded wheel contacts and rolling blend
 with synthesized traction, horn, and carriage ambience. Headphones are recommended.
 
+## Hosted version
+
+Open [Railroom on GitHub Pages](https://pyldin601.github.io/railroom/).
+Pushes to `main` run the Node and browser checks, then deploy the static app via
+`.github/workflows/pages.yml`. The workflow can also be run manually in Actions.
+
 ## Run
 
 ```sh

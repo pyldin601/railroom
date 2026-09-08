@@ -173,3 +173,9 @@ Relevant files: `src/audio/rolling.js`, `rolling-bands.js`.
 
 The route selector offers separate 25 m and 12.5 m jointed demos. Audition at
 72 km/h preserves the selected demo; from the main route it defaults to 25 m.
+
+## GitHub Pages
+
+GitHub Actions deploys the static app to https://pyldin601.github.io/railroom/
+on pushes to main or manual dispatch. Workflow: `.github/workflows/pages.yml`.
+Node and browser checks must pass before deployment.
