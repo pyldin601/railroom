@@ -17,12 +17,19 @@ test('Lisbon asset preserves the approved itinerary, distances and complete cove
   assert.deepEqual([...new Set(data.stations.map(s => s.country))], ['UA', 'PL', 'DE', 'FR', 'ES', 'PT']);
   assert.equal(data.length, 4610000);
   assert.ok(readFileSync(asset).length < 1000000);
-  assert.equal(data.sections.filter(s => s.construction === 'jointed').length, 19);
+  const jointed = data.sections.filter(s => s.construction === 'jointed');
+  assert.equal(jointed.length, 12);
+  assert.ok(new Set(jointed.map(s => s.length)).size >= 5);
+  assert.equal(data.contactModel, 'rail-blocks-v1');
+  assert.ok(jointed.every(s => s.block === 'short-25'));
+  const longAreas = data.sections.filter(s => s.block !== 'short-25');
+  longAreas.forEach((s, i) => assert.equal(s.block, i % 2 ? 'long-1500' : 'long-800'));
   let end = 0;
   for (const s of data.sections) {
     assert.equal(s.position, end);
     end += s.length;
-    if (s.construction === 'jointed') assert.equal(s.length, 2000);
+    assert.equal(s.railLengths.reduce((a,b) => a+b, 0), s.length);
+    if (s.construction === 'jointed') assert.ok(s.length >= 6000 && s.length <= 24000);
   }
   assert.equal(end, data.length);
   end = 0;
@@ -35,14 +42,20 @@ test('Lisbon asset preserves the approved itinerary, distances and complete cove
   assert.equal(end, data.length);
   const route = new RouteIndex(data);
   assert.equal(route.events.length, 0);
-  assert.ok(route.contactCount > 300000);
+  const railCount = data.sections.reduce((total, s) => total + s.railLengths.length, 0);
+  assert.equal(route.contactCount, 2 * (railCount - 1));
+  assert.ok(route.contactCount < 40000);
   const nearEnd = route.between(data.length - 100, data.length);
   assert.ok(nearEnd.length > 0 && nearEnd.length < 20);
   assert.ok(nearEnd.every(e => e.position < data.length));
   // Inspect work, not wall-clock timing: a short query never enumerates the prefix.
   let calls = 0;
-  const offset = route.compact.offset.bind(route.compact);
-  route.compact.offset = (...args) => { calls++; return offset(...args); };
+  route.compact.boundaries = new Proxy(route.compact.boundaries, {
+    get(target, key) {
+      if (/^\d+$/.test(String(key))) calls++;
+      return Reflect.get(target, key, target);
+    },
+  });
   assert.deepEqual(route.between(data.length - 100, data.length), nearEnd);
   assert.ok(calls < 100);
 });
@@ -98,7 +111,8 @@ test('Kyiv–Lisbon varies restrictions between 40, 50 and 60 with terminal and 
   const at = p => limits.find(m => m.position <= p && p < m.endPosition).speedKmh;
   assert.equal(at(0), 25);
   assert.equal(at(999), 25);
-  assert.equal(at(1000), 260);
+  assert.equal(at(1000), 60);
+  assert.equal(at(6000), 260);
   assert.equal(at(data.length - 1000), 25);
   for (const [i, station] of data.stations.slice(1, -1).entries()) {
     assert.equal(at(station.position - 1000), [40, 50, 60][i % 3]);
@@ -106,8 +120,8 @@ test('Kyiv–Lisbon varies restrictions between 40, 50 and 60 with terminal and 
     assert.equal(at(station.position + 1000), 260);
   }
   for (const [i, section] of data.sections.filter(s => s.construction === 'jointed').entries()) {
-    assert.equal(at(section.position), [60, 40, 50][i % 3]);
-    assert.equal(at(section.position + section.length - 1), [60, 40, 50][i % 3]);
-    assert.equal(at(section.position + section.length), 260);
+    assert.equal(at(section.position), section.position === 0 ? 25 : [60, 40, 50][i % 3]);
+    assert.equal(at(section.position + section.length - 1), section.position + section.length === data.length ? 25 : [60, 40, 50][i % 3]);
+    if (section.position + section.length < data.length) assert.equal(at(section.position + section.length), 260);
   }
 });

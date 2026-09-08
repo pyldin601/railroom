@@ -933,3 +933,21 @@ a {
   font-size: 10px;
   pointer-events: none;
 }
+
+/* Rail zones are intervals, distinct from the speed-change badges above them. */
+.map-track-zone {
+  top: 99px;
+  height: 14px;
+  transform: none;
+  border: 1px solid #779088;
+  border-radius: 2px;
+  background: #334640;
+  min-width: 0;
+}
+.map-track-zone.zone-short { background: #b07b4d; }
+.map-track-zone.zone-standard { background: #698f78; }
+.map-track-zone.zone-mixed { background: #9b925e; }
+.map-track-zone.zone-long800 { background: #496f66; }
+.map-track-zone.zone-long1500 { background: #435f76; }
+.map-track-zone:hover,
+.map-track-zone:focus { background: #aec8a6; }

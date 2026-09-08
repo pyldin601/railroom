@@ -32,3 +32,26 @@ test('fractional query boundaries preserve contacts using the explicit-index tol
   for (const split of [25 - 5e-9, 200 - 5e-9])
     assert.deepEqual([...route.between(0, split), ...route.between(split, 300)], route.between(0, 300));
 });
+
+test('zone rail patterns produce distinct 12.5 m, 25 m and mixed contact rhythms', () => {
+  const route = new RouteIndex({
+    id: 'varied', length: 300, contactModel: 'periodic-v1', sections: [
+      { position: 0, length: 100, construction: 'jointed', railPattern: [12.5] },
+      { position: 100, length: 100, construction: 'jointed', railPattern: [25] },
+      { position: 200, length: 100, construction: 'jointed', railPattern: [25, 25, 12.5] },
+    ],
+  });
+  const contacts = route.between(0, 300);
+  assert.deepEqual(contacts.filter(e => e.side === 'left').map(e => e.position),
+    [12.5, 25, 37.5, 50, 62.5, 75, 87.5, 100, 125, 150, 175, 200, 225, 250, 262.5, 287.5]);
+  assert.equal(route.contactCount, contacts.length);
+  assert.deepEqual([...route.between(0, 100), ...route.between(100, 200), ...route.between(200, 300)], contacts);
+  assert.deepEqual(route.between(249, 290), contacts.filter(e => e.position > 249 && e.position <= 290));
+});
+
+test('compact contact patterns reject empty or unsupported rail sizes', () => {
+  for (const railPattern of [[], [0], [-25], [NaN], [10], '25'])
+    assert.throws(() => new RouteIndex({ ...fixture, sections: [
+      { position: 0, length: 300, construction: 'jointed', railPattern },
+    ] }));
+});

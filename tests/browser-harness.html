@@ -47,7 +47,7 @@
         );
         // A superseded initial fetch must not hold the renderer hostage.
         const page = await (await fetch('../index.html')).text();
-        const intercept = '<script>const realFetch = window.fetch.bind(window); window.fetch = (...args) => String(args[0]).includes("kyiv-lisbon.json") ? new Promise(resolve => { window.releaseInitial = () => resolve(realFetch(...args)); }) : realFetch(...args);<' + '/script>';
+        const intercept = '<script>const realFetch = window.fetch.bind(window); window.fetch = (...args) => String(args[0]).includes("public/route.json") ? new Promise(resolve => { window.releaseInitial = () => resolve(realFetch(...args)); }) : realFetch(...args);<' + '/script>';
         frame.srcdoc = page.replace('<head>', '<head><base href="../">' + intercept);
         await until(() => frame.contentWindow.releaseInitial, 'pending initial fetch');
         const initialDoc = frame.contentDocument;
@@ -68,7 +68,10 @@
           $(id).dispatchEvent(new win.Event(event, { bubbles: true }));
         };
         await until(() => !$('play').disabled, 'route loading');
-        assert($('route-mode').value === 'kyiv-lisbon', 'Kyiv–Lisbon is the default route');
+        assert($('route-mode').value === 'route', 'Kyiv–Fastiv is the default route');
+        assert($('route-title').textContent === 'Kyiv → Fastiv', 'default heading matches Kyiv–Fastiv');
+        change('route-mode', 'kyiv-lisbon', 'change');
+        await until(() => !$('play').disabled, 'select Kyiv–Lisbon');
         assert($('route-title').textContent === 'Kyiv → Lisbon', 'new route heading');
         assert($('station').options.length === 21, 'all approved stations are available');
         const speedMarkers = [...doc.querySelectorAll('.map-speed')];
@@ -77,13 +80,24 @@
         assert(['25', '40', '50', '60', '260'].every(speed => speedMarkers.some(marker => marker.querySelector('.map-glyph').textContent === speed)), 'map shows varied restrictions and 260 km/h running limits');
         assert(doc.querySelector('.scale-labels').textContent === '0130260', 'speedometer reflects the 260 km/h maximum');
         assert($('route-map').dataset.windowStart === '0' && $('route-map').dataset.windowEnd === '1000000', 'map starts with the first 1000 km');
+        const zones = [...doc.querySelectorAll('.map-track-zone')];
+        assert(zones.length === routeAsset.sections.length, 'compact track sections have map bands');
+        const visibleSpeedRects = [...doc.querySelectorAll('.map-speed:not([hidden])')].map(marker => marker.getBoundingClientRect());
+        assert(visibleSpeedRects.every((a, i) => visibleSpeedRects.slice(i + 1).every(b =>
+          a.right <= b.left || b.right <= a.left || a.bottom <= b.top || b.bottom <= a.top)), 'all nearby speed badges remain readable');
+        assert(zones.some(zone => !zone.hidden && zone.getAttribute('aria-label').includes('25 m rails + 12.5 m inserts')), 'reduced-speed rail groups are visible in the starting window');
+        assert(zones.some(zone => !zone.hidden && zone.getAttribute('aria-label').includes('800 m rails')), '800 m rail areas are visible in the starting window');
+        assert(zones.some(zone => !zone.hidden && zone.getAttribute('aria-label').includes('1,500 m rails')), '1500 m rail areas are visible in the starting window');
         assert([...doc.querySelectorAll('.map-station:not([hidden])')].length === 5, 'stations beyond the visible window are hidden');
         change('station', 2690000, 'change');
         $('seek').click();
         await until(() => $('route-map').dataset.windowStart === '2190000', 'map follows jump to Paris');
         assert($('route-head').style.left === '50%', 'train is centered within the route');
         const carriedLimit = doc.querySelector('.map-speed:not([hidden])');
-        assert(carriedLimit.style.left === '0%' && carriedLimit.textContent.includes('260'), 'active limit carries into the left edge');
+        const edgeLimit = routeAsset.operatingMarkers.find(marker => marker.position <= 2190000 && marker.endPosition > 2190000);
+        assert(carriedLimit.style.left === '0%' && carriedLimit.querySelector('.map-glyph').textContent === String(edgeLimit.speedKmh), 'active limit carries into the left edge');
+        const edgeZone = doc.querySelector('.map-track-zone:not([hidden])');
+        assert(edgeZone.style.left === '0%' && parseFloat(edgeZone.style.width) > 0, 'zone crossing the viewport edge is clipped to the visible window');
         change('station', 4610000, 'change');
         $('seek').click();
         await until(() => $('distance').textContent.startsWith('4610.000'), 'jump to Lisbon');

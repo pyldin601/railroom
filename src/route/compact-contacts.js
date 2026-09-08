@@ -9,8 +9,15 @@ export class CompactContacts {
       if (section.position !== end || !Number.isFinite(section.length) || section.length <= 0 ||
           !['jointed', 'welded'].includes(section.construction))
         throw new Error('Invalid compact sections');
+      const pattern = section.railPattern ?? [25, 25, 25, 25, 25, 25, 25, 12.5];
+      if (section.construction === 'jointed' &&
+          (!Array.isArray(pattern) || !pattern.length || pattern.some(size => ![12.5, 25].includes(size))))
+        throw new Error('Invalid rail pattern');
       end += section.length;
-      const item = { ...section, end };
+      const patternOffsets = [0];
+      if (section.construction === 'jointed')
+        for (const size of pattern) patternOffsets.push(patternOffsets.at(-1) + size);
+      const item = { ...section, end, patternOffsets };
       item.count = this.upperBound(item, section.length - 1e-8);
       item.boundaryType = section.construction === 'jointed' ||
         data.sections[i - 1]?.construction === 'jointed' ? 'joint' : 'weld';
@@ -21,7 +28,8 @@ export class CompactContacts {
   }
   offset(section, n) {
     return section.construction === 'jointed'
-      ? Math.floor(n / 8) * 187.5 + (n % 8) * 25
+      ? Math.floor(n / (section.patternOffsets.length - 1)) * section.patternOffsets.at(-1) +
+        section.patternOffsets[n % (section.patternOffsets.length - 1)]
       : n * 25;
   }
   upperBound(section, offset) {

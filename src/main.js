@@ -1,11 +1,11 @@
 import { DEFAULT_CARRIAGES, SEAT_POSITIONS } from './route/coach-geometry.js';
 import { TrainSession } from './session.js?v=review-fixes';
 import { AUDIO_SETTINGS, MIX_LEVELS } from './audio/settings.js';
-import { drawRouteMap } from './ui/route-map.js?v=map-markers';
+import { drawRouteMap } from './ui/route-map.js?v=rail-blocks';
 import { createRenderLoop } from './ui/render-loop.js';
-import { RouteIndex, demoRoute, wheelsets, listenerSeat } from './route/route-index.js?v=lisbon';
+import { RouteIndex, demoRoute, wheelsets, listenerSeat } from './route/route-index.js?v=rail-blocks';
 import { wheelAt } from './ui/track-view.js?v=wheel-click';
-import { renderDashboard } from './ui/dashboard.js?v=map-markers';
+import { renderDashboard } from './ui/dashboard.js?v=rail-blocks';
 import { setText } from './ui/dom.js';
 const $ = (id) => document.getElementById(id);
 $('cars').value = String(DEFAULT_CARRIAGES);

@@ -1,3 +1,4 @@
+import { RailBlockContacts } from './rail-block-contacts.js';
 import { CompactContacts } from './compact-contacts.js';
 import { COACH, DEFAULT_CARRIAGES } from './coach-geometry.js';
 /** Static binary-search index. The audio path never reads the full source-object array. */
@@ -8,8 +9,10 @@ export class RouteIndex {
     this.powerMarkers = (data.operatingMarkers || [])
       .filter((m) => ['power_off', 'power_on'].includes(m.type))
       .sort((a, b) => a.position - b.position);
-    if (data.contactModel && data.contactModel !== 'periodic-v1') throw new Error('Unknown contact model');
-    this.compact = data.contactModel ? new CompactContacts(data) : null;
+    if (data.contactModel && !['periodic-v1', 'rail-blocks-v1'].includes(data.contactModel))
+      throw new Error('Unknown contact model');
+    this.compact = data.contactModel === 'rail-blocks-v1' ? new RailBlockContacts(data)
+      : data.contactModel === 'periodic-v1' ? new CompactContacts(data) : null;
     this.length = data.length;
     this.stations = data.stations || [];
     this.events = data.events || [];

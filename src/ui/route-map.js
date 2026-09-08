@@ -13,18 +13,35 @@ export function updateRouteMap(container, position) {
   const map = maps.get(container);
   if (!map) return;
   const window = routeWindow(map.length, position);
+  const width = container.clientWidth;
+  const speedRows = [];
   container.dataset.windowStart = String(window.start);
   container.dataset.windowEnd = String(window.end);
   map.head.style.left = `${window.head}%`;
   for (const item of map.markers) {
     // A speed section that began offscreen still applies at the window's left edge.
     const carried = item.endPosition != null && item.position < window.start && item.endPosition > window.start;
-    item.button.hidden = !carried && (item.position < window.start || item.position > window.end);
+    item.button.hidden = item.span
+      ? item.endPosition <= window.start || item.position >= window.end
+      : !carried && (item.position < window.start || item.position > window.end);
     if (item.button.hidden) continue;
     const percent = (Math.max(window.start, item.position) - window.start) / window.length * 100;
     item.button.style.left = `${percent}%`;
+    if (map.zones.length && item.speed) {
+      const centre = percent / 100 * width;
+      let row = speedRows.findIndex(end => centre - 15 >= end + 4);
+      if (row === -1) row = speedRows.length;
+      speedRows[row] = centre + 15;
+      item.button.style.setProperty('--marker-row', String(row));
+    }
+    if (item.span) item.button.style.width = `${(Math.min(item.endPosition, window.end) - Math.max(item.position, window.start)) / window.length * 100}%`;
     item.button.classList.toggle('near-start', percent < 12);
     item.button.classList.toggle('near-end', percent > 88);
+  }
+  if (map.zones.length) {
+    const top = 30 + Math.max(2, speedRows.length) * 29 + 12;
+    for (const zone of map.zones) zone.button.style.top = `${top}px`;
+    container.style.height = `${Math.max(150, top + 40)}px`;
   }
   for (const [label, value] of [[map.startLabel, window.start], [map.endLabel, window.end]]) {
     const text = `${(value / 1000).toLocaleString('en-US', { maximumFractionDigits: 1 })} km`;
@@ -34,8 +51,9 @@ export function updateRouteMap(container, position) {
 
 export function drawRouteMap(container, data) {
   container.replaceChildren();
+  container.style.height = '';
   const markers = [];
-  function marker(position, label, kind, text = '', endPosition) {
+  function marker(position, label, kind, text = '', endPosition, span = false) {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = `map-marker ${kind}`;
@@ -52,7 +70,7 @@ export function drawRouteMap(container, data) {
     if (position / data.length > 0.88) button.classList.add('near-end');
     button.append(glyph, tooltip);
     container.append(button);
-    markers.push({ button, position, endPosition });
+    markers.push({ button, position, endPosition, span, speed: kind === 'map-speed' });
     return button;
   }
   for (const station of data.stations || [])
@@ -61,6 +79,27 @@ export function drawRouteMap(container, data) {
       `${station.name} · ${(station.position / 1000).toFixed(2)} km${station.positionStatus === 'estimated' ? ' · approximate position' : ''}`,
       'map-station',
     );
+  if (data.contactModel) {
+    for (const section of data.sections || []) {
+      const sizes = [...new Set(section.railPattern || [25, 25, 25, 25, 25, 25, 25, 12.5])].sort((a, b) => a - b);
+      const welded = section.construction === 'welded';
+      let kind = welded ? 'welded' : sizes.length > 1 ? 'mixed' : sizes[0] === 12.5 ? 'short' : 'standard';
+      let name = welded ? 'Welded track' : `${sizes.join(' / ')} m rails`;
+      if (section.block === 'short-25') {
+        kind = 'mixed';
+        name = '25 m rails + 12.5 m inserts';
+      } else if (section.block === 'long-800') {
+        kind = 'long800';
+        name = '800 m rails · occasional 12.5 m connectors';
+      } else if (section.block === 'long-1500') {
+        kind = 'long1500';
+        name = '1,500 m rails · direct joins';
+      }
+      marker(section.position,
+        `${name} · ${section.position / 1000}–${(section.position + section.length) / 1000} km · ${section.length / 1000} km zone`,
+        `map-track-zone zone-${kind}`, '', section.position + section.length, true);
+    }
+  }
   const elements = data.operatingMarkers || [];
   let speedIndex = 0;
   for (const m of elements) {
@@ -95,6 +134,7 @@ export function drawRouteMap(container, data) {
   const endLabel = document.createElement('span');
   range.append(startLabel, endLabel);
   container.append(range);
-  maps.set(container, { length: data.length, markers, head, startLabel, endLabel });
+  maps.set(container, { length: data.length, markers, head, startLabel, endLabel,
+    zones: markers.filter(item => item.span) });
   updateRouteMap(container, 0);
 }
