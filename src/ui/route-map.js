@@ -95,6 +95,7 @@ export function drawRouteMap(container, data) {
         kind = 'long1500';
         name = '1,500 m rails · direct joins';
       }
+      if (section.weldedJoins?.length) name += ` · ${section.weldedJoins.length} subtle welded joins`;
       marker(section.position,
         `${name} · ${section.position / 1000}–${(section.position + section.length) / 1000} km · ${section.length / 1000} km zone`,
         `map-track-zone zone-${kind}`, '', section.position + section.length, true);

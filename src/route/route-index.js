@@ -1,4 +1,4 @@
-import { RailBlockContacts } from './rail-block-contacts.js';
+import { RailBlockContacts } from './rail-block-contacts.js?v=subtle-welds';
 import { CompactContacts } from './compact-contacts.js';
 import { COACH, DEFAULT_CARRIAGES } from './coach-geometry.js';
 /** Static binary-search index. The audio path never reads the full source-object array. */

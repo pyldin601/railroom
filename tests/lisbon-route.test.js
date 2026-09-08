@@ -149,3 +149,23 @@ test('Lisbon passenger stops allocate ten minutes to hubs and five to other inte
   assert.equal(stops.find(s => s.name === 'Shepetivka').dwellSeconds, 300);
   assert.equal(stops.reduce((n,s) => n+s.dwellSeconds,0), 8700);
 });
+
+test('only some long-string joins in high-speed running are welded', () => {
+  const data = load();
+  const route = new RouteIndex(data);
+  const speedAt = p => data.operatingMarkers.find(m => m.position <= p && p < m.endPosition).speedKmh;
+  let welded = 0, regular = 0;
+  for (const section of data.sections) {
+    let position = section.position;
+    for (let i = 0; i < section.railLengths.length; i++) {
+      if ((section.weldedJoins || []).includes(i)) {
+        welded++;
+        assert.ok(i > 0 && section.railLengths[i-1] >= 800 && section.railLengths[i] >= 800);
+        assert.ok(speedAt(position-0.01) >= 200 && speedAt(position) >= 200);
+        assert.ok(route.between(position-0.01,position).every(e => e.type === 'welded_joint'));
+      } else if (i > 0) regular++;
+      position += section.railLengths[i];
+    }
+  }
+  assert.ok(welded > 0 && regular > welded);
+});

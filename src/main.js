@@ -1,12 +1,15 @@
 import { DEFAULT_CARRIAGES, SEAT_POSITIONS } from './route/coach-geometry.js';
-import { TrainSession } from './session.js?v=passenger-dwells';
+import { TrainSession } from './session.js?v=subtle-welds';
 import { AUDIO_SETTINGS, MIX_LEVELS } from './audio/settings.js';
-import { drawRouteMap } from './ui/route-map.js?v=passenger-dwells';
+import { drawRouteMap } from './ui/route-map.js?v=subtle-welds';
 import { createRenderLoop } from './ui/render-loop.js';
-import { RouteIndex, demoRoute, wheelsets, listenerSeat } from './route/route-index.js?v=passenger-dwells';
+import { RouteIndex, demoRoute, wheelsets, listenerSeat } from './route/route-index.js?v=subtle-welds';
 import { wheelAt } from './ui/track-view.js?v=wheel-click';
-import { renderDashboard } from './ui/dashboard.js?v=passenger-dwells';
+import { renderDashboard } from './ui/dashboard.js?v=subtle-welds';
 import { setText } from './ui/dom.js';
+import { createStateStore } from './state-store.js';
+const stateStore = createStateStore();
+const savedState = stateStore.load();
 const $ = (id) => document.getElementById(id);
 $('cars').value = String(DEFAULT_CARRIAGES);
 document.querySelectorAll('[data-seat]').forEach((button, i) => {
@@ -29,6 +32,7 @@ let routeData,
   loading = false,
   ready = false;
 let emergency = false;
+let activeRouteMode = null;
 const controls = () => ({
   throttle: Number($('throttle').value) / 100,
   brake: Number($('brake').value) / 100,
@@ -109,6 +113,8 @@ async function play(audition = false) {
       session.transport.pause();
       if (!demoSpacing()) $('route-mode').value = 'demo';
       route = new RouteIndex(demoRoute(64000, demoSpacing()));
+      activeRouteMode = $('route-mode').value;
+      pendingPosition = 0;
       displayRoute();
       buildAudio();
       session.transport.state.speed = 20;
@@ -290,7 +296,9 @@ function setRouteReady(value) {
   for (const id of ['play', 'autopilot', 'audition', 'seek', 'station'])
     $(id).disabled = !value;
 }
-async function changeRoute() {
+async function changeRoute(restore = null) {
+  persistState();
+  if (restore) pendingPosition = restore.position;
   const generation = ++routeGeneration;
   session.transport?.pause();
   disableAutopilot();
@@ -315,13 +323,17 @@ async function changeRoute() {
     const nextRoute = new RouteIndex(data);
     routeData = data;
     route = nextRoute;
-    pendingPosition = 0;
-    emergency = false;
-    $('brake').value = 0;
+    activeRouteMode = mode;
+    pendingPosition = Math.max(0, Math.min(route.length, restore ? pendingPosition : 0));
+    if (!restore) {
+      emergency = false;
+      $('brake').value = 0;
+    }
     updateControls();
     displayRoute();
-    if (session.bank) buildAudio();
+    if (session.bank) buildAudio(pendingPosition);
     setRouteReady(true);
+    persistState();
     setStatus('Ready · headphones recommended');
   } catch (e) {
     if (generation !== routeGeneration) return;
@@ -329,7 +341,7 @@ async function changeRoute() {
     setStatus('Route unavailable');
   }
 }
-$('route-mode').onchange = changeRoute;
+$('route-mode').onchange = () => changeRoute();
 function changeConsist() {
   const position = session.transport?.snapshot().position ?? pendingPosition;
   session.transport?.pause();
@@ -431,4 +443,51 @@ document.addEventListener('keydown', requestRender);
 new ResizeObserver(requestRender).observe($('track'));
 requestRender();
 
-void changeRoute();
+function persistState() {
+  // A pending/failed selection must never pair its route name with old progress.
+  if (!ready || !activeRouteMode) return;
+  const position = session.transport?.snapshot().position ?? pendingPosition;
+  stateStore.save({
+    routeMode: activeRouteMode,
+    position,
+    controls: controls(),
+    cars: Number($('cars').value),
+    seatPosition: Number($('seats').querySelector('.selected').dataset.seat),
+    audio: audioOptions(position).settings,
+  });
+}
+function restorePreferences(state) {
+  $('route-mode').value = state.routeMode;
+  $('cars').value = String(state.cars);
+  for (const button of $('seats').children) {
+    const selected = Number(button.dataset.seat) === state.seatPosition;
+    button.classList.toggle('selected', selected);
+    button.setAttribute('aria-pressed', String(selected));
+  }
+  axles = wheelsets(state.cars);
+  seat = listenerSeat(state.cars, state.seatPosition);
+  $('seat-label').textContent = `Seat position · carriage ${Math.min(state.cars, 5)} of ${state.cars}`;
+  $('throttle').value = state.controls.throttle * 100;
+  $('brake').value = state.controls.brake * 100;
+  emergency = state.controls.emergency;
+  $('master').value = state.audio.master * 100;
+  $('master-value').textContent = $('master').value + '%';
+  $('motor-mode').value = state.audio.motorMode;
+  $('spatial').checked = state.audio.spatial;
+  $('yaw').value = state.audio.yaw;
+  $('yaw-value').textContent = $('yaw').value + '°';
+  for (const [kind, level] of Object.entries(state.audio.levels)) $(kind + '-mix').value = level * 100;
+  updateControls();
+  updateSoundNote();
+}
+// Save only basic state, not prediction queues, live velocity, audio or autopilot.
+// Event saves are deferred until the action's own handlers have finished.
+for (const event of ['input', 'change', 'click', 'keydown'])
+  document.addEventListener(event, () => queueMicrotask(persistState));
+setInterval(persistState, 1000);
+window.addEventListener('pagehide', persistState);
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) persistState();
+});
+if (savedState) restorePreferences(savedState);
+void changeRoute(savedState);

@@ -70,3 +70,18 @@ test('rail block contact index rejects missing coverage and invalid lengths', ()
   for (const railLengths of [[], [0], [-1], [NaN], [100]])
     assert.throws(() => new RouteIndex({ ...blockFixture, sections: [{ position: 0, length: 3212.5, railLengths }] }));
 });
+
+test('marked long-string welds preserve boundary timing and produce subtle-impact crossings', () => {
+  const data = { id: 'welds', length: 3200, contactModel: 'rail-blocks-v1', stations: [],
+    sections: [{ position: 0, length: 3200, railLengths: [800,800,800,800], weldedJoins: [1,3] }] };
+  const r = new RouteIndex(data);
+  const contacts = r.between(0,3200);
+  assert.deepEqual(contacts.filter(e => e.side === 'left').map(e => e.type), ['welded_joint','joint','welded_joint']);
+  assert.equal(r.contactCount, 6);
+  assert.deepEqual([...r.between(0,800),...r.between(800,3200)], contacts);
+  const hits = findCrossings([{start:{position:790,speed:20,time:0},duration:1,acceleration:0}], [{id:'a',offset:0}],r);
+  assert.equal(hits.length,2);
+  assert.equal(hits[0].kind,'welded_joint');
+  assert.equal(hits[0].simulationTime,0.5);
+  for (const weldedJoins of [[0],[4],[1.5],[1,1]]) assert.throws(() => new RouteIndex({...data,sections:[{...data.sections[0],weldedJoins}]}));
+});

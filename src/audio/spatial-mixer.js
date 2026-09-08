@@ -152,6 +152,7 @@ export class SpatialMixer {
       duration = sample.buffer.duration / rate;
     const level =
       (sample.gain ?? 0.45) *
+      (event.kind === 'welded_joint' ? 0.18 : 1) *
       this.levels.impact *
       (0.12 + 0.65 * Math.sqrt(Math.min(1, event.speedMps / 33.333)));
     gain.gain.setValueAtTime(0, start);

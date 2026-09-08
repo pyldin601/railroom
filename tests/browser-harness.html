@@ -56,6 +56,8 @@
         await until(() => initialDoc.getElementById('route-head')?.style.left === '0%', 'rendering after superseded initial load', 2000);
         assert(!initialDoc.getElementById('play').disabled, 'demo renders while obsolete initial fetch is pending');
         frame.contentWindow.releaseInitial();
+        await navigate('about:blank');
+        localStorage.removeItem('railroom.state.v1');
         await navigate('../index.html');
         const win = frame.contentWindow,
           doc = frame.contentDocument,
@@ -115,6 +117,7 @@
         change('route-mode', 'route', 'change');
         await until(() => !$('error').hidden, 'route load failure');
         assert($('play').disabled, 'failed route cannot start playback');
+        assert(JSON.parse(localStorage.getItem('railroom.state.v1')).routeMode === 'kyiv-lisbon', 'failed route load preserves last saved journey');
         win.fetch = originalFetch;
         // A late successful fetch must not replace a newer selection.
         let release;
@@ -239,6 +242,56 @@
         await delay(150);
         assert($('route-map').dataset.windowStart === pausedWindow, 'paused viewport stays still');
         assert($('error').hidden && errors.length === 0, 'control lifecycle has no browser errors');
+        change('throttle', 63);
+        change('brake', 27);
+        change('master', 72);
+        change('impact-mix', 45);
+        change('rolling-mix', 135);
+        change('motor-mode', 'recorded', 'change');
+        change('yaw', 45);
+        const storageKey = 'railroom.state.v1';
+        await until(() => JSON.parse(win.localStorage.getItem(storageKey))?.controls.brake === .27, 'settings persisted');
+        const saved = JSON.parse(win.localStorage.getItem(storageKey));
+        assert(saved.routeMode === 'kyiv-lisbon' && saved.position > paris.position, 'saved progress belongs to selected track');
+        await navigate('../index.html?restore-test=1');
+        let restoredDoc = frame.contentDocument;
+        await until(() => !restoredDoc.getElementById('play').disabled, 'restored route ready');
+        assert(restoredDoc.getElementById('route-mode').value === 'kyiv-lisbon', 'selected route survives reload');
+        assert(restoredDoc.getElementById('distance').textContent.startsWith((saved.position / 1000).toFixed(3)), 'position survives reload');
+        assert(restoredDoc.getElementById('throttle').value === '63' && restoredDoc.getElementById('brake').value === '27', 'throttle and brakes survive reload');
+        assert(restoredDoc.getElementById('master').value === '72' && restoredDoc.getElementById('impact-mix').value === '45' && restoredDoc.getElementById('rolling-mix').value === '135', 'mixer settings survive reload including boosted levels');
+        assert(restoredDoc.getElementById('motor-mode').value === 'recorded' && restoredDoc.getElementById('yaw').value === '45', 'sound preferences survive reload');
+        assert(restoredDoc.getElementById('motion-label').textContent === 'PAUSED' && restoredDoc.getElementById('autopilot').getAttribute('aria-pressed') === 'false', 'restore never starts playback or autopilot');
+        restoredDoc.getElementById('brake').value = '0';
+        restoredDoc.getElementById('brake').dispatchEvent(new frame.contentWindow.Event('input', {bubbles:true}));
+        restoredDoc.getElementById('play').click();
+        await until(() => JSON.parse(localStorage.getItem(storageKey)).position > saved.position + 1, 'progress saves during playback');
+        const movingPosition = JSON.parse(localStorage.getItem(storageKey)).position;
+        await navigate('../index.html?restore-moving=1');
+        restoredDoc = frame.contentDocument;
+        await until(() => !restoredDoc.getElementById('play').disabled && restoredDoc.getElementById('distance').textContent !== '0.000 km', 'moving restore ready');
+        assert(JSON.parse(localStorage.getItem(storageKey)).position >= movingPosition && restoredDoc.getElementById('motion-label').textContent === 'PAUSED', 'reload saves moving progress and restores paused');
+        // Exercise reset and clamp on a small route too.
+        restoredDoc.getElementById('reset').click();
+        await until(() => JSON.parse(frame.contentWindow.localStorage.getItem(storageKey)).position === 0, 'reset updates saved position');
+        // Use the data contract to simulate a save from a longer/older route asset.
+        await navigate('about:blank');
+        localStorage.setItem(storageKey, JSON.stringify({...saved,routeMode:'demo-12.5',position:99999999}));
+        await navigate('../index.html?restore-test=2');
+        restoredDoc = frame.contentDocument;
+        await until(() => !restoredDoc.getElementById('play').disabled && restoredDoc.getElementById('distance').textContent.startsWith('64.000'), 'demo restore ready');
+        assert(restoredDoc.getElementById('route-mode').value === 'demo-12.5' && restoredDoc.getElementById('distance').textContent.startsWith('64.000'), 'restored position clamps to the selected route length');
+
+        await navigate('about:blank');
+        localStorage.setItem(storageKey, JSON.stringify({...saved,routeMode:'route',position:42000}));
+        frame.srcdoc = page.replace('<head>', '<head><base href="../">' + intercept);
+        await until(() => frame.contentWindow.releaseInitial, 'pending saved route fetch');
+        restoredDoc = frame.contentDocument;
+        restoredDoc.getElementById('reset').click();
+        frame.contentWindow.releaseInitial();
+        await until(() => !restoredDoc.getElementById('play').disabled, 'reset during restore ready');
+        assert(JSON.parse(localStorage.getItem(storageKey)).position === 0, 'reset during loading overrides saved position');
+
         passed = true;
       } catch (error) {
         results.push('FAIL ' + error.stack);

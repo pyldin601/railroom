@@ -1,4 +1,4 @@
-import { updateRouteMap } from './route-map.js?v=passenger-dwells';
+import { updateRouteMap } from './route-map.js?v=subtle-welds';
 import { DEFAULT_VEHICLE } from '../simulation/motion.js?v=speed260';
 import { MAX_IMPACT_VOICES } from '../audio/spatial-mixer.js?v=review-fixes';
 import { drawTrack } from './track-view.js?v=wheel-click';

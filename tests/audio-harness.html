@@ -88,6 +88,26 @@
         const rate = 48000,
           context = new OfflineAudioContext(2, rate * 3, rate);
         const bank = await new SampleBank(context).load('../public/audio/manifest.json');
+        async function isolatedImpactEnergy(kind) {
+          const ctx = new OfflineAudioContext(2, 96000, 48000);
+          const sample = bank.pool('joint')[0];
+          const axles = wheelsets(1);
+          const mix = new SpatialMixer(ctx, { select: () => sample }, axles);
+          mix.setListener(axles[0].offset, 0);
+          mix.hit({ kind, wheelsetId: axles[0].id, side: 'left', position: 800,
+            objectId: 'same', speedMps: 70 }, 0.2, 1);
+          const output = await ctx.startRendering();
+          let energy = 0;
+          for (const value of output.getChannelData(0)) energy += value * value;
+          return energy;
+        }
+        const jointEnergy = await isolatedImpactEnergy('joint');
+        const weldEnergy = await isolatedImpactEnergy('welded_joint');
+        assert(weldEnergy > 0 && weldEnergy < jointEnergy * 0.1,
+          'long-string welded joins are audible but substantially subtler than joints');
+        assert(await isolatedImpactEnergy('weld') === 0,
+          'legacy internal fabrication welds remain silent');
+
         assert(bank.samples.length === 12, 'all twelve recording assets decode');
         assert(
           bank.samples.every((s) => s.buffer.numberOfChannels === 1),

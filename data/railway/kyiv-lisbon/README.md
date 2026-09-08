@@ -125,6 +125,14 @@ external implementation's object layout. Rail lengths are cumulatively indexed
 once into physical boundary positions; interval queries use binary search.
 
 Every shared rail boundary, including an area boundary, generates an impact.
+In running sections rated at least 200 km/h on both sides of the join, alternate
+eligible long-string joins are welded. Both adjacent rails must be at least 800 m;
+short connectors, work sites and area boundaries remain ordinary joints. These
+are synthetic construction choices, independent of the timetable and limits.
+Welded joins use 18% of the ordinary impact amplitude (about 15 dB quieter),
+including the metal tail. They remain audible, unlike silent internal fabrication
+weld markers on legacy routes. `weldedJoins` stores the incoming rail indices;
+contacts keep their positions, IDs and binary-search behavior.
 There are no endpoint joints and no internal fabrication-weld events. Each
 physical boundary is represented once per left/right rail side, as required by
 this simulator's wheelset audio interface. Stations and speed markers may share

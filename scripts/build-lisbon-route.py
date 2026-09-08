@@ -120,6 +120,24 @@ def build_route():
             markers.append(dict(id=f'kyiv-lisbon/speed/{start}', type='speed_limit',
                                 position=start, endPosition=end, speedKmh=speed,
                                 status='estimated', basis='simplified-scenario'))
+    # Weld alternate eligible long-string boundaries in high-speed running only.
+    # Never add contacts inside a rail or weld across short connector/work rails.
+    eligible = 0
+    for section in sections:
+        position = section['position']
+        rails = section['railLengths']
+        welded = []
+        for i, size in enumerate(rails):
+            if i > 0 and rails[i-1] >= 800 and size >= 800:
+                adjacent = [m['speedKmh'] for m in markers
+                            if m['position'] <= position <= m['endPosition']]
+                if adjacent and min(adjacent) >= 200:
+                    if eligible % 2 == 0:
+                        welded.append(i)
+                    eligible += 1
+            position += size
+        if welded:
+            section['weldedJoins'] = welded
     return dict(id='kyiv-lisbon', name='Kyiv → Lisbon', length=length, synthetic=True,
                 contactModel='rail-blocks-v1', speedProfile='simplified-passenger-corridors',
                 description=f'{length / 1000:,.0f} km · simplified passenger corridors · approximate limits',
