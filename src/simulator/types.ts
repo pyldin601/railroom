@@ -22,6 +22,25 @@ export interface TrainState {
   trainControls: TrainControls;
   /** Whether the power line supplies electricity for traction. */
   powerLineStatus: 'on' | 'off';
+}
+
+export interface SeatPosition {
+  /** Carriage number, starting at 1 at the front of the train. */
+  cairoNumber: number;
+  /** Position in metres from the start of the carriage, increasing toward its rear. */
+  position: number;
+}
+
+export interface TrainConfig {
   /** Carriages ordered from the front of the train to the rear. */
   cairos: Cairo[];
+  /** Listener seat location within a carriage. */
+  seatPosition: SeatPosition;
+}
+
+export interface Train {
+  /** Current operating inputs and conditions. */
+  state: TrainState;
+  /** Train composition and geometry. */
+  config: TrainConfig;
 }
