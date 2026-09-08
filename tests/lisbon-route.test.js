@@ -10,18 +10,18 @@ function load() {
   assert.ok(existsSync(asset), 'Kyiv–Lisbon asset exists');
   return JSON.parse(readFileSync(asset));
 }
-test('Lisbon asset preserves the approved itinerary, distances and complete coverage', () => {
+test('Lisbon asset preserves the approved itinerary, rounded corridor distances and complete coverage', () => {
   const data = load();
   assert.deepEqual(data.stations.map(s => s.name), ['Kyiv', 'Shepetivka', 'Lviv', 'Przemyśl', 'Kraków', 'Katowice', 'Wrocław', 'Dresden', 'Leipzig', 'Frankfurt am Main', 'Strasbourg', 'Paris', 'Bordeaux', 'Hendaye', 'Irún', 'Burgos', 'Valladolid', 'Salamanca', 'Guarda', 'Coimbra', 'Lisbon']);
-  assert.deepEqual(data.stations.map(s => s.position / 1000), [0, 300, 580, 680, 930, 1010, 1210, 1480, 1600, 1980, 2200, 2690, 3270, 3500, 3505, 3785, 3905, 4030, 4190, 4390, 4610]);
+  assert.deepEqual(data.stations.map(s => s.position / 1000), [0, 305, 575, 670, 925, 1000, 1180, 1450, 1570, 1945, 2165, 2605, 3140, 3375, 3377, 3642, 3772, 3892, 4062, 4232, 4447]);
   assert.deepEqual([...new Set(data.stations.map(s => s.country))], ['UA', 'PL', 'DE', 'FR', 'ES', 'PT']);
-  assert.equal(data.length, 4610000);
+  assert.equal(data.length, 4447000);
   assert.ok(readFileSync(asset).length < 1000000);
   const jointed = data.sections.filter(s => s.construction === 'jointed');
-  assert.equal(jointed.length, 12);
-  assert.ok(new Set(jointed.map(s => s.length)).size >= 5);
+  assert.equal(jointed.length, 6);
+  assert.ok(new Set(jointed.map(s => s.length)).size >= 4);
   assert.equal(data.contactModel, 'rail-blocks-v1');
-  assert.ok(jointed.every(s => s.block === 'short-25'));
+  assert.ok(jointed.every(s => s.block === 'short-25' && s.purpose === 'rail-replacement'));
   const longAreas = data.sections.filter(s => s.block !== 'short-25');
   longAreas.forEach((s, i) => assert.equal(s.block, i % 2 ? 'long-1500' : 'long-800'));
   let end = 0;
@@ -29,7 +29,7 @@ test('Lisbon asset preserves the approved itinerary, distances and complete cove
     assert.equal(s.position, end);
     end += s.length;
     assert.equal(s.railLengths.reduce((a,b) => a+b, 0), s.length);
-    if (s.construction === 'jointed') assert.ok(s.length >= 6000 && s.length <= 24000);
+    if (s.construction === 'jointed') assert.ok(s.length >= 1000 && s.length <= 2000);
   }
   assert.equal(end, data.length);
   end = 0;
@@ -45,7 +45,7 @@ test('Lisbon asset preserves the approved itinerary, distances and complete cove
   const railCount = data.sections.reduce((total, s) => total + s.railLengths.length, 0);
   assert.equal(route.contactCount, 2 * (railCount - 1));
   assert.ok(route.contactCount < 40000);
-  const nearEnd = route.between(data.length - 100, data.length);
+  const nearEnd = route.between(data.length - 5000, data.length);
   assert.ok(nearEnd.length > 0 && nearEnd.length < 20);
   assert.ok(nearEnd.every(e => e.position < data.length));
   // Inspect work, not wall-clock timing: a short query never enumerates the prefix.
@@ -56,7 +56,7 @@ test('Lisbon asset preserves the approved itinerary, distances and complete cove
       return Reflect.get(target, key, target);
     },
   });
-  assert.deepEqual(route.between(data.length - 100, data.length), nearEnd);
+  assert.deepEqual(route.between(data.length - 5000, data.length), nearEnd);
   assert.ok(calls < 100);
 });
 test('new-route autopilot approaches, dwells, resumes and finishes at Lisbon', () => {
@@ -84,7 +84,9 @@ test('committed asset matches the deterministic builder', () => {
 test('short motion simulations stop gently and dwell at Shepetivka, Irún and Lisbon', () => {
   const route = new RouteIndex(load());
   for (const station of [route.stations[1], route.stations[14], route.stations.at(-1)]) {
-    let state = { ...initialState(station.position - 2500), speed: 20 };
+    const previous = route.stations[route.stations.indexOf(station) - 1];
+    const start = Math.max(station.position - 2500, previous.position + 100);
+    let state = { ...initialState(start), speed: 20 };
     const pilot = new Autopilot(route, state, 261);
     let arrivalTime = null;
     for (let i = 0; i < 20000 && pilot.index === 0; i++) {
@@ -98,30 +100,43 @@ test('short motion simulations stop gently and dwell at Shepetivka, Irún and Li
         assert.ok(state.speed < 0.2, `${station.name} arrival speed ${state.speed}`);
       state = next;
     }
+    assert.equal(state.position, station.position, `${station.name} was the station actually reached`);
     assert.equal(pilot.index, 1, `${station.name} stop completed`);
     assert.ok(arrivalTime !== null && state.time - arrivalTime >= 60);
     assert.equal(pilot.status, station === route.stations.at(-1) ? 'Journey complete' : 'Departure horn');
   }
 });
 
-test('Kyiv–Lisbon varies restrictions between 40, 50 and 60 with terminal and running limits preserved', () => {
+test('simplified passenger corridors vary running limits while retaining local restrictions and the 260 cap', () => {
   const data = load();
-  const limits = data.operatingMarkers;
-  assert.deepEqual([...new Set(limits.map(m => m.speedKmh))].sort((a, b) => a - b), [25, 40, 50, 60, 260]);
-  const at = p => limits.find(m => m.position <= p && p < m.endPosition).speedKmh;
+  assert.equal(data.speedProfile, 'simplified-passenger-corridors');
+  const at = p => data.operatingMarkers.find(m => m.position <= p && p < m.endPosition).speedKmh;
   assert.equal(at(0), 25);
-  assert.equal(at(999), 25);
-  assert.equal(at(1000), 60);
-  assert.equal(at(6000), 260);
-  assert.equal(at(data.length - 1000), 25);
+  assert.equal(at(data.length - 1), 25);
+  assert.equal(at(100000), 160, 'Ukrainian running corridor');
+  assert.equal(at(2450000), 260, 'French high-speed corridor');
+  assert.equal(at(4320000), 160, 'Portuguese conventional section');
+  const speeds = new Set(data.operatingMarkers.map(m => m.speedKmh));
+  for (const v of [25,40,50,60,80,90,100,110,120,130,140,160,200,220,260]) assert.ok(speeds.has(v), `speed ${v}`);
+  assert.ok([...speeds].every(v => v <= 260));
+  assert.ok(data.operatingMarkers.every(m => m.status === 'estimated' && m.basis === 'simplified-scenario'));
+  assert.ok(data.operatingMarkers.length < 160, 'coarse readable profile, not every track-level change');
   for (const [i, station] of data.stations.slice(1, -1).entries()) {
-    assert.equal(at(station.position - 1000), [40, 50, 60][i % 3]);
-    assert.equal(at(station.position + 999), [40, 50, 60][i % 3]);
-    assert.equal(at(station.position + 1000), 260);
+    assert.ok(at(station.position) <= [40,50,60][i % 3]);
   }
-  for (const [i, section] of data.sections.filter(s => s.construction === 'jointed').entries()) {
-    assert.equal(at(section.position), section.position === 0 ? 25 : [60, 40, 50][i % 3]);
-    assert.equal(at(section.position + section.length - 1), section.position + section.length === data.length ? 25 : [60, 40, 50][i % 3]);
-    if (section.position + section.length < data.length) assert.equal(at(section.position + section.length), 260);
-  }
+});
+
+test('local speed restrictions do not require short rails outside replacement works', () => {
+  const data = load();
+  const sectionAt = p => data.sections.find(s => s.position <= p && p < s.position+s.length);
+  const speedAt = p => data.operatingMarkers.find(s => s.position <= p && p < s.endPosition).speedKmh;
+  assert.equal(sectionAt(116500).purpose, 'rail-replacement');
+  assert.equal(speedAt(116500), 40);
+  assert.equal(sectionAt(120000).construction, 'long-rail');
+  assert.equal(speedAt(120000), 40, 'same local limit continues after rail replacement works');
+  assert.equal(sectionAt(0).construction, 'long-rail');
+  assert.equal(speedAt(0), 25);
+  assert.equal(sectionAt(data.length-1).construction, 'long-rail');
+  assert.equal(speedAt(data.length-1), 25);
+  assert.ok(data.sections.filter(s => s.purpose === 'rail-replacement').reduce((n,s) => n+s.length,0) <= 12000);
 });

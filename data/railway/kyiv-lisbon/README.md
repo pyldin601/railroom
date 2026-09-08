@@ -1,28 +1,95 @@
-# Kyiv–Lisbon synthetic journey
+# Kyiv–Lisbon simplified passenger corridors
 
-The 4,610 km scenario follows the approved city-level itinerary through Ukraine,
-Poland, Germany, France, Spain and Portugal. The itinerary contains 21 stops
-(the initial plan called it 22, but its table listed 21). Distances are modelling
-assumptions, not official railway chainage. Borders, gauge changes and transfers
-are abstracted into continuous driving; this does not represent a through service.
+This 4,447 km scenario keeps the 21 approved city stops and follows the idea of
+main passenger corridors, including high-speed lines. **Distances and speed-zone
+boundaries are approximate. This is not a real operational speed chart.**
 
-Rebuild the compact asset with `npm run build:lisbon`. The deterministic source is
+The user chose a simplified route after the initial real-alignment investigation.
+OpenRailRouting/OpenStreetMap paths totalled about 4,454 km; each leg is rounded
+to the nearest 5 km, except Hendaye–Irún (2 km). The Paris Gare de l’Est–Montparnasse
+transfer adds no driving distance. Borders, gauge changes and transfers remain
+abstracted. This itinerary does not imply a current through passenger service.
+
+`corridors.json` is the compact editable definition: ordered stops, rounded leg
+lengths, optional corridor waypoints and a handful of representative running
+zones per leg. Zone lengths and speeds are hand-authored simulation assumptions,
+not measured limits at precise coordinates. Regular running varies from 80 to
+220 km/h; high-speed corridors use the previously requested 260 km/h cap.
+Sourced infrastructure maxima can be higher (e.g. 300/320 km/h in France), but
+those values are not the simulation's selected operating limits.
+
+Rebuild with `npm run build:lisbon`. The deterministic builder is
 `scripts/build-lisbon-route.py`; the browser loads `public/kyiv-lisbon.json`.
-Kyiv–Fastiv and the two 64 km jointed demos remain separate selections.
+Kyiv–Fastiv remains default; it and both 64 km demos are unchanged.
+
+## Rounded itinerary
+
+| Stop | Country | Cumulative km |
+|---|---|---:|
+| Kyiv | UA | 0 |
+| Shepetivka | UA | 305 |
+| Lviv | UA | 575 |
+| Przemyśl | PL | 670 |
+| Kraków | PL | 925 |
+| Katowice | PL | 1000 |
+| Wrocław | PL | 1180 |
+| Dresden | DE | 1450 |
+| Leipzig | DE | 1570 |
+| Frankfurt am Main | DE | 1945 |
+| Strasbourg | FR | 2165 |
+| Paris | FR | 2605 |
+| Bordeaux | FR | 3140 |
+| Hendaye | FR | 3375 |
+| Irún | ES | 3377 |
+| Burgos | ES | 3642 |
+| Valladolid | ES | 3772 |
+| Salamanca | ES | 3892 |
+| Guarda | PT | 4062 |
+| Coimbra | PT | 4232 |
+| Lisbon | PT | 4447 |
+
+## Research and attribution
+
+Research date: 2026-09-08. These sources informed the corridor choices and speed
+ranges; they do not verify our simplified speed intervals.
+
+- [OpenRailRouting](https://routing.openrailrouting.org/maps/) and
+  [OpenStreetMap contributors](https://www.openstreetmap.org/copyright), ODbL:
+  railway-path distances, with corridor anchors such as Korosten, Zdolbuniv,
+  Görlitz, Riesa, Erfurt, Fulda, Mannheim, Karlsruhe, Vitoria, Medina del Campo,
+  Vilar Formoso and Pampilhosa. Derived rounded distance data in `corridors.json`
+  is attributed to OpenStreetMap and available under ODbL.
+- [SNCF nominal speed dataset](https://data.sncf.com/explore/dataset/vitesse-maximale-nominale-sur-ligne/):
+  excludes temporary restrictions and describes the fastest nominal train category.
+  The 2025-05-05 government mirror reviewed during research includes 300/320 km/h
+  LGV Est and SEA sections. It is not a current dispatching reference.
+- [DB Erfurt–Leipzig/Halle information](https://www1.deutschebahn.com/resource/blob/264504/820f84dd3f9c13ec6d4ec521e50b652e/db_informationszentrum_kalzendorf-data.pdf):
+  high-speed corridor context.
+- [Adif Venta de Baños–Burgos–Vitoria](https://www.adifaltavelocidad.es/sobre-adif-av/red-av/venta-banos-vitoria):
+  high-speed corridor context; not a source for the chosen 260 cap.
+- [Infraestruturas de Portugal, Linha do Norte](https://www.infraestruturasdeportugal.pt/pt-pt/node/8068):
+  describes selected sections reaching 220 km/h; our wider zone extents are approximate.
+
+The investigation found OpenRailRouting's returned `max_speed` can truncate at
+252 km/h. No such encoded values or missing-data defaults are imported into this
+profile. Full geometry import and raw OSM matching were dropped when the user
+chose simplification. No runtime network lookup or database is required.
 
 ## Track building blocks
 
-The route keeps twelve reduced-speed zones of 6–24 km. Between them, long-rail
-areas alternate 800 m and 1,500 m rails, starting with an 800 m area. Block
-extents, station positions and the existing operating profile are unchanged.
+The route uses six synthetic rail-replacement work sites of 1–2 km each.
+Only these sites have 25 m rails with 12.5 m inserts. Between them, long-rail
+areas alternate 800 m and 1,500 m rails, starting with an 800 m area. Local
+speed restrictions are independent: stations and longer slow zones use long
+rails unless they overlap one of the work sites.
 
 - **800 m areas:** direct rail joins, with one 12.5 m connector after every fifth
   full 800 m rail when another complete 800 m rail fits after that connector.
 - **1,500 m areas:** direct rail joins without connector rails.
-- **Reduced areas:** 25 m rails in groups of four or five, followed by one or two
+- **Rail-replacement sites:** 25 m rails in groups of four or five, followed by one or two
   12.5 m rails. Only the 25 m rails count toward the cadence.
 
-Reduced areas cycle `(4,1)`, `(5,2)`, `(4,2)`, `(5,1)` full/short groups. The
+Work sites cycle `(4,1)`, `(5,2)`, `(4,2)`, `(5,1)` full/short groups. The
 builder chooses the next feasible group when needed so the remaining distance
 can still be filled with complete groups; every area starts the cycle afresh.
 It rejects a reduced-area length that cannot be filled exactly. All requested
@@ -30,27 +97,24 @@ area lengths must be positive multiples of 12.5 m. Long areas may shorten their
 last long rail to meet the existing endpoint; they never add fabrication welds
 inside that rail. No connector is left hanging at an area's endpoint.
 
-| Reduced zone (km) | Length (km) |
+| Rail-replacement site (km) | Length (km) |
 |---|---:|
-| 0–6 | 6 |
-| 120–132 | 12 |
-| 450–470 | 20 |
-| 850–858 | 8 |
-| 1280–1296 | 16 |
-| 1720–1744 | 24 |
-| 2180–2192 | 12 |
-| 2830–2846 | 16 |
-| 3300–3306 | 6 |
-| 3810–3822 | 12 |
-| 4230–4240 | 10 |
-| 4598–4610 | 12 |
+| 116–117 | 1 |
+| 434–435.5 | 1.5 |
+| 1235–1237 | 2 |
+| 2103–2104.25 | 1.25 |
+| 3183–3184.75 | 1.75 |
+| 4080–4082 | 2 |
 
-The speed profile retains 260 km/h running sections, 25 km/h terminal approaches
-and varied 40/50/60 km/h restrictions. Speed annotations are independent inputs:
-placing a station or an inserted connector does not itself create a speed limit
-or split an existing rail. Connectors inherit their area's existing limit.
-The locomotive maximum remains 260 km/h. Autopilot follows limits and stops at
-each city with the existing 60-second dwell. No power-switch locations are added.
+Total short-rail distance: **9.5 km**. Work locations are simulation assumptions.
+
+Rail construction remains synthetic and is independent of the corridor speed
+profile. Twelve local speed zones retain their existing 40/50/60 km/h restrictions, and stations
+retain 1 km approaches/departures at 40/50/60 km/h (25 at the termini). Overlapping
+restrictions take the lowest speed. All adjacent equal speed intervals merge.
+The locomotive and high-speed running cap remain 260 km/h. Autopilot follows
+limits and stops at each city with the existing 60-second dwell. No power-switch
+locations are added.
 
 ## Runtime adaptation
 

@@ -1,4 +1,4 @@
-import { updateRouteMap } from './route-map.js?v=rail-blocks';
+import { updateRouteMap } from './route-map.js?v=short-worksites';
 import { DEFAULT_VEHICLE } from '../simulation/motion.js?v=speed260';
 import { MAX_IMPACT_VOICES } from '../audio/spatial-mixer.js?v=review-fixes';
 import { drawTrack } from './track-view.js?v=wheel-click';

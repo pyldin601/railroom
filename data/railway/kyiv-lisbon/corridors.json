@@ -1,0 +1,561 @@
+{
+  "description": "Simplified passenger corridors: rounded distances and representative simulation speeds, not an operational speed chart.",
+  "distanceBasis": "OpenRailRouting/OpenStreetMap railway paths researched 2026-09-08; each leg rounded to the nearest 5 km, except the 2 km Hendaye–Irún border leg. Paris transfer excluded.",
+  "speedBasis": "Coarse, hand-authored corridor-inspired zones. High-speed running capped at the requested 260 km/h; local and station restrictions are synthetic.",
+  "stations": [
+    {
+      "country": "UA",
+      "name": "Kyiv"
+    },
+    {
+      "country": "UA",
+      "name": "Shepetivka"
+    },
+    {
+      "country": "UA",
+      "name": "Lviv"
+    },
+    {
+      "country": "PL",
+      "name": "Przemyśl"
+    },
+    {
+      "country": "PL",
+      "name": "Kraków"
+    },
+    {
+      "country": "PL",
+      "name": "Katowice"
+    },
+    {
+      "country": "PL",
+      "name": "Wrocław"
+    },
+    {
+      "country": "DE",
+      "name": "Dresden"
+    },
+    {
+      "country": "DE",
+      "name": "Leipzig"
+    },
+    {
+      "country": "DE",
+      "name": "Frankfurt am Main"
+    },
+    {
+      "country": "FR",
+      "name": "Strasbourg"
+    },
+    {
+      "country": "FR",
+      "name": "Paris"
+    },
+    {
+      "country": "FR",
+      "name": "Bordeaux"
+    },
+    {
+      "country": "FR",
+      "name": "Hendaye"
+    },
+    {
+      "country": "ES",
+      "name": "Irún"
+    },
+    {
+      "country": "ES",
+      "name": "Burgos"
+    },
+    {
+      "country": "ES",
+      "name": "Valladolid"
+    },
+    {
+      "country": "ES",
+      "name": "Salamanca"
+    },
+    {
+      "country": "PT",
+      "name": "Guarda"
+    },
+    {
+      "country": "PT",
+      "name": "Coimbra"
+    },
+    {
+      "country": "PT",
+      "name": "Lisbon"
+    }
+  ],
+  "legs": [
+    {
+      "fromStation": "Kyiv",
+      "toStation": "Shepetivka",
+      "distanceKm": 305,
+      "via": [
+        "Korosten"
+      ],
+      "runningZones": [
+        {
+          "lengthKm": 40,
+          "speedKmh": 120
+        },
+        {
+          "lengthKm": 220,
+          "speedKmh": 160
+        },
+        {
+          "lengthKm": 45,
+          "speedKmh": 120
+        }
+      ]
+    },
+    {
+      "fromStation": "Shepetivka",
+      "toStation": "Lviv",
+      "distanceKm": 270,
+      "via": [
+        "Zdolbuniv"
+      ],
+      "runningZones": [
+        {
+          "lengthKm": 50,
+          "speedKmh": 120
+        },
+        {
+          "lengthKm": 180,
+          "speedKmh": 160
+        },
+        {
+          "lengthKm": 40,
+          "speedKmh": 100
+        }
+      ]
+    },
+    {
+      "fromStation": "Lviv",
+      "toStation": "Przemyśl",
+      "distanceKm": 95,
+      "via": [],
+      "runningZones": [
+        {
+          "lengthKm": 20,
+          "speedKmh": 100
+        },
+        {
+          "lengthKm": 50,
+          "speedKmh": 120
+        },
+        {
+          "lengthKm": 25,
+          "speedKmh": 80
+        }
+      ]
+    },
+    {
+      "fromStation": "Przemyśl",
+      "toStation": "Kraków",
+      "distanceKm": 255,
+      "via": [],
+      "runningZones": [
+        {
+          "lengthKm": 30,
+          "speedKmh": 120
+        },
+        {
+          "lengthKm": 200,
+          "speedKmh": 160
+        },
+        {
+          "lengthKm": 25,
+          "speedKmh": 120
+        }
+      ]
+    },
+    {
+      "fromStation": "Kraków",
+      "toStation": "Katowice",
+      "distanceKm": 75,
+      "via": [],
+      "runningZones": [
+        {
+          "lengthKm": 15,
+          "speedKmh": 100
+        },
+        {
+          "lengthKm": 45,
+          "speedKmh": 160
+        },
+        {
+          "lengthKm": 15,
+          "speedKmh": 100
+        }
+      ]
+    },
+    {
+      "fromStation": "Katowice",
+      "toStation": "Wrocław",
+      "distanceKm": 180,
+      "via": [],
+      "runningZones": [
+        {
+          "lengthKm": 30,
+          "speedKmh": 120
+        },
+        {
+          "lengthKm": 125,
+          "speedKmh": 160
+        },
+        {
+          "lengthKm": 25,
+          "speedKmh": 120
+        }
+      ]
+    },
+    {
+      "fromStation": "Wrocław",
+      "toStation": "Dresden",
+      "distanceKm": 270,
+      "via": [
+        "Görlitz"
+      ],
+      "runningZones": [
+        {
+          "lengthKm": 95,
+          "speedKmh": 160
+        },
+        {
+          "lengthKm": 80,
+          "speedKmh": 120
+        },
+        {
+          "lengthKm": 70,
+          "speedKmh": 100
+        },
+        {
+          "lengthKm": 25,
+          "speedKmh": 120
+        }
+      ]
+    },
+    {
+      "fromStation": "Dresden",
+      "toStation": "Leipzig",
+      "distanceKm": 120,
+      "via": [
+        "Riesa"
+      ],
+      "runningZones": [
+        {
+          "lengthKm": 20,
+          "speedKmh": 120
+        },
+        {
+          "lengthKm": 75,
+          "speedKmh": 200
+        },
+        {
+          "lengthKm": 25,
+          "speedKmh": 120
+        }
+      ]
+    },
+    {
+      "fromStation": "Leipzig",
+      "toStation": "Frankfurt am Main",
+      "distanceKm": 375,
+      "via": [
+        "Erfurt",
+        "Fulda"
+      ],
+      "runningZones": [
+        {
+          "lengthKm": 15,
+          "speedKmh": 120
+        },
+        {
+          "lengthKm": 105,
+          "speedKmh": 260
+        },
+        {
+          "lengthKm": 85,
+          "speedKmh": 160
+        },
+        {
+          "lengthKm": 120,
+          "speedKmh": 200
+        },
+        {
+          "lengthKm": 50,
+          "speedKmh": 160
+        }
+      ]
+    },
+    {
+      "fromStation": "Frankfurt am Main",
+      "toStation": "Strasbourg",
+      "distanceKm": 220,
+      "via": [
+        "Mannheim",
+        "Karlsruhe"
+      ],
+      "runningZones": [
+        {
+          "lengthKm": 70,
+          "speedKmh": 160
+        },
+        {
+          "lengthKm": 90,
+          "speedKmh": 200
+        },
+        {
+          "lengthKm": 40,
+          "speedKmh": 160
+        },
+        {
+          "lengthKm": 20,
+          "speedKmh": 120
+        }
+      ]
+    },
+    {
+      "fromStation": "Strasbourg",
+      "toStation": "Paris",
+      "distanceKm": 440,
+      "via": [],
+      "runningZones": [
+        {
+          "lengthKm": 20,
+          "speedKmh": 160
+        },
+        {
+          "lengthKm": 385,
+          "speedKmh": 260
+        },
+        {
+          "lengthKm": 35,
+          "speedKmh": 120
+        }
+      ]
+    },
+    {
+      "fromStation": "Paris",
+      "toStation": "Bordeaux",
+      "distanceKm": 535,
+      "via": [],
+      "runningZones": [
+        {
+          "lengthKm": 20,
+          "speedKmh": 160
+        },
+        {
+          "lengthKm": 490,
+          "speedKmh": 260
+        },
+        {
+          "lengthKm": 25,
+          "speedKmh": 160
+        }
+      ]
+    },
+    {
+      "fromStation": "Bordeaux",
+      "toStation": "Hendaye",
+      "distanceKm": 235,
+      "via": [],
+      "runningZones": [
+        {
+          "lengthKm": 145,
+          "speedKmh": 160
+        },
+        {
+          "lengthKm": 30,
+          "speedKmh": 130
+        },
+        {
+          "lengthKm": 30,
+          "speedKmh": 110
+        },
+        {
+          "lengthKm": 30,
+          "speedKmh": 90
+        }
+      ]
+    },
+    {
+      "fromStation": "Hendaye",
+      "toStation": "Irún",
+      "distanceKm": 2,
+      "via": [],
+      "runningZones": [
+        {
+          "lengthKm": 2,
+          "speedKmh": 40
+        }
+      ]
+    },
+    {
+      "fromStation": "Irún",
+      "toStation": "Burgos",
+      "distanceKm": 265,
+      "via": [
+        "Vitoria-Gasteiz"
+      ],
+      "runningZones": [
+        {
+          "lengthKm": 85,
+          "speedKmh": 100
+        },
+        {
+          "lengthKm": 95,
+          "speedKmh": 140
+        },
+        {
+          "lengthKm": 85,
+          "speedKmh": 160
+        }
+      ]
+    },
+    {
+      "fromStation": "Burgos",
+      "toStation": "Valladolid",
+      "distanceKm": 130,
+      "via": [],
+      "runningZones": [
+        {
+          "lengthKm": 10,
+          "speedKmh": 120
+        },
+        {
+          "lengthKm": 105,
+          "speedKmh": 260
+        },
+        {
+          "lengthKm": 15,
+          "speedKmh": 160
+        }
+      ]
+    },
+    {
+      "fromStation": "Valladolid",
+      "toStation": "Salamanca",
+      "distanceKm": 120,
+      "via": [
+        "Medina del Campo"
+      ],
+      "runningZones": [
+        {
+          "lengthKm": 45,
+          "speedKmh": 200
+        },
+        {
+          "lengthKm": 55,
+          "speedKmh": 160
+        },
+        {
+          "lengthKm": 20,
+          "speedKmh": 120
+        }
+      ]
+    },
+    {
+      "fromStation": "Salamanca",
+      "toStation": "Guarda",
+      "distanceKm": 170,
+      "via": [
+        "Vilar Formoso"
+      ],
+      "runningZones": [
+        {
+          "lengthKm": 95,
+          "speedKmh": 120
+        },
+        {
+          "lengthKm": 35,
+          "speedKmh": 100
+        },
+        {
+          "lengthKm": 40,
+          "speedKmh": 80
+        }
+      ]
+    },
+    {
+      "fromStation": "Guarda",
+      "toStation": "Coimbra",
+      "distanceKm": 170,
+      "via": [
+        "Pampilhosa"
+      ],
+      "runningZones": [
+        {
+          "lengthKm": 45,
+          "speedKmh": 100
+        },
+        {
+          "lengthKm": 95,
+          "speedKmh": 120
+        },
+        {
+          "lengthKm": 30,
+          "speedKmh": 140
+        }
+      ]
+    },
+    {
+      "fromStation": "Coimbra",
+      "toStation": "Lisbon",
+      "distanceKm": 215,
+      "via": [],
+      "runningZones": [
+        {
+          "lengthKm": 40,
+          "speedKmh": 160
+        },
+        {
+          "lengthKm": 30,
+          "speedKmh": 220
+        },
+        {
+          "lengthKm": 45,
+          "speedKmh": 160
+        },
+        {
+          "lengthKm": 75,
+          "speedKmh": 200
+        },
+        {
+          "lengthKm": 25,
+          "speedKmh": 120
+        }
+      ]
+    }
+  ],
+  "railReplacementWorks": [
+    {
+      "positionKm": 116,
+      "lengthKm": 1
+    },
+    {
+      "positionKm": 434,
+      "lengthKm": 1.5
+    },
+    {
+      "positionKm": 1235,
+      "lengthKm": 2
+    },
+    {
+      "positionKm": 2103,
+      "lengthKm": 1.25
+    },
+    {
+      "positionKm": 3183,
+      "lengthKm": 1.75
+    },
+    {
+      "positionKm": 4080,
+      "lengthKm": 2
+    }
+  ]
+}

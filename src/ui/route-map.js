@@ -87,7 +87,7 @@ export function drawRouteMap(container, data) {
       let name = welded ? 'Welded track' : `${sizes.join(' / ')} m rails`;
       if (section.block === 'short-25') {
         kind = 'mixed';
-        name = '25 m rails + 12.5 m inserts';
+        name = `${section.purpose === 'rail-replacement' ? 'Rail replacement works · ' : ''}25 m rails + 12.5 m inserts`;
       } else if (section.block === 'long-800') {
         kind = 'long800';
         name = '800 m rails · occasional 12.5 m connectors';
@@ -103,7 +103,7 @@ export function drawRouteMap(container, data) {
   const elements = data.operatingMarkers || [];
   let speedIndex = 0;
   for (const m of elements) {
-    const estimate = m.status === 'estimated' ? ' · estimated' : '';
+    const estimate = m.basis === 'simplified-scenario' ? ' · representative scenario limit' : m.status === 'estimated' ? ' · estimated' : '';
     if (m.type === 'speed_limit') {
       const button = marker(
         m.position,
