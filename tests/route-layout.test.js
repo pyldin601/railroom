@@ -28,6 +28,13 @@ test('every rail boundary is a joint and every internal fabrication seam is a we
     const rails = data.rails.filter((r) => r.side === side);
     const boundaries = new Set(rails.slice(1).map((r) => r.position));
     const events = data.events.filter((e) => e.side === side);
+    const seams = [];
+    for (const rail of rails.filter((r) => r.construction === 'welded'))
+      for (let p = rail.position + 25; p < rail.position + rail.length; p += 25) seams.push(p);
+    assert.deepEqual(
+      events.filter((e) => e.type === 'weld').map((e) => e.position),
+      seams,
+    );
     assert.ok(events.length > 2500);
     assert.deepEqual(
       events.filter((e) => e.type === 'joint').map((e) => e.position),
@@ -61,24 +68,25 @@ test('jointed station approaches and long welded stretches follow an explicit pl
   assert.equal(data.stations.length, 19);
   assert.equal(data.synthetic, true);
 });
-test('welded sections have direct string joints without short adjustment clusters', () => {
-  for (const section of data.sections.filter((s) => s.construction === 'welded')) {
-    const spans = data.rails.filter((r) => r.sectionId === section.id && r.side === 'left');
-    assert.ok(spans.every((r) => r.construction === 'welded' && r.length >= 700));
-    for (const side of ['left', 'right']) {
-      const joints = data.events.filter(
-        (e) =>
-          e.side === side &&
-          e.type === 'joint' &&
-          e.position > section.position &&
-          e.position < section.position + section.length,
-      );
-      assert.deepEqual(
-        joints.map((e) => e.position),
-        spans.slice(1).map((r) => r.position),
-      );
-    }
+test('most string joins are direct, with occasional bounded connector groups', () => {
+  const rails = data.rails.filter((r) => r.side === 'left');
+  let direct = 0;
+  const groups = [];
+  for (let i = 0; i < rails.length; i++) {
+    if (rails[i].construction === 'welded' && rails[i + 1]?.construction === 'welded') direct++;
+    if (rails[i].purpose !== 'string connector') continue;
+    const start = i,
+      length = rails[i].length;
+    while (rails[i + 1]?.purpose === 'string connector') i++;
+    const group = rails.slice(start, i + 1);
+    assert.equal(rails[start - 1].construction, 'welded');
+    assert.equal(rails[i + 1].construction, 'welded');
+    assert.ok(group.every((r) => r.length === length));
+    assert.ok(group.length >= 1 && group.length <= (length === 12.5 ? 5 : 2));
+    groups.push(length);
   }
+  assert.ok(groups.includes(12.5) && groups.includes(25));
+  assert.ok(direct > groups.length * 3, 'over 75% of joins remain direct');
 });
 
 test('all nineteen passenger stopping points are present in route order', () => {
@@ -119,22 +127,25 @@ test('short rails occur in singles or pairs after every 5–10 full rails', () =
   assert.ok(short.length > 16);
   const runs = [];
   for (let i = 0; i < rails.length; i++) {
-    if (rails[i].length !== 12.5) continue;
+    if (rails[i].length !== 12.5 || rails[i].purpose === 'string connector') continue;
     const start = i;
     while (rails[i + 1]?.length === 12.5) i++;
     runs.push(i - start + 1);
     assert.equal(rails[start - 1].length, 25);
-    if (rails[i + 1]?.sectionId === rails[i].sectionId)
-      assert.equal(rails[i + 1].length, 25);
+    if (rails[i + 1]?.sectionId === rails[i].sectionId) assert.equal(rails[i + 1].length, 25);
   }
   assert.ok(runs.includes(1) && runs.includes(2));
   assert.ok(runs.every((n) => n <= 2));
-  const jointed = rails.filter((r) => r.construction === 'jointed');
+  const jointed = rails.filter(
+    (r) => r.construction === 'jointed' && r.purpose !== 'string connector',
+  );
   assert.equal(
     jointed.reduce((sum, r) => sum + r.length, 0),
     18000,
   );
-  for (const section of data.sections.filter((s) => s.construction === 'jointed')) {
+  for (const section of data.sections.filter(
+    (s) => s.construction === 'jointed' && s.purpose !== 'string connector',
+  )) {
     const spans = jointed.filter((r) => r.sectionId === section.id);
     let full = 0;
     for (let i = 0; i < spans.length; i++) {

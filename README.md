@@ -62,9 +62,11 @@ Cabin ambience contains no speech. The horn is synthesized, not an authentic
 Siemens recording. See [audio credits and processing](AUDIO-LICENSES.md).
 
 The route has 19 passenger stops, 18 km of predominantly 25 m jointed track
-with one or two 12.5 m rails after every 5–10 full rails and at each jointed section’s end, and 46 km of 725–800 m welded strings. Internal fabrication welds are silent; joints between
+with one or two 12.5 m rails after every 5–10 full rails and at each jointed section’s end, plus 45.675 km of 712.5–800 m welded strings and 325 m of connectors.
+Most strings join directly; occasional connectors contain 1–5 × 12.5 m rails
+or 1–2 × 25 m rails. Internal fabrication welds are silent; joints between
 strings still produce impacts. A Boiarka neutral section cuts traction and triggers
-power-switch sounds. Jointed sections are limited to 40 km/h (25 km/h at the
+power-switch sounds. Jointed sections and string connectors are limited to 40 km/h (25 km/h at the
 terminal approaches); welded strings permit 120 km/h. Autopilot follows these
 limits. Positions and speed limits are illustrative estimates, not
 verified operating data. See [track layout](TRACK-LAYOUT.md),

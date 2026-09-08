@@ -2,17 +2,17 @@
 
 Research date: 2026-09-07. No current official line speed order, selected station track/turnout route, or contact-network plan was verified. **None of the numeric limits or marker coordinates below is a verified operating instruction.** The existing 64 km route and rail-construction zones are synthetic; coordinates are meters from its Kyiv origin, not official railway chainage.
 
-`public/route.json` contains an `operatingMarkers` array separate from wheel-contact `events`. Each marker has a deterministic UUID, numeric meter position, direction, applicability and evidence status. `speed_limit` applies from `position` to exclusive `endPosition`; the last interval reaches the route endpoint. `verifiedSpeedKmh: null` explicitly distinguishes scenario speed from an established limit. Electrical markers now cut/restore traction and schedule contactor sounds. Speed markers remain data only, with no enforcement. Power state is derived from position on seek/resume, without replaying skipped switch sounds. Marker crossing uses the leading-axle route coordinate as the locomotive reference; no separate pantograph coordinate is modeled.
+`public/route.json` contains an `operatingMarkers` array separate from wheel-contact `events`. Each marker has a deterministic UUID, numeric meter position, direction, applicability and evidence status. `speed_limit` applies from `position` to exclusive `endPosition`; the last interval reaches the route endpoint. `verifiedSpeedKmh: null` explicitly distinguishes scenario speed from an established limit. Electrical markers now cut/restore traction and schedule contactor sounds. Autopilot follows speed markers; manual driving can exceed them. Power state is derived from position on seek/resume, without replaying skipped switch sounds. Marker crossing uses the leading-axle route coordinate as the locomotive reference; no separate pantograph coordinate is modeled.
 
-| Start (m) | End (m) | Scenario km/h | Modeled area |
-|---:|---:|---:|---|
-| 0 | 1500 | 25 | Kyiv departure, jointed |
-| 1500 | 6250 | 120 | Welded running track |
-| 6250 | 7750 | 40 | Kyiv-Volynskyi jointed approach |
-| 7750 | 34250 | 120 | Welded running track |
-| 34250 | 35750 | 40 | Vasylkiv I jointed approach |
-| 35750 | 62500 | 120 | Welded running track |
-| 62500 | 64000 | 25 | Fastiv arrival, jointed |
+| Construction / area | Scenario km/h |
+|---|---:|
+| Kyiv departure (0–1500 m), Fastiv arrival (62500–64000 m) | 25 |
+| Other 25 m jointed sections, including interspersed short rails | 40 |
+| All short connector groups between welded strings | 40 |
+| Welded strings | 120 |
+
+Each connector receives its own interval, with the welded limit restored at its
+end. See [track layout](TRACK-LAYOUT.md) for the full corridor and connector list.
 
 This meets the requested station-zone versus welded-running-zone contrast as a scenario assumption. A 25 m rail does not inherently require a low speed, and an 800 m welded string does not prove that 120 km/h is allowed. Station track selection, curves, infrastructure condition, vehicle limits and temporary restrictions can change the real profile. The 120 value is the simulator scenario's full speed, not a verified route maximum.
 

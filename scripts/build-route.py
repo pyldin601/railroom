@@ -53,6 +53,7 @@ def build_route(objects):
         (62500, 64000, 25, 'Fastiv I arrival approach'),
     ]
     sections, spans = [], []
+    join_number = connector_number = 0
     for start, end, rail_length, reason in plan:
         construction = 'jointed' if rail_length else 'welded'
         section_id = identity('section', start, end)
@@ -81,43 +82,78 @@ def build_route(objects):
                 cycle += 1
             sizes = [(length, 'jointed', reason) for length in lengths]
         else:
-            # Direct string-to-string joints. Balance lengths on the 25 m
-            # fabrication grid, keeping each string at most 800 m.
             count = math.ceil((end-start)/800)
-            units = (end-start)//25
+            connectors = {}
+            for i in range(count - 1):
+                join_number += 1
+                if join_number % 5 == 0:
+                    # Two short-rail connectors for each full-rail connector.
+                    if connector_number % 3 == 2:
+                        length, amount = 25, 1 + (connector_number // 3) % 2
+                    else:
+                        length, amount = 12.5, 1 + (connector_number - connector_number // 3) % 5
+                    connectors[i] = [length] * amount
+                    connector_number += 1
+            reserve = sum(sum(lengths) for lengths in connectors.values())
+            # Half-rail grid accommodates odd counts of 12.5 m connectors.
+            units = int((end-start-reserve)/12.5)
             base, extra = divmod(units, count)
             sizes = []
             for i in range(count):
-                sizes.append(((base+(i < extra))*25, 'welded', 'welded string'))
+                sizes.append(((base+(i < extra))*12.5, 'welded', 'welded string'))
+                sizes.extend((length, 'jointed', 'string connector')
+                             for length in connectors.get(i, []))
         position = start
         for length, kind, purpose in sizes:
             spans.append(dict(position=float(position), length=float(length),
                               construction=kind, purpose=purpose, sectionId=section_id))
             position += length
         assert position == end
+    # Expose connector intervals as jointed sections so operating limits and
+    # the map describe the actual rail construction, not the parent corridor.
+    expanded = []
+    for section in sections:
+        members = [span for span in spans if span['sectionId'] == section['id']]
+        if not any(span['purpose'] == 'string connector' for span in members):
+            expanded.append(section)
+            continue
+        groups = []
+        for span in members:
+            if not groups or groups[-1][0]['construction'] != span['construction']:
+                groups.append([])
+            groups[-1].append(span)
+        for group in groups:
+            position = group[0]['position']
+            length = sum(span['length'] for span in group)
+            section_id = identity('section', position, position + length)
+            expanded.append(dict(id=section_id, type='section', position=position,
+                                 length=length, construction=group[0]['construction'],
+                                 purpose=group[0]['purpose'], reason=section['reason']))
+            for span in group:
+                span['sectionId'] = section_id
+    sections = expanded
     rails = [dict(id=identity('rail', int(s['position']) if s['position'].is_integer() else s['position'], side), type='rail', side=side,
                   fabricationLength=s['length'] if s['construction'] == 'jointed' else 25.0, **s)
              for s in spans for side in ('left', 'right')]
-    boundaries = {s['position'] for s in spans[1:]}
-    # Retain original event UUIDs/positions. Their connection type now follows
-    # the physical string ends; seams inside each string remain quiet welds.
-    welded_sections = [section for section in sections if section['construction'] == 'welded']
-    events = [dict(id=o['id'], position=o['position'], side=o['side'],
-                   type='joint' if o['position'] in boundaries else 'weld')
-              for o in objects if o['type'] in ('joint', 'weld')
-              and (o['position'] in boundaries or any(
-                  section['position'] < o['position'] < section['position'] + section['length']
-                  for section in welded_sections))]
-    existing = {(e['position'], e['side']) for e in events}
-    for position in sorted(boundaries):
+    boundaries = {span['position'] for span in spans[1:]}
+    seams = set()
+    for span in spans:
+        if span['construction'] == 'welded':
+            position = span['position'] + 25
+            while position < span['position'] + span['length']:
+                seams.add(position)
+                position += 25
+    original_ids = {(o['position'], o['side']): o['id'] for o in objects
+                    if o['type'] in ('joint', 'weld')}
+    events = []
+    for position in sorted(boundaries | seams):
+        kind = 'joint' if position in boundaries else 'weld'
         for side in ('left', 'right'):
-            if (position, side) not in existing:
-                events.append(dict(id=identity('joint', position, side),
-                                   position=position, side=side, type='joint'))
-    events.sort(key=lambda event: (event['position'], event['side']))
+            events.append(dict(id=original_ids.get((position, side), identity(kind, position, side)),
+                               position=position, side=side, type=kind))
     assert len(stations) == 19
     assert all(a['position'] <= b['position'] for a, b in zip(events, events[1:]))
-    return dict(length=64000.0, synthetic=True, layout='mixed-25m-short-rail-closures-v6',
+    return dict(length=64000.0, synthetic=True, layout='mixed-strings-with-connectors-v7',
                 stations=stations, sections=sections, rails=rails, events=events,
                 operatingMarkers=build_markers(sections),
                 operatingMetadata=dict(schemaVersion=1, researchedOn='2026-09-07',
