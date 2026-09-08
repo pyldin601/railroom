@@ -1,8 +1,8 @@
 # Railroom
 
 TypeScript workspace for the Railroom rewrite. The legacy layout and styles are
-copied into a standalone `lit-html` template in `src/ui/`. Status, speed, and
-distance demonstrate state bindings. Controls, route-map content, canvas drawing,
+copied into a static `lit-html` template in `src/ui/`. No application state or
+state bindings are defined yet. Controls, route-map content, canvas drawing,
 and audio are not wired yet. The previous implementation is preserved in `legacy/`.
 
 See [state-to-UI architecture](docs/state-to-ui.md) for the proposed update flow.

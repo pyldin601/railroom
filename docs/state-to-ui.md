@@ -4,11 +4,10 @@
 
 `src/ui/template.ts` copies the legacy page body into a standalone `lit-html`
 template. `src/ui/style.css` copies its styles. No legacy JavaScript is imported.
-`trainTemplate(state)` is a pure description of the DOM; call
-`render(trainTemplate(nextState), container)` again to update bound values while
-retaining existing elements. Status, speed, and distance are bound today; the
-remaining markup is a visual reference with unwired controls and empty drawing
-surfaces. The copied audio credits describe the legacy sound pack.
+`trainTemplate()` describes a static page with no application state or bindings.
+The markup is a visual reference with unwired controls and empty drawing surfaces.
+The copied audio credits describe the legacy sound pack. The following integration
+approach is a proposal for later work.
 
 ## Recommended simulation integration (not implemented yet)
 

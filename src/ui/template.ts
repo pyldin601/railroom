@@ -1,13 +1,12 @@
 import { html } from 'lit-html';
-import type { TrainViewState } from './view-state';
 
-export function trainTemplate(state: Readonly<TrainViewState>) {
+export function trainTemplate() {
   return html`
     <header>
       <a class="brand" href="./" aria-label="Railroom home"
         ><span class="brand-icon">Ⅱ</span> railroom<span class="tag">SOUND SIMULATOR</span></a
       >
-      <div class="live"><i id="status-dot"></i><span id="status">${state.status}</span></div>
+      <div class="live"><i id="status-dot"></i><span id="status">Template preview</span></div>
     </header>
     <main>
       <section class="route-panel">
@@ -37,10 +36,7 @@ export function trainTemplate(state: Readonly<TrainViewState>) {
         <div class="route-caption">
           <span id="route-caption"
             >64 km · 12.5 / 25 m rails / welded strings ≤800 m · approximate route</span
-          ><span id="distance"
-            >${(state.positionM / 1000).toFixed(3)} / ${(state.routeLengthM / 1000).toFixed(3)}
-            km</span
-          >
+          ><span id="distance">0.000 / 64.000 km</span>
         </div>
         <div class="route-navigation">
           <div class="next-stop">
@@ -89,7 +85,7 @@ export function trainTemplate(state: Readonly<TrainViewState>) {
             <span class="eyebrow">DRIVE</span><span class="pill" id="motion-label">STATIONARY</span>
           </div>
           <div class="speed-display">
-            <span id="speed">${state.speedKmh.toFixed(0)}</span><span class="speed-unit">km/h</span>
+            <span id="speed">0</span><span class="speed-unit">km/h</span>
           </div>
           <div class="speed-scale"><div id="speed-bar"></div></div>
           <div class="scale-labels"><span>0</span><span>180</span><span>360</span></div>
