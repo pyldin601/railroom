@@ -1,0 +1,6 @@
+legacy/
+node_modules/
+dist/
+coverage/
+.idea/
+package-lock.json
