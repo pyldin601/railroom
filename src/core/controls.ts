@@ -9,9 +9,9 @@ export enum ControlEventType {
 
 /** Changes and actions emitted by the driving controls. */
 export type ControlEvent =
-  /** Acceleration slider changed to a value from 0 to 100 percent. */
+  /** Acceleration slider changed to a value from 0 to 1. */
   | { readonly type: ControlEventType.AccelerateChange; readonly value: number }
-  /** Service-brake slider changed to a value from 0 to 100 percent. */
+  /** Service-brake slider changed to a value from 0 to 1. */
   | { readonly type: ControlEventType.BrakeChange; readonly value: number }
   /** Horn button pressed. */
   | { readonly type: ControlEventType.HornPress }
@@ -23,7 +23,9 @@ export const controlEvents$ = new Subject<ControlEvent>();
 
 /** The current positions and actions of the driving controls. */
 export interface ControlState {
+  /** Requested acceleration, normalized from 0 (none) to 1 (full). */
   readonly accelerateLevel: number;
+  /** Requested braking, normalized from 0 (released) to 1 (full). */
   readonly brakeLevel: number;
   readonly hornPressed: boolean;
 }
