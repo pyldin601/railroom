@@ -23,8 +23,8 @@ export const speed$ = (
   clock$: Observable<number>,
   controlState$: Observable<ControlState>,
   config: TrainConfig,
-) =>
-  clock$.pipe(
+) => {
+  return clock$.pipe(
     withLatestFrom(controlState$),
     scan((speed, [tick, state]) => {
       const maximumSpeed = Math.max(0, config.maximumSpeed);
@@ -40,3 +40,4 @@ export const speed$ = (
       return clamp(speed + acceleration * (tick / 1000), 0, maximumSpeed);
     }, 0),
   );
+};
