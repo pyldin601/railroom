@@ -12,7 +12,7 @@ export function trainTemplate(props: {
   trackLength: number;
   controlState$: Observable<ControlState>;
   speed$: Observable<number>;
-  position$: Observable<number>;
+  distance$: Observable<number>;
   motionLabel$: Observable<MotionLabel>;
   onAccelerationChange: (level: number) => void;
   onBrakeChange: (level: number) => void;
@@ -47,7 +47,7 @@ export function trainTemplate(props: {
         <span>${props.trainConfig.maximumSpeed}</span>
       </div>
       <p class="hint" id="distance" aria-label="Distance travelled / total track length">
-        ${observableValue(props.position$, (position) => (position / 1000).toFixed(3), '0.000')} /
+        ${observableValue(props.distance$, (distance) => (distance / 1000).toFixed(3), '0.000')} /
         ${(props.trackLength / 1000).toFixed(3)} km
       </p>
       <label class="slider-label" for="throttle"

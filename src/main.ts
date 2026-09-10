@@ -27,14 +27,14 @@ async function main() {
     maximumSpeed: metresPerSecond(train.config.maximumSpeed),
   });
   const acceleration$ = acceleration(clock$, speed$);
-  const position$ = position(clock$, speed$, 0);
+  const distance$ = position(clock$, speed$, 0);
   const motionLabel$ = motionLabel(speed$, acceleration$, controlState$);
 
   const trackItem$ = trackItem(track);
-  const trainEvent$ = trainEvent(trackItem$, position$, train.config);
+  const trainEvent$ = trainEvent(trackItem$, distance$, train.config);
 
   trainEvent$.subscribe((ev) => {
-    console.log(`${ev.cargoId}.${ev.axleIndex}.${ev.distance}.${ev.item.object.type}`);
+    console.log(`${ev.cargoId}.${ev.axleIndex}.${ev.atDistance}.${ev.trackObject.type}`);
   });
 
   render(
@@ -43,7 +43,7 @@ async function main() {
       trackLength: track.length,
       controlState$,
       speed$,
-      position$,
+      distance$,
       motionLabel$,
       onAccelerationChange(level) {
         controlEvents$.next({ type: ControlEventType.AccelerateChange, value: level });
