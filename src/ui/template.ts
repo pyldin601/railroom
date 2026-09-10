@@ -39,7 +39,11 @@ export function trainTemplate(props: {
           )}
         ></div>
       </div>
-      <div class="scale-labels"><span>0</span><span>180</span><span>360</span></div>
+      <div class="scale-labels">
+        <span>0</span>
+        <span>${Math.floor(props.trainConfig.maximumSpeed * 0.5)}</span>
+        <span>${props.trainConfig.maximumSpeed}</span>
+      </div>
       <label class="slider-label" for="throttle"
         >Throttle
         <output id="throttle-value"

@@ -1,6 +1,6 @@
 {
   "config": {
-    "maximumSpeed": 360,
+    "maximumSpeed": 260,
     "cairos": [
       {
         "id": "c1",
