@@ -33,6 +33,7 @@ async function main() {
   const trackItem$ = trackItem(track);
   const trainEvent$ = trainEvent(trackItem$, distance$, train.config);
 
+  // TODO Mixer + Synth
   trainEvent$.subscribe((ev) => {
     console.log(`${ev.cargoId}.${ev.axleIndex}.${ev.atDistance}.${ev.trackObject.type}`);
   });

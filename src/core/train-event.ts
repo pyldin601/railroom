@@ -38,9 +38,9 @@ export const trainEvent = (
             map((distance) => distance + axleOffset),
             first((distance) => distance >= item.position),
             map((distance) => ({
+              cargoId,
               axleIndex: index,
               trackObject: item.object,
-              cargoId,
               atDistance: distance,
             })),
           ),
