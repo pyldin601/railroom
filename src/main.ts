@@ -21,13 +21,14 @@ async function main() {
   console.log('Track and train ready', { track, train });
 
   const speed$ = speed(clock$, controlState$, {
-    maximumSpeed: metresPerSecond(360),
+    maximumSpeed: metresPerSecond(train.config.maximumSpeed),
   });
   const position$ = position(clock$, speed$, 0);
   const motionLabel$ = motionLabel(speed$, controlState$);
 
   render(
     trainTemplate({
+      trainConfig: train.config,
       controlState$,
       speed$,
       motionLabel$,

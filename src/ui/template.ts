@@ -2,10 +2,13 @@ import { html } from 'lit-html';
 import { live } from 'lit-html/directives/live.js';
 import type { Observable } from 'rxjs';
 import type { ControlState } from '../core/controls';
+import { clamp } from '../core/helpers';
 import { observableValue } from './observable-value';
 import type { MotionLabel } from '../core/motion-label';
+import type { TrainConfig } from '../simulator/types/train';
 
 export function trainTemplate(props: {
+  trainConfig: TrainConfig;
   controlState$: Observable<ControlState>;
   speed$: Observable<number>;
   motionLabel$: Observable<MotionLabel>;
@@ -25,6 +28,18 @@ export function trainTemplate(props: {
           >${observableValue(props.speed$, (speed) => `${Math.round(speed * 3.6)}`, '0')}</span
         ><span class="speed-unit">km/h</span>
       </div>
+      <div class="speed-scale">
+        <div
+          id="speed-bar"
+          style=${observableValue(
+            props.speed$,
+            (speed) =>
+              `width: ${clamp((speed * 3.6) / props.trainConfig.maximumSpeed, 0, 1) * 100}%`,
+            'width: 0%',
+          )}
+        ></div>
+      </div>
+      <div class="scale-labels"><span>0</span><span>180</span><span>360</span></div>
       <label class="slider-label" for="throttle"
         >Throttle
         <output id="throttle-value"

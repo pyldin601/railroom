@@ -1,10 +1,3 @@
-export interface TrainControls {
-  /** Requested acceleration level from 0 (none) to 1 (full), not actual acceleration. */
-  accelerationLevel: number;
-  /** Requested braking level from 0 (released) to 1 (full). */
-  brakingLevel: number;
-}
-
 /** Carriage geometry with two bogies and two axles per bogie. */
 export interface Cairo {
   /** Stable carriage identifier, unique within the train. */
@@ -18,8 +11,6 @@ export interface Cairo {
 }
 
 export interface TrainState {
-  /** Current driver inputs used to calculate motion. */
-  trainControls: TrainControls;
   /** Whether the power line supplies electricity for traction. */
   powerLineStatus: 'on' | 'off';
 }
@@ -32,6 +23,8 @@ export interface SeatPosition {
 }
 
 export interface TrainConfig {
+  /** Maximum speed of the train. */
+  maximumSpeed: number;
   /** Carriages ordered from the front of the train to the rear. */
   cairos: Cairo[];
   /** Listener seat location within a carriage. */
