@@ -3,17 +3,26 @@ import { live } from 'lit-html/directives/live.js';
 import type { Observable } from 'rxjs';
 import type { ControlState } from '../core/controls';
 import { observableValue } from './observable-value';
+import type { MotionLabel } from '../core/motion-label';
 
 export function trainTemplate(props: {
   controlState$: Observable<ControlState>;
   speed$: Observable<number>;
+  motionLabel$: Observable<MotionLabel>;
   onAccelerationChange: (level: number) => void;
   onBrakeChange: (level: number) => void;
 }) {
   return html`
     <section class="drive-panel panel">
+      <div class="section-line">
+        <span class="eyebrow">DRIVE</span>
+        <span class="pill" id="motion-label"
+          >${observableValue(props.motionLabel$, (label) => label.toUpperCase(), 'IDLE')}</span
+        >
+      </div>
       <div class="speed-display">
-        <span id="speed">${observableValue(props.speed$, (speed) => `${speed * 3.6}`, '0')}</span
+        <span id="speed"
+          >${observableValue(props.speed$, (speed) => `${Math.round(speed * 3.6)}`, '0')}</span
         ><span class="speed-unit">km/h</span>
       </div>
       <label class="slider-label" for="throttle"

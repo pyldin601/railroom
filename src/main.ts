@@ -7,6 +7,7 @@ import { speed } from './core/speed';
 import { clock$ } from './core/clock';
 import { metresPerSecond } from './core/helpers';
 import { position } from './core/position';
+import { motionLabel } from './core/motion-label';
 
 async function main() {
   const app = document.querySelector<HTMLDivElement>('#app');
@@ -23,11 +24,13 @@ async function main() {
     maximumSpeed: metresPerSecond(360),
   });
   const position$ = position(clock$, speed$, 0);
+  const motionLabel$ = motionLabel(speed$);
 
   render(
     trainTemplate({
       controlState$,
       speed$,
+      motionLabel$,
       onAccelerationChange(level) {
         controlEvents$.next({ type: ControlEventType.AccelerateChange, value: level });
       },
