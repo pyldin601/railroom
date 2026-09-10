@@ -9,6 +9,8 @@ import { metresPerSecond } from './core/helpers';
 import { position } from './core/position';
 import { motionLabel } from './core/motion-label';
 import { acceleration } from './core/acceleration';
+import { trackItem } from './core/track-item';
+import { trainEvent } from './core/train-event';
 
 async function main() {
   const app = document.querySelector<HTMLDivElement>('#app');
@@ -27,6 +29,13 @@ async function main() {
   const acceleration$ = acceleration(clock$, speed$);
   const position$ = position(clock$, speed$, 0);
   const motionLabel$ = motionLabel(speed$, acceleration$, controlState$);
+
+  const trackItem$ = trackItem(track);
+  const trainEvent$ = trainEvent(trackItem$, position$, train.config);
+
+  trainEvent$.subscribe((ev) => {
+    console.log(`${ev.cargoId}.${ev.axleIndex}.${ev.distance}.${ev.item.object.type}`);
+  });
 
   render(
     trainTemplate({
