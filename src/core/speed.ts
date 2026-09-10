@@ -19,7 +19,7 @@ function resistanceAt(speed: number) {
 }
 
 /** Emits train speed in metres per second for each elapsed clock tick. */
-export const speed$ = (
+export const speed = (
   clock$: Observable<number>,
   controlState$: Observable<ControlState>,
   config: TrainConfig,

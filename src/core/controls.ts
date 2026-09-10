@@ -1,4 +1,4 @@
-import { scan, Subject, startWith } from 'rxjs';
+import { scan, Subject, startWith, shareReplay } from 'rxjs';
 
 export enum ControlEventType {
   AccelerateChange = 'accelerateChange',
@@ -54,4 +54,5 @@ export const controlState$ = controlEvents$.pipe(
     }
   }, INITIAL_CONTROL_STATE),
   startWith(INITIAL_CONTROL_STATE),
+  shareReplay(1),
 );

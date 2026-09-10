@@ -1,218 +1,66 @@
 import { html } from 'lit-html';
+import { live } from 'lit-html/directives/live.js';
+import type { Observable } from 'rxjs';
+import type { ControlState } from '../core/controls';
+import { observableValue } from './observable-value';
 
-export function trainTemplate() {
+export function trainTemplate(props: {
+  controlState$: Observable<ControlState>;
+  speed$: Observable<number>;
+  onAccelerationChange: (level: number) => void;
+  onBrakeChange: (level: number) => void;
+}) {
   return html`
-    <header>
-      <a class="brand" href="./" aria-label="Railroom home"
-        ><span class="brand-icon">Ⅱ</span> railroom<span class="tag">SOUND SIMULATOR</span></a
-      >
-      <div class="live"><i id="status-dot"></i><span id="status">Template preview</span></div>
-    </header>
-    <main>
-      <section class="route-panel">
-        <div class="section-line">
-          <div>
-            <span class="eyebrow">YOUR JOURNEY</span>
-            <h1>Kyiv <span>→</span> Fastiv</h1>
-          </div>
-          <label class="route-picker"
-            ><span>Track</span
-            ><select id="route-mode">
-              <option value="route">Kyiv–Fastiv · mixed track</option>
-              <option value="demo">25 m jointed demo</option>
-              <option value="demo-12.5">12.5 m jointed demo</option>
-            </select></label
-          >
-        </div>
-        <div
-          class="route-map"
-          id="route-map"
-          aria-label="Route stations, estimated speed limits and power switching markers"
-        ></div>
-        <div class="map-legend">
-          ○ Stations · numbered badges: speed limit (km/h) · power off / on · hover or focus for
-          details · limits estimated
-        </div>
-        <div class="route-caption">
-          <span id="route-caption"
-            >64 km · 12.5 / 25 m rails / welded strings ≤800 m · approximate route</span
-          ><span id="distance">0.000 / 64.000 km</span>
-        </div>
-        <div class="route-navigation">
-          <div class="next-stop">
-            <div>
-              <span class="eyebrow">NEXT MARKER</span
-              ><strong id="next-station">Karavaievi Dachi</strong>
-            </div>
-            <span id="next-distance">3.50 km</span>
-          </div>
-          <div class="journey-seek">
-            <label for="station">Jump to station</label
-            ><select id="station"></select
-            ><button id="seek">Go →</button>
-          </div>
-        </div>
-      </section>
-      <section class="carriage-panel panel">
-        <div class="section-line">
-          <div>
-            <span class="eyebrow">BENEATH YOUR SEAT</span>
-            <h2>Cairo · 24.75 m carriages</h2>
-          </div>
-          <label class="compact"
-            ><span>Carriages</span
-            ><select id="cars">
-              <option value="1">1 carriage</option>
-              <option value="10" selected>10 carriages</option>
-            </select></label
-          >
-        </div>
-        <div class="canvas-wrap">
-          <canvas
-            id="track"
-            aria-label="Moving railway and individual wheelset impacts"
-            title="Click a wheel to hear its impact"
-          ></canvas>
-          <div class="diagram-key">
-            <span><i class="key-dot"></i> wheel contact</span
-            ><span><i class="key-dot listener"></i> you</span><span>← direction of travel</span>
-          </div>
-        </div>
-      </section>
-      <div class="workspace">
-        <section class="drive-panel panel">
-          <div class="section-line">
-            <span class="eyebrow">DRIVE</span><span class="pill" id="motion-label">STATIONARY</span>
-          </div>
-          <div class="speed-display">
-            <span id="speed">0</span><span class="speed-unit">km/h</span>
-          </div>
-          <div class="speed-scale"><div id="speed-bar"></div></div>
-          <div class="scale-labels"><span>0</span><span>180</span><span>360</span></div>
-          <label class="slider-label" for="throttle"
-            >Throttle <output id="throttle-value">45%</output></label
-          ><input id="throttle" type="range" min="0" max="100" value="45" />
-          <label class="slider-label" for="brake"
-            >Service brake <output id="brake-value">0%</output></label
-          ><input class="brake-range" id="brake" type="range" min="0" max="100" value="0" />
-          <p id="air-status" class="hint">Brake cylinders 0.0 bar · air 8.5 bar</p>
-          <div class="drive-actions">
-            <button id="coast">Coast</button
-            ><button id="emergency" class="danger">Emergency brake</button>
-          </div>
-          <button id="horn" title="Sound locomotive horn (H)">Horn · H</button>
-          <button id="autopilot" aria-pressed="false">Autopilot</button>
-          <p id="autopilot-status" class="hint" hidden></p>
-          <button id="play" class="primary" disabled>
-            <span id="play-icon">▶</span> <span id="play-label">Start journey</span>
-          </button>
-          <div class="secondary-actions">
-            <button id="reset">↺ Reset</button><button id="audition">Audition at 72 km/h ↗</button>
-          </div>
-          <p class="hint">Space to pause · ↑ ↓ throttle · B to brake · H for horn</p>
-        </section>
-
-        <section class="listen-panel panel">
-          <div class="section-line">
-            <span class="eyebrow">LISTEN</span><span class="headphone">◖ ◗</span>
-          </div>
-          <h2>A seat in the sound.</h2>
-          <label class="slider-label" for="master"
-            >Master volume <output id="master-value">100%</output></label
-          ><input id="master" type="range" min="0" max="100" value="100" />
-          <div class="output-meter"><div id="meter"></div></div>
-          <div class="scale-labels"><span>OUTPUT</span><span id="peak">−∞ dB</span></div>
-          <div class="seat-label" id="seat-label">Seat position · carriage 5 of 10</div>
-          <div class="segmented" id="seats">
-            <button data-seat="2" aria-pressed="false">Front</button
-            ><button data-seat="9.7" aria-pressed="true" class="selected">Middle</button
-            ><button data-seat="17.4" aria-pressed="false">Rear</button>
-          </div>
-          <label class="slider-label" for="yaw"
-            >Look around <output id="yaw-value">0°</output></label
-          ><input id="yaw" type="range" min="-180" max="180" value="0" />
-          <label class="toggle"
-            ><input type="checkbox" id="spatial" checked /><span>Binaural headphones</span></label
-          >
-          <div class="mix-label">Sound layers</div>
-          <label class="slider-label" for="motor-mode">Motor sound</label
-          ><select id="motor-mode">
-            <option value="synth">Synthesized · continuous</option>
-            <option value="recorded">Recorded · motor tone</option>
-          </select>
-          <label class="mini-slider" for="impact-mix"
-            >Wheel impacts<input id="impact-mix" type="range" min="0" max="150" value="100"
-          /></label>
-          <label class="mini-slider" for="impactMetal-mix"
-            >Impact · metal hiss<input
-              id="impactMetal-mix"
-              type="range"
-              min="0"
-              max="150"
-              value="100"
-          /></label>
-          <label class="mini-slider" for="rolling-mix"
-            >Rolling<input id="rolling-mix" type="range" min="0" max="150" value="100"
-          /></label>
-          <label class="mini-slider" for="rollingLow-mix"
-            >Rolling · low rumble<input
-              id="rollingLow-mix"
-              type="range"
-              min="0"
-              max="150"
-              value="100"
-          /></label>
-          <label class="mini-slider" for="ambient-mix"
-            >Carriage ambience<input id="ambient-mix" type="range" min="0" max="150" value="10"
-          /></label>
-          <label class="mini-slider" for="rollingHigh-mix"
-            >Rolling · high metal<input
-              id="rollingHigh-mix"
-              type="range"
-              min="0"
-              max="150"
-              value="100"
-          /></label>
-          <label class="mini-slider" for="traction-mix"
-            >Traction<input id="traction-mix" type="range" min="0" max="150" value="30"
-          /></label>
-          <label class="mini-slider" for="brake-mix"
-            >Braking<input id="brake-mix" type="range" min="0" max="150" value="100"
-          /></label>
-        </section>
+    <section class="drive-panel panel">
+      <div class="speed-display">
+        <span id="speed">${observableValue(props.speed$, (speed) => `${speed * 3.6}`, '0')}</span
+        ><span class="speed-unit">km/h</span>
       </div>
-      <div class="footer-row">
-        <span class="recording-badge"><i></i> LIVE MOTOR · REAL RAIL SOUNDS</span
-        ><span id="sound-note"
-          >Continuous motor · metallic wheel impacts and rolling. Headphones recommended.</span
-        >
-        <details>
-          <summary>About the sounds</summary>
-          <p>
-            Choose continuous motor synthesis or a recorded motor tone with speed-controlled pitch.
-            The recorded option holds a local texture instead of restarting the full acceleration
-            sweep. Wheel, rolling and braking sounds use public-domain and CC0 recordings from
-            different trains. It is not a recording of the Kyiv–Fastiv service. Wheel impacts have
-            short modeled metal resonances; the rolling bed restores metallic midrange from one
-            ride; braking separates a speed-controlled recorded tone from an unpitched friction-hiss
-            texture. Air-release hiss, compressor hum, cabin ambience and the horn are synthesized.
-            Independent recorded speed bands are not included.
-          </p>
-          <p>
-            All carriage wheels produce distance-attenuated joint impacts; your occupied carriage
-            remains loudest. Metal tails carry farther and fade smoothly toward the train ends.
-            Rolling comes from the eight wheels of your carriage. Internal welds are silent;
-            string-end joints still clack. Click a wheel to audition its position, including while
-            stopped.
-          </p>
-          <a href="./AUDIO-LICENSES.md" target="_blank">Recording credits and processing notes ↗</a>
-        </details>
-      </div>
-      <p id="error" role="alert" hidden></p>
-      <details class="diagnostics">
-        <summary>Playback diagnostics</summary>
-        <span id="diagnostics">Start the journey to enable audio.</span>
-      </details>
-    </main>
+      <label class="slider-label" for="throttle"
+        >Throttle
+        <output id="throttle-value"
+          >${observableValue(
+            props.controlState$,
+            ({ accelerateLevel }) => `${Math.round(accelerateLevel * 100)}%`,
+            '0%',
+          )}</output
+        ></label
+      ><input
+        id="throttle"
+        type="range"
+        min="0"
+        max="100"
+        .value=${observableValue(
+          props.controlState$,
+          ({ accelerateLevel }) => live(String(Math.round(accelerateLevel * 100))),
+          live('0'),
+        )}
+        @input=${({ currentTarget }: Event) =>
+          props.onAccelerationChange((currentTarget as HTMLInputElement).valueAsNumber / 100)}
+      />
+      <label class="slider-label" for="brake"
+        >Service brake
+        <output id="brake-value"
+          >${observableValue(
+            props.controlState$,
+            ({ brakeLevel }) => `${Math.round(brakeLevel * 100)}%`,
+            '0%',
+          )}</output
+        ></label
+      ><input
+        class="brake-range"
+        id="brake"
+        type="range"
+        min="0"
+        max="100"
+        .value=${observableValue(
+          props.controlState$,
+          ({ brakeLevel }) => live(String(Math.round(brakeLevel * 100))),
+          live('0'),
+        )}
+        @input=${({ currentTarget }: Event) =>
+          props.onBrakeChange((currentTarget as HTMLInputElement).valueAsNumber / 100)}
+      />
+    </section>
   `;
 }
