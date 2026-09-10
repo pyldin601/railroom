@@ -8,6 +8,7 @@ import { clock$ } from './core/clock';
 import { metresPerSecond } from './core/helpers';
 import { position } from './core/position';
 import { motionLabel } from './core/motion-label';
+import { acceleration } from './core/acceleration';
 
 async function main() {
   const app = document.querySelector<HTMLDivElement>('#app');
@@ -23,14 +24,17 @@ async function main() {
   const speed$ = speed(clock$, controlState$, {
     maximumSpeed: metresPerSecond(train.config.maximumSpeed),
   });
+  const acceleration$ = acceleration(clock$, speed$);
   const position$ = position(clock$, speed$, 0);
-  const motionLabel$ = motionLabel(speed$, controlState$);
+  const motionLabel$ = motionLabel(speed$, acceleration$, controlState$);
 
   render(
     trainTemplate({
       trainConfig: train.config,
+      trackLength: track.length,
       controlState$,
       speed$,
+      position$,
       motionLabel$,
       onAccelerationChange(level) {
         controlEvents$.next({ type: ControlEventType.AccelerateChange, value: level });

@@ -9,8 +9,10 @@ import type { TrainConfig } from '../simulator/types/train';
 
 export function trainTemplate(props: {
   trainConfig: TrainConfig;
+  trackLength: number;
   controlState$: Observable<ControlState>;
   speed$: Observable<number>;
+  position$: Observable<number>;
   motionLabel$: Observable<MotionLabel>;
   onAccelerationChange: (level: number) => void;
   onBrakeChange: (level: number) => void;
@@ -44,6 +46,10 @@ export function trainTemplate(props: {
         <span>${Math.floor(props.trainConfig.maximumSpeed * 0.5)}</span>
         <span>${props.trainConfig.maximumSpeed}</span>
       </div>
+      <p class="hint" id="distance" aria-label="Distance travelled / total track length">
+        ${observableValue(props.position$, (position) => (position / 1000).toFixed(3), '0.000')} /
+        ${(props.trackLength / 1000).toFixed(3)} km
+      </p>
       <label class="slider-label" for="throttle"
         >Throttle
         <output id="throttle-value"

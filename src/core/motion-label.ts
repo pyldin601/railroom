@@ -1,4 +1,4 @@
-import { distinctUntilChanged, map, pairwise, shareReplay, startWith, withLatestFrom } from 'rxjs';
+import { distinctUntilChanged, map, shareReplay, startWith, withLatestFrom } from 'rxjs';
 import type { Observable } from 'rxjs';
 import type { ControlState } from './controls';
 
@@ -10,19 +10,19 @@ export type MotionLabel = 'coasting' | 'accelerating' | 'braking' | 'stationary'
  */
 export const motionLabel = (
   speed$: Observable<number>,
+  acceleration$: Observable<number>,
   controlState$: Observable<ControlState>,
 ): Observable<MotionLabel> => {
   return speed$.pipe(
-    pairwise(),
-    withLatestFrom(controlState$),
-    map(([[previous, current], { brakeLevel }]): MotionLabel => {
-      if (current < 0.05) {
+    withLatestFrom(controlState$, acceleration$),
+    map(([speed, { brakeLevel }, acceleration]): MotionLabel => {
+      if (speed < 0.05) {
         return 'stationary';
       }
       if (brakeLevel > 0) {
         return 'braking';
       }
-      if (current - previous > 0.01) {
+      if (acceleration > 0.01) {
         return 'accelerating';
       }
       return 'coasting';
