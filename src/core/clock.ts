@@ -1,4 +1,12 @@
-import { animationFrames, BehaviorSubject, filter, map, pairwise, withLatestFrom } from 'rxjs';
+import {
+  animationFrames,
+  BehaviorSubject,
+  filter,
+  map,
+  pairwise,
+  share,
+  withLatestFrom,
+} from 'rxjs';
 
 /** Emits whether the clock is paused; set it to `true` to suppress ticks. */
 export const paused$ = new BehaviorSubject(false);
@@ -10,4 +18,5 @@ export const clock$ = animationFrames().pipe(
   withLatestFrom(paused$),
   filter(([, paused]) => !paused),
   map(([[previous, current]]) => current - previous),
+  share(),
 );

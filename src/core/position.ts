@@ -1,4 +1,4 @@
-import { type Observable, scan, startWith, withLatestFrom } from 'rxjs';
+import { type Observable, scan, shareReplay, startWith, withLatestFrom } from 'rxjs';
 
 /** Emits the train position in metres for each elapsed clock tick. */
 export const position = (
@@ -12,5 +12,6 @@ export const position = (
       return position + speed * (tick / 1000);
     }, initialPosition),
     startWith(initialPosition),
+    shareReplay(1),
   );
 };

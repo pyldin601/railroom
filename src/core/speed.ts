@@ -1,4 +1,4 @@
-import { scan, withLatestFrom } from 'rxjs';
+import { scan, shareReplay, withLatestFrom } from 'rxjs';
 import type { Observable } from 'rxjs';
 import type { ControlState } from './controls';
 import { clamp } from './helpers';
@@ -39,5 +39,6 @@ export const speed = (
 
       return clamp(speed + acceleration * (tick / 1000), 0, maximumSpeed);
     }, 0),
+    shareReplay(1),
   );
 };

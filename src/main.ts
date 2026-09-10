@@ -24,7 +24,7 @@ async function main() {
     maximumSpeed: metresPerSecond(360),
   });
   const position$ = position(clock$, speed$, 0);
-  const motionLabel$ = motionLabel(speed$);
+  const motionLabel$ = motionLabel(speed$, controlState$);
 
   render(
     trainTemplate({
