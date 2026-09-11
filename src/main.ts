@@ -28,13 +28,14 @@ async function main() {
     loadSimulation('./tracks/kyiv-fastiv.json', './trains/generic.json'),
     SampleBank.create(audioContext, new URL('./audio/manifest.json', document.baseURI)),
   ]);
-  new Scene(audioContext, sampleBank, new Mixer(audioContext));
+  const scene = new Scene(audioContext, sampleBank, new Mixer(audioContext));
 
   console.log('Track and train ready', { track, train });
 
   const speed$ = speed(clock$, controlState$, {
     maximumSpeed: metresPerSecond(train.config.maximumSpeed),
   });
+
   const acceleration$ = acceleration(clock$, speed$);
   const distance$ = position(clock$, speed$, 0);
   const motionLabel$ = motionLabel(speed$, acceleration$, controlState$);
@@ -63,6 +64,8 @@ async function main() {
     }),
     app,
   );
+
+  scene.connect({ speed$ });
 }
 
 main().catch((error: unknown) => {

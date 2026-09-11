@@ -1,3 +1,4 @@
+import type { Observable, Subscription } from 'rxjs';
 import type { Mixer } from './mixer';
 import { Rolling } from './rolling.ts';
 import type { SampleBank } from './sample-bank';
@@ -6,6 +7,7 @@ import type { SampleBank } from './sample-bank';
 export class Scene {
   readonly mixer: Pick<Mixer, 'inputs' | 'dispose'>;
   readonly rolling: Rolling;
+  private speedSubscription: Subscription | undefined;
 
   constructor(
     context: BaseAudioContext,
@@ -16,7 +18,15 @@ export class Scene {
     this.rolling = new Rolling(context, samples.rolling, mixer.inputs.rolling);
   }
 
+  connect({ speed$ }: { readonly speed$: Observable<number> }) {
+    this.rolling.start();
+    this.speedSubscription = speed$.subscribe((speed) => {
+      this.rolling.setSpeed(speed);
+    });
+  }
+
   dispose() {
+    this.speedSubscription?.unsubscribe();
     this.rolling.dispose();
     this.mixer.dispose();
   }
