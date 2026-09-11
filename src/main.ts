@@ -11,6 +11,9 @@ import { motionLabel } from './core/motion-label';
 import { acceleration } from './core/acceleration';
 import { trackItem } from './core/track-item';
 import { trainEvent } from './core/train-event';
+import { SampleBank } from './audio/sample-bank';
+import { Scene } from './audio/scene';
+import { Mixer } from './audio/mixer';
 
 async function main() {
   const app = document.querySelector<HTMLDivElement>('#app');
@@ -18,10 +21,12 @@ async function main() {
     throw new Error('Missing application container');
   }
 
-  const { track, train } = await loadSimulation(
-    './tracks/kyiv-fastiv.json',
-    './trains/generic.json',
-  );
+  const audioContext = new AudioContext();
+  const [{ track, train }, sampleBank] = await Promise.all([
+    loadSimulation('./tracks/kyiv-fastiv.json', './trains/generic.json'),
+    SampleBank.create(audioContext, new URL('./audio/manifest.json', document.baseURI)),
+  ]);
+  new Scene(audioContext, sampleBank, new Mixer(audioContext));
 
   console.log('Track and train ready', { track, train });
 
@@ -35,7 +40,6 @@ async function main() {
   const trackItem$ = trackItem(track);
   const trainEvent$ = trainEvent(trackItem$, distance$, train.config);
 
-  // TODO Mixer + Synth
   trainEvent$.subscribe((ev) => {
     console.log(`${ev.cargoId}.${ev.axleIndex}.${ev.atDistance}.${ev.trackObject.type}`);
   });
