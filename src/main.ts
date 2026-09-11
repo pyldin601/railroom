@@ -14,7 +14,9 @@ import { trainEvent } from './core/train-event';
 
 async function main() {
   const app = document.querySelector<HTMLDivElement>('#app');
-  if (!app) throw new Error('Missing application container');
+  if (!app) {
+    throw new Error('Missing application container');
+  }
 
   const { track, train } = await loadSimulation(
     './tracks/kyiv-fastiv.json',

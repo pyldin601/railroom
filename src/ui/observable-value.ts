@@ -37,7 +37,9 @@ class ObservableValueDirective<T, Value> extends AsyncDirective {
 
   private subscribe() {
     const { source } = this;
-    if (!this.isConnected || !source || this.subscription) return;
+    if (!this.isConnected || !source || this.subscription) {
+      return;
+    }
 
     const subscription = new Subscription();
     this.subscription = subscription;
