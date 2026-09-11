@@ -14,6 +14,7 @@ import { trainEvent } from './core/train-event';
 import { SampleBank } from './audio/sample-bank';
 import { Scene } from './audio/scene';
 import { Mixer } from './audio/mixer';
+import { enableAudioOnFirstInteraction } from './audio/audio-context';
 
 async function main() {
   const app = document.querySelector<HTMLDivElement>('#app');
@@ -22,6 +23,7 @@ async function main() {
   }
 
   const audioContext = new AudioContext();
+  enableAudioOnFirstInteraction(audioContext);
   const [{ track, train }, sampleBank] = await Promise.all([
     loadSimulation('./tracks/kyiv-fastiv.json', './trains/generic.json'),
     SampleBank.create(audioContext, new URL('./audio/manifest.json', document.baseURI)),
