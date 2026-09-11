@@ -12,11 +12,12 @@
     "typecheck": "tsc --noEmit",
     "build": "npm run typecheck && vite build",
     "preview": "vite preview",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "lint": "eslint . --max-warnings 0",
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
-    "check": "npm run lint && npm run format:check && npm run build"
+    "check": "npm test && npm run lint && npm run format:check && npm run build"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

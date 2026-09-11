@@ -1,0 +1,12 @@
+{
+  "rolling": {
+    "url": "rolling-rail.wav",
+    "source": "https://commons.wikimedia.org/wiki/File:Complete_train_ride_4_minutes.ogg",
+    "license": "Public domain",
+    "author": "stephan",
+    "loopStart": 0,
+    "loopEnd": 9.85,
+    "sourceOffsetSeconds": 98,
+    "description": "Original 98–108 s rolling recording, processed into a cyclic rail texture."
+  }
+}
