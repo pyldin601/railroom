@@ -36,6 +36,12 @@ function audioContext() {
     currentTime: 4,
     gains: [],
     sources: [],
+    filters: [],
+    createBiquadFilter() {
+      const filter = audioNode({ frequency: audioParam(), Q: audioParam(), type: 'lowpass' });
+      this.filters.push(filter);
+      return filter;
+    },
     createGain() {
       const gain = audioNode({ gain: audioParam() });
       this.gains.push(gain);
@@ -48,7 +54,8 @@ function audioContext() {
         playbackRate: audioParam(),
         started: false,
         stopped: false,
-        start() {
+        start(when, offset) {
+          this.startArgs = [when, offset];
           this.started = true;
         },
         stop() {
@@ -62,9 +69,9 @@ function audioContext() {
   return context;
 }
 
-test('Scene routes its Rolling source through the rolling mixer channel', () => {
+test('Scene routes eight occupied-carriage wheel loops through the rolling mixer channel', () => {
   const context = audioContext();
-  const buffer = {};
+  const buffer = { duration: 10 };
   const rollingInput = audioNode();
   const mixer = {
     inputs: { rolling: rollingInput },
@@ -82,9 +89,28 @@ test('Scene routes its Rolling source through the rolling mixer channel', () => 
   const [gain] = context.gains;
   assert.equal(source.buffer, buffer);
   assert.equal(source.loop, true);
-  assert.equal(source.playbackRate.value, 1);
+  assert.equal(source.playbackRate.value, 2 ** (-17 / 1200));
   assert.equal(source.started, true);
-  assert.deepEqual(source.connections, [gain]);
+  assert.equal(context.sources.length, 8);
+  const rates = [-17, 7, 15, -8, 11, -14, -4, 10];
+  for (const [i, wheel] of context.sources.entries()) {
+    assert.equal(wheel.buffer, buffer);
+    assert.equal(wheel.loop, true);
+    assert.equal(wheel.playbackRate.value, 2 ** (rates[i] / 1200));
+    assert.deepEqual(wheel.startArgs, [4, ((i * 0.371) % 1) * buffer.duration]);
+    assert.equal(wheel.connections.length, 2);
+    for (const [j, first] of wheel.connections.entries()) {
+      const second = first.connections[0];
+      for (const filter of [first, second]) {
+        assert.equal(filter.type, j === 0 ? 'lowpass' : 'highpass');
+        assert.equal(filter.frequency.value, 500);
+        assert.equal(filter.Q.value, 20 * Math.log10(Math.SQRT1_2));
+      }
+      assert.deepEqual(second.connections, [gain]);
+    }
+  }
+  scene.rolling.start();
+  assert.equal(context.sources.length, 8);
   assert.deepEqual(gain.connections, [rollingInput]);
 
   scene.dispose();
@@ -92,6 +118,8 @@ test('Scene routes its Rolling source through the rolling mixer channel', () => 
   assert.equal(source.disconnected, true);
   assert.equal(gain.disconnected, true);
   assert.equal(mixer.disposed, true);
+  assert.ok(context.sources.every((source) => source.stopped && source.disconnected));
+  assert.ok(context.filters.every((filter) => filter.disconnected));
 });
 
 test('Scene starts rolling and maps speed to its gain', () => {
@@ -101,7 +129,7 @@ test('Scene starts rolling and maps speed to its gain', () => {
     inputs: { rolling: audioNode() },
     dispose() {},
   };
-  const scene = new Scene(context, { rolling: {} }, mixer);
+  const scene = new Scene(context, { rolling: { duration: 10 } }, mixer);
 
   scene.connect({ speed$ });
   speed$.next(0);
@@ -111,11 +139,11 @@ test('Scene starts rolling and maps speed to its gain', () => {
   const [source] = context.sources;
   const [gain] = context.gains;
   assert.equal(source.started, true);
-  assert.equal(source.playbackRate.value, 1);
+  assert.equal(source.playbackRate.value, 2 ** (-17 / 1200));
   assert.deepEqual(gain.gain.targets, [
     { target: 0, startTime: 4, timeConstant: 0.12 },
-    { target: 0.14, startTime: 4, timeConstant: 0.12 },
-    { target: 0.28, startTime: 4, timeConstant: 0.12 },
+    { target: 0.14 / Math.sqrt(8), startTime: 4, timeConstant: 0.12 },
+    { target: 0.28 / Math.sqrt(8), startTime: 4, timeConstant: 0.12 },
   ]);
 });
 
@@ -126,7 +154,7 @@ test('Scene stops observing speed when disposed', () => {
     inputs: { rolling: audioNode() },
     dispose() {},
   };
-  const scene = new Scene(context, { rolling: {} }, mixer);
+  const scene = new Scene(context, { rolling: { duration: 10 } }, mixer);
 
   scene.connect({ speed$ });
   speed$.next(11);
@@ -134,5 +162,7 @@ test('Scene stops observing speed when disposed', () => {
   speed$.next(22);
 
   const [gain] = context.gains;
-  assert.deepEqual(gain.gain.targets, [{ target: 0.14, startTime: 4, timeConstant: 0.12 }]);
+  assert.deepEqual(gain.gain.targets, [
+    { target: 0.14 / Math.sqrt(8), startTime: 4, timeConstant: 0.12 },
+  ]);
 });
